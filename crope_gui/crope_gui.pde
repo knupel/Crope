@@ -5,6 +5,7 @@ void setup() {
   size(400,200);
   slider_setup(x,y);
   slotch_setup(x,y);
+  dropdown_setup(x,y);
 
 
 }
@@ -13,16 +14,9 @@ void setup() {
 void draw() {
 	background(0);
   
-
   //slider_draw();
-	slotch_draw();
-
-
-
-	
-
-
-	
+	//slotch_draw();
+	dropdown_draw();
 
 	stroke(255,0,0);
 	line(x,0,x,height);
@@ -30,6 +24,48 @@ void draw() {
 	line(x+slider.get_size().x,0,x+slider.get_size().x,height);
 	line(0,y,width,y);
 }
+
+
+
+/**
+dropdown
+*/
+Dropdown dropdown;
+void dropdown_setup(int x, int y) {
+	String [] content = {"mon premier choix","mon deuxième choix", "mon troisième","quatriène","énième","antédéluvienne"};
+	dropdown = new Dropdown(iVec2(x,y),iVec2(60,20), "Menu", content);
+	int num_box_display = 4 ;
+	int rank_box_position = 2;
+	dropdown.set_box(num_box_display, rank_box_position);
+}
+
+
+void dropdown_draw() {
+	// slider.select(keyPressed); // by default select is mousePressed arg
+	// slider.select(mousePressed, keyPressed);
+	dropdown.update();
+	dropdown.show();
+	int x = dropdown.get_pos().x + dropdown.get_header_text_pos().x ;
+	int y = dropdown.get_pos().y + dropdown.get_size().y + dropdown.get_header_text_pos().y;
+	dropdown.show_selection(x,y);
+	/*
+	println("highlighted",dropdown.get_highlighted());
+	println("selected",dropdown.get_selected());
+	*/
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
