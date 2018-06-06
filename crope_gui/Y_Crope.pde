@@ -1,14 +1,12 @@
 /**
 CROPE
+v 0.1.0
 CONTROL ROMANESCO PROCESSING ENVIRONMENT
 * Copyleft (c) 2018-2018
 *
-Mini library to create button dropdown and button
-2015-2018
 * @author Stan le Punk
 * @see https://github.com/StanLepunK
 * @see http://stanlepunk.xyz/
-v 2.1.1
 */
 abstract class Crope {
   protected iVec2 pos, size;
@@ -238,7 +236,7 @@ abstract class Crope {
 CROPE
 CONTROL ROMANESCO PROCESSING ENVIRONMENT
 *
-CLASS BUTTON 3.0.0
+CLASS BUTTON 1.1.0
 */
 public class Button extends Crope {
   int color_bg;
@@ -926,6 +924,7 @@ v 0.0.2
 public class Slotch extends Slider {
   float [] notches_pos ;
   int colour_notch = int(g.colorModeX);
+  float thickness_notch = 1.;
   Slotch(iVec2 pos, iVec2 size) {
     super(pos, size);   
   }
@@ -956,12 +955,19 @@ public class Slotch extends Slider {
     notches_position();
   }
 
+  public void set_aspect_notch(int c, float thickness) {
+    this.colour_notch = c ;
+    this.thickness_notch = thickness;
+  }
+
   public void set_colour_notch(int c) {
     this.colour_notch = c ;
   }
 
   private float pos_notch(int size, int pos_molette) {
-    // float abs_pos = pos_molette - pos;
+    /**
+    something must be improve when there is 3 notches
+    */
     float pos = pos_molette;
     float step = size / get_notches_num();
     for(int i = 0 ; i < notches_pos.length ; i++) {
@@ -970,42 +976,10 @@ public class Slotch extends Slider {
       if(pos > min && pos < max) {
         pos = notches_pos[i];
         break;
-
       }
     }
     return pos;
   }
-
-
-
-/*
-  private int pos_notch(int pos, int size, int pos_molette, int size_molette) {
-    float step = (float)size / get_notches_num();
-    //float step = float(size +size_molette) / get_notches_num();
-    float abs_pos = pos_molette - pos;
-    float f_notch = abs_pos/step;
-    
-    notch = floor(f_notch);
-    
-    if(notch >= get_notches_num()) {
-      notch = get_notches_num()-1;
-    }
-    //float space = (float)size / (get_notches_num()+1);
-    float space = float(size) / get_notches_num();
-    float abs_res = (notch+1) *space -(space*.5); 
-    printTempo(10,"pos molette",pos_molette);
-    printTempo(10,"abs_pos",abs_pos);
-    printTempo(10,"float notch",f_notch);
-    printTempo(10,"notch",notch);
-    printTempo(10,"space",space);
-    printTempo(10,"abs res",abs_res);
-
-    // float abs_res = ((notch+1) *space) -(size_molette/2);
-    return int(abs_res+pos);
-  }
-  */
-
-
 
 
 
@@ -1024,7 +998,8 @@ public class Slotch extends Slider {
   }
   void show_notch(int start, int stop) {
     stroke(colour_notch);
-    //stop *= -1;
+    noFill();
+    strokeWeight(thickness_notch);
     if (size.x >= size.y) {
       start += pos.y ;
       stop += size.y;

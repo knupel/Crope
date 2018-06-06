@@ -40,10 +40,10 @@ slider notch
 */
 Slotch slotch ;
 void slotch_setup(int x, int y) {
-	slotch = new Slotch(iVec2(x,y),iVec2(200,20));
+	slotch = new Slotch(iVec2(x,y),iVec2(60,20));
   slotch.set_molette(ELLIPSE);
   slotch.set_rounded(20);
-  slotch.set_notch(20);
+  slotch.set_notch(5);
 }
 
 
@@ -54,7 +54,8 @@ void slotch_draw() {
 	slotch.show_molette();
 	// stroke(255);
 	// slotch.show_notch();
-	slotch.set_colour_notch(230);
+	// slotch.set_colour_notch(230);
+	slotch.set_aspect_notch(230,.5);
 	slotch.show_notch(-5,10);
 
 }
