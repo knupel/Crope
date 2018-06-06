@@ -1,6 +1,6 @@
 /**
 DROPDOWN
-v 2.1.0
+v 2.1.1
 2014-2018
 */
 boolean dropdownOpen ; // use to indicate to indicate at the other button, they cannot be used when the user are on the dropdown menu
@@ -37,7 +37,7 @@ public class Dropdown extends Crope {
 
 
   private iVec2 pos_header_text;
-  private iVec2 pos_content_text;
+  private iVec2 pos_box_text;
 
   private int pos_ref_x, pos_ref_y ;
   private iVec2 change_pos;
@@ -78,7 +78,7 @@ public class Dropdown extends Crope {
     int offset_text_header_y = (size.y - size_header_text)/2;
     set_header_text_pos(offset_text_x,size.y -offset_text_header_y);
     int offset_text_content_y = (size_box.y - size_content_text)/2;
-    set_content_text_pos(offset_text_x,size_box.y - offset_text_content_y); 
+    set_box_text_pos(offset_text_x,size_box.y - offset_text_content_y); 
     selected_type = mousePressed;
   }
 
@@ -96,15 +96,15 @@ public class Dropdown extends Crope {
   }
 
 
-  public void set_content_text_pos(iVec2 pos) {
-    set_content_text_pos(pos.x, pos.y);
+  public void set_box_text_pos(iVec2 pos) {
+    set_box_text_pos(pos.x, pos.y);
   }
 
-  public void set_content_text_pos(int x, int y) {
-    if(pos_content_text == null) {
-      this.pos_content_text = iVec2(x,y);
+  public void set_box_text_pos(int x, int y) {
+    if(pos_box_text == null) {
+      this.pos_box_text = iVec2(x,y);
     } else {
-      this.pos_content_text.set(x,y);
+      this.pos_box_text.set(x,y);
     } 
   }
 
@@ -113,14 +113,14 @@ public class Dropdown extends Crope {
   public void set_colour(ROPE_colour rc) {
     this.colour_structure = rc.get_colour()[0];
 
-    this.colour_box_in = rc.get_colour()[1];
-    this.colour_box_out = rc.get_colour()[2];
+    this.colour_header_in = rc.get_colour()[1];
+    this.colour_header_out = rc.get_colour()[2];
 
-    this.colour_header_in = rc.get_colour()[3];
-    this.colour_header_out = rc.get_colour()[4];
+    this.colour_header_text_in = rc.get_colour()[3];
+    this.colour_header_text_out = rc.get_colour()[4];
 
-    this.colour_header_text_in = rc.get_colour()[5];
-    this.colour_header_text_out = rc.get_colour()[6]; 
+    this.colour_box_in = rc.get_colour()[5];
+    this.colour_box_out = rc.get_colour()[6]; 
 
     this.colour_box_text_in = rc.get_colour()[7];
     this.colour_box_text_out = rc.get_colour()[8];
@@ -159,11 +159,11 @@ public class Dropdown extends Crope {
 
 
 
-  public void set_font_box(String font_name, int size) {
+  public void set_box_font(String font_name, int size) {
     this.font_box = createFont(font_name,size);
   }
   
-  public void set_font_box(PFont font) {
+  public void set_box_font(PFont font) {
     this.font_box = font;
   }
 
@@ -362,7 +362,7 @@ public class Dropdown extends Crope {
       fill(colour_box_text_out);
     }
     textFont(font_box);
-    int x = temp_pos.x +pos_content_text.x;
+    int x = temp_pos.x +pos_box_text.x;
     int y = temp_pos.y +height_box -(ceil(height_box*.2));
     text(content,x,y);
   }
@@ -424,7 +424,7 @@ public class Dropdown extends Crope {
   }
 
   iVec2 get_content_text_pos() {
-    return pos_content_text;
+    return pos_box_text;
   }
 }
 
