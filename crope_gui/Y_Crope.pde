@@ -8,7 +8,7 @@ Mini library to create button dropdown and button
 * @author Stan le Punk
 * @see https://github.com/StanLepunK
 * @see http://stanlepunk.xyz/
-v 2.1.0
+v 2.1.1
 */
 abstract class Crope {
   protected iVec2 pos, size;
@@ -36,7 +36,9 @@ abstract class Crope {
 
   private int rank;
 
-
+  /**
+  set structure
+  */
   public void set_pos(int x, int y) {
     set_pos(iVec2(x,y));
   }
@@ -66,7 +68,7 @@ abstract class Crope {
       }
     }
   }
-
+  
   public void set_fill(int c) {
     set_fill(c,c);
   }
@@ -84,6 +86,11 @@ abstract class Crope {
     this.stroke_in = c_in;
     this.stroke_out = c_out;
   }
+
+
+
+
+
 
   public void set_thickness(float thickness) {
     this.thickness = thickness;
@@ -136,6 +143,10 @@ abstract class Crope {
   */
   public void set_font(PFont font) {
     this.font = font; 
+  }
+
+  public void set_font(String font_name, int size) {
+    this.font = createFont(font_name,size);
   }
 
   public void set_font_size(int font_size) {
@@ -196,6 +207,10 @@ abstract class Crope {
 
   public int get_rank() {
     return rank;
+  }
+
+  public PFont get_font() {
+    return font;
   }
 }
 
@@ -269,14 +284,14 @@ public class Button extends Crope {
   /**
   set
   */
-  public void set_color_on_off(int color_in_ON, int color_out_ON, int color_in_OFF, int color_out_OFF) {
+  public void set_colour_on_off(int color_in_ON, int color_out_ON, int color_in_OFF, int color_out_OFF) {
     this.color_in_ON = color_in_ON ; 
     this.color_out_ON = color_out_ON ; 
     this.color_in_OFF = color_in_OFF ; 
     this.color_out_OFF = color_out_OFF ;
   }
 
-  public void set_color_bg(int color_bg_in, int color_bg_out) {
+  public void set_colour_structure(int color_bg_in, int color_bg_out) {
     this.color_bg_in = color_bg_in ; 
     this.color_bg_out = color_bg_out ;
   }
@@ -505,34 +520,40 @@ public class Button_dynamic extends Button {
 
 
 /**
-CLASS SLIDER
+SLIDER
+v 1.0.2
 */
 boolean molette_already_selected ;
 public class Slider extends Crope {
-  
+  protected boolean select_is ;
+  protected boolean selected_type;
   protected iVec2 pos_molette, size_molette;
 
   protected iVec2 pos_min, pos_max;
 
-  protected int fill_molette_in = color(g.colorModeX *.8);
-  protected int fill_molette_out = color(g.colorModeX *.6);
+  protected int fill_molette_in = color(g.colorModeX *.4);
+  protected int fill_molette_out = color(g.colorModeX *.2);
   protected int stroke_molette_in = fill_molette_in;
   protected int stroke_molette_out =fill_molette_out;
   protected float thickness_molette = 0;
 
-  protected boolean molette_used_is;
+  protected boolean molette_used_is = true;
   protected boolean inside_molette_is;
 
   protected float min_norm = 0 ;
   protected float max_norm = 1 ;
 
-  protected String moletteShapeType = ("") ;
+  protected int molette_type = RECT;
+
+  boolean notch_is;
+  int notches_num;
+  int notch;
   
   //CONSTRUCTOR minimum
   public Slider(iVec2 pos, iVec2 size) {
     set_pos(pos);
+    set_molette_pos();
     set_size(size);
-    //this.size = size.copy() ;
 
     //which molette for slider horizontal or vertical
     if (size.x >= size.y) {
@@ -540,39 +561,132 @@ public class Slider extends Crope {
     } else {
       size_molette = iVec2(size.x) ;
     }
-    // calculate minimum and maxium position of the molette
-    if(size.x > size.y) {
-      pos_min = pos.copy();
-      pos_max = iVec2(pos.x +size.x +size.y,  pos.y) ;
-    } else {
-      pos_min = pos.copy();
-      int correction = size_molette.y  + size_molette.x ;
-      pos_max = iVec2(pos.x,  pos.y  +size.x +size.y -correction) ;
-    }
+    set_molette_min_max_pos();
   }
   
-  //slider with external molette
-  public Slider(iVec2 pos, iVec2 size, iVec2 size_molette, String moletteShapeType) {
-    set_pos(pos);
-    set_pos_molette();
-    this.size_molette = size_molette.copy() ;
-    set_size(size);
-    //this.size = size.copy() ;
-    this.moletteShapeType = moletteShapeType ;
-    // calculate minimum and maxium position of the molette
+
+
+  private void set_molette_min_max_pos() {
     if(size.x > size.y) {
       pos_min = pos.copy();
-      pos_max = iVec2(pos.x +size.x +size.y,  pos.y) ;
+      pos_max = iVec2(pos.x +size.x -size.y, pos.y) ;
     } else {
       pos_min = pos.copy();
-      int correction = size_molette.y  + size_molette.x ;
-      pos_max = iVec2(pos.x,  pos.y  +size.x +size.y -correction) ;
+     // int correction = size_molette.y +size_molette.x ;
+      pos_max = iVec2(pos.x, pos.y +size.y -size.x) ;
+      // pos_max = iVec2(pos.x, pos.y +size.x +size.y -correction) ;
     }
   }
 
 
 
-  public void set_pos_molette() {
+  /**
+  MAIN METHOD
+  */
+  public void update() {
+    molette_update();
+  }
+
+  protected void molette_update() {
+    if(!select_is) {
+      selected_type = mousePressed;
+      molette_used_is = select(molette_used_is(),molette_used_is,true);
+    }
+    // move the molette is this one is locked
+    // security
+    if(size.x >= size.y) {
+      // for the horizontal slider
+      if (pos_molette.x < pos_min.x ) {
+        pos_molette.x = pos_min.x ;
+      }
+      if (pos_molette.x > pos_max.x ) {
+        pos_molette.x = pos_max.x ;
+      }
+    } else {
+      // for the vertical slider
+      if (pos_molette.y < pos_min.y ) {
+        pos_molette.y = pos_min.y ;
+      }
+      if (pos_molette.y > pos_max.y ) {
+        pos_molette.y = pos_max.y ;
+      }
+    }
+
+    inside_slider();
+    if (molette_used_is) {
+      if (size.x >= size.y) { 
+        pos_molette.x = round(constrain(mouseX -(size_molette.x *.5), pos_min.x, pos_max.x));
+      } else { 
+        pos_molette.y = round(constrain(mouseY -(size_molette.y *.5), pos_min.y, pos_max.y));
+      }
+    }
+  }
+
+
+
+
+
+  
+  public void select(boolean authorization) {
+    select_is = true;
+    selected_type = mousePressed;
+    molette_used_is = select(molette_used_is(),molette_used_is,authorization);
+  }
+
+  public void select(boolean authorization_1, boolean authorization_2) {
+    select_is = true;
+    selected_type = authorization_1;
+    // molette_used_is = select(molette_used_is(authorization_1),molette_used_is,authorization_2);
+    molette_used_is = select(molette_used_is(),molette_used_is,authorization_2);
+  }
+
+
+  // privat method
+  protected boolean select(boolean locked_method, boolean result, boolean authorization) {
+    if(authorization) {
+      if(!molette_already_selected) {
+        if (locked_method) {
+          molette_already_selected = true ;
+          result = true ;
+        }
+      } else if (locked_method) {
+        // if (locked_method && authorization) {
+        result = true ;
+      }
+
+      if (!selected_type) { 
+        result = false ; 
+        molette_already_selected = false ;
+      }
+      return result ;
+
+    } else return false ;   
+  }
+
+
+
+
+
+
+
+
+
+  /**
+  setting
+  */
+  public void set_molette(int type) {
+    this.molette_type = type;
+  }
+
+  public void set_molette_size(iVec2 size) {
+    set_molette_size(size.x, size.y);
+  }
+
+  public void set_molette_size(int x, int y) {
+    this.size_molette.set(x,y);
+  }
+
+  public void set_molette_pos() {
     if(this.pos_molette == null) {
       this.pos_molette = pos.copy();
     } else {
@@ -581,7 +695,7 @@ public class Slider extends Crope {
   }
   
   // set_molette
-  public void set_pos_molette(float pos_norm) {
+  public void set_molette_pos(float pos_norm) {
     // security to constrain the value in normalizing range.
     if(pos_norm > 1.) pos_norm = 1. ;
     if(pos_norm < 0) pos_norm = 0 ;
@@ -616,74 +730,10 @@ public class Slider extends Crope {
   }
 
 
-  
-  public void select_molette(boolean authorazation) {
-    molette_used_is = select(molette_used_is(), molette_used_is, authorazation) ;
-  }
-
-
-  public void update_molette() {
-    // move the molette is this one is locked
-    // security
-    if(size.x >= size.y) {
-      // for the horizontal slider
-      if (pos_molette.x < pos_min.x ) {
-        pos_molette.x = pos_min.x ;
-      }
-      if (pos_molette.x > pos_max.x ) {
-        pos_molette.x = pos_max.x ;
-      }
-    } else {
-      // for the vertical slider
-      if (pos_molette.y < pos_min.y ) {
-        pos_molette.y = pos_min.y ;
-      }
-      if (pos_molette.y > pos_max.y ) {
-        pos_molette.y = pos_max.y ;
-      }
-    }
-
-    if (molette_used_is) {
-      if (size.x >= size.y) { 
-        pos_molette.x = round(constrain(mouseX -(size_molette.x *.5), pos_min.x, pos_max.x)); 
-      } else { 
-        pos_molette.y = round(constrain(mouseY -(size_molette.y *.5), pos_min.y, pos_max.y));
-      }
-    }
-  }
-
-  // privat method
-  protected boolean select(boolean locked_method, boolean result, boolean authorization) {
-    if(authorization) {
-      if(!molette_already_selected) {
-        if (locked_method) {
-          molette_already_selected = true ;
-          result = true ;
-        }
-      } else if (locked_method) {
-        // if (locked_method && authorization) {
-        result = true ;
-      }
-
-      if (!mousePressed) { 
-        result = false ; 
-        molette_already_selected = false ;
-      }
-      return result ;
-
-    } else return false ;
-    
-  }
 
 
 
-  
 
-  
-  
-  
-  
-  
   /**
   DISPLAY SLIDER
   v 2.0.0
@@ -724,7 +774,7 @@ public class Slider extends Crope {
     } else {
       aspect_rope(fill_molette_out,stroke_molette_out,thickness_molette);
     }
-    shape_molette() ;
+    molette_shape() ;
   }
   
   public void show_label() {
@@ -735,10 +785,10 @@ public class Slider extends Crope {
   }
 
   
-  private void shape_molette() {
-    if(moletteShapeType.equals("ELLIPSE") ) {
+  private void molette_shape() {
+    if(molette_type == ELLIPSE) {
       ellipse(size_molette.x *.5 +pos_molette.x, size.y *.5 +pos_molette.y, size_molette.x , size_molette.y) ;
-    } else if(moletteShapeType.equals("RECT")) {
+    } else if(molette_type == RECT) {
       rect(pos_molette.x, pos_molette.y, size_molette.x , size_molette.y ) ;
     } else rect(pos_molette.x, pos_molette.y, size_molette.x , size_molette.y ) ;
   }
@@ -782,15 +832,14 @@ public class Slider extends Crope {
   }
   
   
-  
-
   public boolean molette_used_is() {
-    if (inside_molette_is && mousePressed) {
+    if (inside_molette_is && selected_type) {
       return true ; 
     } else {
       return false ;
     }
   }
+
 
 
   // update position from midi controller
@@ -831,13 +880,15 @@ public class Slider extends Crope {
     return pos_max;
   }
 
+  
 
 
-  public iVec2 get_pos_molette() {
+
+  public iVec2 get_molette_pos() {
     return pos_molette;
   }
 
-  public iVec2 get_size_molette() {
+  public iVec2 get_molette_size() {
     return size_molette;
   }
 
@@ -845,6 +896,177 @@ public class Slider extends Crope {
     return inside_molette_is;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+SLIDER NOTCH
+v 0.0.2
+*/
+
+public class Slotch extends Slider {
+  float [] notches_pos ;
+  int colour_notch = int(g.colorModeX);
+  Slotch(iVec2 pos, iVec2 size) {
+    super(pos, size);   
+  }
+
+
+
+
+  public void update() {
+    molette_update();
+    if (size.x >= size.y) { 
+      if(notch_is) {
+        //pos_molette.x = pos_notch(pos.x, size.x, pos_molette.x, size_molette.x);
+        pos_molette.x = (int)pos_notch(size.x, pos_molette.x);
+      }
+    } else { 
+      if(notch_is) {
+        // pos_molette.y = pos_notch(pos.y, size.y, pos_molette.y, size_molette.y);
+        pos_molette.y = (int)pos_notch(size.y, pos_molette.y);
+      }
+    }
+  }
+
+
+
+  public void set_notch(int num) {
+    notch_is = true ;
+    this.notches_num = num;
+    notches_position();
+  }
+
+  public void set_colour_notch(int c) {
+    this.colour_notch = c ;
+  }
+
+  private float pos_notch(int size, int pos_molette) {
+    // float abs_pos = pos_molette - pos;
+    float pos = pos_molette;
+    float step = size / get_notches_num();
+    for(int i = 0 ; i < notches_pos.length ; i++) {
+      float min = notches_pos[i] - (step *.5);
+      float max = notches_pos[i] + (step *.5);
+      if(pos > min && pos < max) {
+        pos = notches_pos[i];
+        break;
+
+      }
+    }
+    return pos;
+  }
+
+
+
+/*
+  private int pos_notch(int pos, int size, int pos_molette, int size_molette) {
+    float step = (float)size / get_notches_num();
+    //float step = float(size +size_molette) / get_notches_num();
+    float abs_pos = pos_molette - pos;
+    float f_notch = abs_pos/step;
+    
+    notch = floor(f_notch);
+    
+    if(notch >= get_notches_num()) {
+      notch = get_notches_num()-1;
+    }
+    //float space = (float)size / (get_notches_num()+1);
+    float space = float(size) / get_notches_num();
+    float abs_res = (notch+1) *space -(space*.5); 
+    printTempo(10,"pos molette",pos_molette);
+    printTempo(10,"abs_pos",abs_pos);
+    printTempo(10,"float notch",f_notch);
+    printTempo(10,"notch",notch);
+    printTempo(10,"space",space);
+    printTempo(10,"abs res",abs_res);
+
+    // float abs_res = ((notch+1) *space) -(size_molette/2);
+    return int(abs_res+pos);
+  }
+  */
+
+
+
+
+
+
+  public float [] notches_position() {
+    notches_pos = new float[get_notches_num()];
+    float step = size.x / get_notches_num();
+    for(int i = 0 ; i < get_notches_num(); i++) {
+      notches_pos[i] = (i+1) *step -(step*.5);
+    }
+    return notches_pos;
+  }
+  
+  void show_notch() {
+    show_notch(0,0);
+  }
+  void show_notch(int start, int stop) {
+    stroke(colour_notch);
+    //stop *= -1;
+    if (size.x >= size.y) {
+      start += pos.y ;
+      stop += size.y;
+      for(int i = 0 ; i < notches_pos.length ; i++) {
+        float abs_pos = notches_pos[i];
+        line(pos.x +abs_pos,start,pos.x +abs_pos,start +stop);
+      }
+    } else {
+      start += pos.x ;
+      stop += size.x;
+      for(int i = 0 ; i < notches_pos.length ; i++) {
+        float abs_pos = notches_pos[i];
+        line(start,pos.y +abs_pos,start+stop,pos.y +abs_pos);
+      }
+    } 
+  }
+
+
+
+
+
+
+  public int get_notch() {
+    return notch;
+  }
+
+  public int get_notches_num() {
+    return notches_num;
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -886,17 +1108,25 @@ public class Slider_adjustable extends Slider {
     this.newPosMax = iVec2();
     this.newPosMin = pos.copy();
     this.sizeMinMax = size.copy();
-    this.sizeMolMinMax = iVec2(size_molette);
+
+    if (size.x >= size.y) {
+      this.sizeMolMinMax = iVec2(size.y); 
+    } else {
+      this.sizeMolMinMax = iVec2(size.x) ;
+    }
   }
-  
+  /*
   //slider with external molette
-  public Slider_adjustable(iVec2 pos, iVec2 size, iVec2 size_molette, String moletteShapeType) {
-    super(pos, size, size_molette, moletteShapeType);
+  public Slider_adjustable(iVec2 pos, iVec2 size, iVec2 size_molette, int moletteShapeType) {
+    super(pos,size);
+    set_molette_size(size_molette);
+    set_molette(moletteShapeType);
     this.newPosMax = iVec2();
     this.newPosMin = iVec2();
     this.sizeMinMax = size.copy();
     this.sizeMolMinMax = iVec2(size_molette);
   }
+  */
 
 
 
@@ -1130,19 +1360,17 @@ public class Slider_adjustable extends Slider {
 
 /**
 DROPDOWN
-v 2.0.0
+v 2.0.1
 2014-2018
 */
 boolean dropdownOpen ; // use to indicate to indicate at the other button, they cannot be used when the user are on the dropdown menu
-/**
-CLASS
-*/
+
 public class Dropdown extends Crope {
   //Slider dropdown
   private Slider slider_dd;
   private iVec2 size_box;
   // font
-  private PFont font_header,font_box;
+  private PFont font_box;
   //dropdown
   private int line = 0;
   private String content[];
@@ -1172,7 +1400,7 @@ public class Dropdown extends Crope {
   CONSTRUCTOR
   */
   public Dropdown(String name, String [] content, iVec2 pos, iVec2 size, iVec2 pos_text, ROPE_color rc, int num_box, int height_box) {
-    this.font_header = createFont("defaultFont",10);
+    this.font = createFont("defaultFont",10);
     this.font_box = createFont("defaultFont",10);
     this.name = name; 
     this.pos = pos.copy();
@@ -1211,18 +1439,12 @@ public class Dropdown extends Crope {
 
   }
 
-  public void set_font_header(String font_name, int size) {
-    this.font_header = createFont(font_name,size);
-  }
+
 
   public void set_font_box(String font_name, int size) {
     this.font_box = createFont(font_name,size);
   }
-
-  public void set_font_header(PFont font) {
-    this.font_header = font;
-  }
-
+  
   public void set_font_box(PFont font) {
     this.font_box = font;
   }
@@ -1263,7 +1485,9 @@ public class Dropdown extends Crope {
     
     iVec2 size_molette =  iVec2(size_slider.x, round(size_slider.y /ratio));
 
-    slider_dd = new Slider(pos_slider, size_slider, size_molette, "RECT");
+    slider_dd = new Slider(pos_slider, size_slider);
+    slider_dd.set_molette_size(size_molette);
+    slider_dd.set_molette(RECT);
     slider_dd.set_molette_fill(this.color_box_in,this.color_box_out);
   }
 
@@ -1293,22 +1517,17 @@ public class Dropdown extends Crope {
           int y = pos.y +height_box;
           slider_dd.set_pos(x,y);
           slider_dd.inside_molette_rect();
-          slider_dd.select_molette(true);
-          slider_dd.update_molette();
+          slider_dd.select(true);
+          slider_dd.update();
           slider_dd.show_structure();
-          //slider_dd.show(color_main,color_main,0);
-          /**
-          the color must be set in other place, that's not pertinent to set color in this method
-          */
           slider_dd.show_molette();
-          // slider_dd.show_molette(jaune, orange, jaune, orange, 0) ;
         }
       }
     } else {
       //header rendering
       dropdownOpen = false ;
     }
-    title_without_box(name, 1, size, font_header);
+    title_without_box(name,1,size);
   }
 
 
@@ -1316,7 +1535,7 @@ public class Dropdown extends Crope {
 
 
   //DISPLAY
-  private void title_without_box(String name, int step, iVec2 size, PFont font) {
+  private void title_without_box(String name, int step, iVec2 size) {
     //update
     factorPos = step + pos.z -1 ;
     float yLevel = step == 1 ? pos.y  : (pos.y + (size.y *(factorPos )));
@@ -1390,9 +1609,6 @@ public class Dropdown extends Crope {
     return num_box;
   }
 
-  PFont get_font_header() {
-    return font_header;
-  }
 
   PFont get_font_box() {
     return font_box;
