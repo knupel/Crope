@@ -15,8 +15,8 @@ void draw() {
 	background(0);
   
   //slider_draw();
-	//slotch_draw();
-	dropdown_draw();
+	slotch_draw();
+	//dropdown_draw();
 
 	stroke(255,0,0);
 	line(x,0,x,height);
@@ -77,9 +77,13 @@ slider notch
 Slotch slotch ;
 void slotch_setup(int x, int y) {
 	slotch = new Slotch(iVec2(x,y),iVec2(60,20));
+	/*
   slotch.set_molette(ELLIPSE);
   slotch.set_rounded(20);
-  slotch.set_notch(5);
+  */
+  slotch.set_notch(5).set_molette(ELLIPSE).set_rounded(20);
+  //slotch.set_molette(ELLIPSE).set_rounded(20).set_notch(5);
+  //slotch.set_notch(5);
 }
 
 
