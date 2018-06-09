@@ -284,7 +284,7 @@ abstract class Crope {
 CROPE
 CONTROL ROMANESCO PROCESSING ENVIRONMENT
 *
-CLASS BUTTON 1.2.0
+CLASS BUTTON 1.2.1
 */
 public class Button extends Crope {
   int color_bg;
@@ -425,31 +425,33 @@ public class Button extends Crope {
   LABEL
   */
   public void show_label() {
-    if (is) {
-      if (rollover() && !authorization) {
-        color_on_off = color_in_ON; 
+    if(this.name != null) {
+      if (is) {
+        if (rollover() && !authorization) {
+          color_on_off = color_in_ON; 
+        } else {
+          color_on_off = color_out_ON;
+        }
       } else {
-        color_on_off = color_out_ON;
+        if (rollover() && !authorization) {
+          color_on_off = color_in_OFF; 
+        } else {
+          color_on_off = color_out_OFF;
+        }
       }
-    } else {
-      if (rollover() && !authorization) {
-        color_on_off = color_in_OFF; 
-      } else {
-        color_on_off = color_out_OFF;
+      
+      if(pos_label == null) {
+        pos_label = iVec2();
       }
-    }
-    
-    if(pos_label == null) {
-      pos_label = iVec2();
-    }
 
-    if(font != null) textFont(font);
-    if(font_size > 0) textSize(font_size);
-    textAlign(align);
-    fill(color_on_off);
-    iVec2 pos_def = iadd(pos,pos_label);
-    pos_def.y += size.y ;
-    text(this.name,pos_def);
+      if(font != null) textFont(font);
+      if(font_size > 0) textSize(font_size);
+      textAlign(align);
+      fill(color_on_off);
+      iVec2 pos_def = iadd(pos,pos_label);
+      pos_def.y += size.y ;
+      text(this.name,pos_def);
+    }  
   }
 
 
@@ -821,7 +823,7 @@ public class Slider extends Crope {
 
   /**
   DISPLAY SLIDER
-  v 2.0.0
+  v 2.0.1
   */
   public void show_structure() {
     if(thickness > 0 && alpha(stroke_in) > 0 && alpha(stroke_out) > 0) {
@@ -863,14 +865,16 @@ public class Slider extends Crope {
   }
   
   public void show_label() {
-    textAlign(align);
-    textFont(font);
-    if(inside_slider()) {
-      fill(color_label_in);
-    } else {
-      fill(color_label_out);
-    }   
-    text(name,add(pos,pos_label));
+    if(this.name != null) {
+       textAlign(align);
+       textFont(font);
+       if(inside_slider()) {
+        fill(color_label_in);
+      } else {
+        fill(color_label_out);
+      }   
+      text(name,add(pos,pos_label));
+    }  
   }
 
   
