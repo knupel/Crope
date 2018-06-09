@@ -337,17 +337,11 @@ public class Button extends Crope {
     this.color_out_OFF = color_out_OFF ;
     return this;
   }
-  /*
-  public void set_colour_structure(int color_bg_in, int color_bg_out) {
-    this.color_bg_in = color_bg_in ; 
-    this.color_bg_out = color_bg_out ;
-  }
-  */
+
 
 
 
   
-
 
 
   /**
