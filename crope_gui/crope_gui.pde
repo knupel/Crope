@@ -15,8 +15,8 @@ void draw() {
 	background(0);
   
   //slider_draw();
-	slotch_draw();
-	//dropdown_draw();
+	// slotch_draw();
+	dropdown_draw();
 
 	stroke(255,0,0);
 	line(x,0,x,height);

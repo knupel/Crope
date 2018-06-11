@@ -1,6 +1,6 @@
 /**
 DROPDOWN
-v 2.3.2
+v 2.3.3
 2014-2018
 */
 boolean dropdownOpen ; // use to indicate to indicate at the other button, they cannot be used when the user are on the dropdown menu
@@ -323,7 +323,7 @@ public class Dropdown extends Crope {
       fill(colour_header_text_out);
     }
     textFont(font);
-    text(get_content()[get_selected()], x, y) ;
+    text(get_content()[get_selection()], x, y) ;
   }
   
    private void show_header() {
@@ -429,13 +429,13 @@ public class Dropdown extends Crope {
 
 
   //return which line of dropdown is highlighted
-  public int get_highlighted() {
+  public int get_highlight() {
     return line ;
   }
 
   //return which line of dropdown is selected
   int current_line ;
-  public int get_selected() {
+  public int get_selection() {
     if(!locked) {
       if(line >= 0 && line < content.length) {
         current_line = line ;
