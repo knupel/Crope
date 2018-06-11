@@ -1,6 +1,6 @@
 /**
 DROPDOWN
-v 2.3.1
+v 2.3.2
 2014-2018
 */
 boolean dropdownOpen ; // use to indicate to indicate at the other button, they cannot be used when the user are on the dropdown menu
@@ -147,6 +147,11 @@ public class Dropdown extends Crope {
     if(content != null && num_box != content.length) {
       set_num_box_rendering(true);
     }
+    return this;
+  }
+
+  public Dropdown set_box_rank(int rank) {
+    this.box_starting_rank_position = rank;
     return this;
   }
 
