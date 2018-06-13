@@ -1,7 +1,7 @@
 /**
 DROPDOWN
-v 2.4.0
-2014-2018
+v 0.1.0
+2018-2018
 */
 /**
 method to know is dropdown is active or not
@@ -13,21 +13,28 @@ void add_dropdown(Dropdown... dd) {
   for(int i = 0 ; i < dd.length ; i++) {
     dropdown_crope_list.add(dd[i]);
   }
+  println("dropdown add to dropdown manager:",dropdown_crope_list.size());
 }
 
 boolean dropdown_is() {
   boolean locked = false ;
   for(Dropdown dd : dropdown_crope_list) {
-    if(dd.locked) {
-      locked = true;
-      break;
-    }
+    if(dd != null) {
+      if(dd.locked_is()) {
+        locked = true;
+        break;
+      }
+    }  
   }
   return locked;
 }
 
 
-
+/**
+DROPDOWN class
+v 2.4.1
+2014-2018
+*/
 public class Dropdown extends Crope {
   protected boolean select_is;
   protected boolean selected_type;
@@ -482,6 +489,10 @@ public class Dropdown extends Crope {
 
   public iVec2 get_content_text_pos() {
     return pos_box_text;
+  }
+
+  public boolean locked_is() {
+    return locked;
   }
 }
 
