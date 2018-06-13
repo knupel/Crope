@@ -32,7 +32,7 @@ boolean dropdown_is() {
 
 /**
 DROPDOWN class
-v 2.5.0
+v 2.5.2
 2014-2018
 */
 public class Dropdown extends Crope {
@@ -278,7 +278,6 @@ public class Dropdown extends Crope {
     slider_dd.set_molette(RECT);
     slider_dd.set_fill(colour_structure);
     slider_dd.set_fill_molette(colour_box_in,colour_box_out);
-    println(wheel_is);
     slider_dd.wheel(wheel_is);
   }
 
@@ -392,6 +391,8 @@ public class Dropdown extends Crope {
       }
       set_box_width(longest_String_pixel(font_box,this.content));
       for (int i = start +offset_slider ; i < end +offset_slider ; i++) {
+        if(i < 0) i = 0 ;
+        if(i >= content.length) i = content.length -1;
         render_box(content[i], step++);
         if (slider) {
           int x = pos.x -slider_dd.get_size().x;

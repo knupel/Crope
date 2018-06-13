@@ -389,6 +389,7 @@ public class Button extends Crope {
   it's not acceptable to have a def value inside
   */
   private boolean rollover() {
+    if(cursor == null) cursor = iVec2();
     float newSize = 1  ;
     if (size.y < 10 ) newSize = size.y *1.8 ; 
     else if (size.y >= 10 && size.y < 20  ) newSize = size.y *1.2 ;  
@@ -590,7 +591,7 @@ public class Button_dynamic extends Button {
 
 /**
 SLIDER
-v 1.3.0
+v 1.3.0.1
 */
 boolean molette_already_selected ;
 public class Slider extends Crope {
@@ -707,7 +708,7 @@ public class Slider extends Crope {
 
     if(wheel_is()) {
       if(get_scroll() == null) {
-        printErrTempo(60, "class Slider method molette_update(): the wheelevent is innacessible \nmay be you must use method scroll(MouseEvent e) in void mouseWheel(MouseEvent e)");
+        printErrTempo(60, "class Slider method molette_update(): the wheelEvent is innacessible \nmay be you must use method scroll(MouseEvent e) in void mouseWheel(MouseEvent e)");
 
       } else {
         if (size.x >= size.y) { 
@@ -872,7 +873,7 @@ public class Slider extends Crope {
 
   /**
   DISPLAY SLIDER
-  v 2.0.1
+  v 2.0.2
   */
   public void show_structure() {
     if(thickness > 0 && alpha(stroke_in) > 0 && alpha(stroke_out) > 0) {
@@ -964,6 +965,7 @@ public class Slider extends Crope {
 
   //ellipse
   public boolean inside_molette_ellipse() {
+    if(cursor == null) cursor = iVec2();
     float radius = size_molette.x ;
     int posX = int(radius *.5 +pos_molette.x ) ; 
     int posY = int(size.y *.5 +pos_molette.y) ;
