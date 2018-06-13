@@ -14,9 +14,10 @@ void setup() {
 void draw() {
 	background(0);
   
-  //slider_draw();
+  // slider_draw();
 	// slotch_draw();
 	dropdown_draw();
+	println(dropdown_is());
 
 	stroke(255,0,0);
 	line(x,0,x,height);
@@ -27,27 +28,45 @@ void draw() {
 
 
 
+
+
+
+
+
+
+
 /**
 dropdown
 */
-Dropdown dropdown;
+Dropdown [] dropdown;
 void dropdown_setup(int x, int y) {
-	String [] content = {"mon premier choix","mon deuxième choix", "mon troisième","quatriène","énième","antédéluvienne"};
-	dropdown = new Dropdown(iVec2(x,y),iVec2(60,20), "Menu", content);
+	String [] content_0 = {"chien","chat", "poisson rouge","hamster","rat","souris"};
+	String [] content_1 = {"tigre","lynx", "puma","chat","panthère","loup","ours"};
+	dropdown = new Dropdown[2];
+	dropdown[0] = new Dropdown(iVec2(x,y),iVec2(60,20), "Menu", content_0);
+	dropdown[1] = new Dropdown(iVec2(x*8,y),iVec2(60,20), "Menu", content_1);
 	int num_box_display = 4 ;
 	int rank_box_position = 2;
-	dropdown.set_box(num_box_display, rank_box_position);
+	for(int i = 0 ; i < dropdown.length;i++) {
+		dropdown[i].set_box(num_box_display, rank_box_position);
+	}
+	
+	add_dropdown(dropdown);
 }
 
 
 void dropdown_draw() {
 	// slider.select(keyPressed); // by default select is mousePressed arg
 	// slider.select(mousePressed, keyPressed);
-	dropdown.update();
-	dropdown.show();
-	int x = dropdown.get_pos().x + dropdown.get_header_text_pos().x ;
-	int y = dropdown.get_pos().y + dropdown.get_size().y + dropdown.get_header_text_pos().y;
-	dropdown.show_selection(x,y);
+	for(int i = 0 ; i < dropdown.length ;i++) {
+		dropdown[i].update();
+		dropdown[i].show();
+		int x = dropdown[i].get_pos().x + dropdown[i].get_header_text_pos().x ;
+		int y = dropdown[i].get_pos().y + dropdown[i].get_size().y + dropdown[i].get_header_text_pos().y;
+		dropdown[i].show_selection(x,y);
+	}
+	
+	
 	/*
 	println("highlighted",dropdown.get_highlighted());
 	println("selected",dropdown.get_selected());
@@ -111,6 +130,7 @@ void slider_setup(int x, int y) {
 	slider = new Slider(iVec2(x,y),iVec2(200,20));
   slider.set_molette(ELLIPSE);
   slider.set_rounded(20);
+  slider.set_molette_pos_norm(.25);
 }
 
 

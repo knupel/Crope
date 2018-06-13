@@ -1,9 +1,32 @@
 /**
 DROPDOWN
-v 2.3.3
+v 2.4.0
 2014-2018
 */
-boolean dropdownOpen ; // use to indicate to indicate at the other button, they cannot be used when the user are on the dropdown menu
+/**
+method to know is dropdown is active or not
+Add dropdown must use when the dropdown is build.
+*/
+ArrayList<Dropdown> dropdown_crope_list ;
+void add_dropdown(Dropdown... dd) {
+  if(dropdown_crope_list == null) dropdown_crope_list = new ArrayList<Dropdown>();
+  for(int i = 0 ; i < dd.length ; i++) {
+    dropdown_crope_list.add(dd[i]);
+  }
+}
+
+boolean dropdown_is() {
+  boolean locked = false ;
+  for(Dropdown dd : dropdown_crope_list) {
+    if(dd.locked) {
+      locked = true;
+      break;
+    }
+  }
+  return locked;
+}
+
+
 
 public class Dropdown extends Crope {
   protected boolean select_is;
@@ -260,10 +283,6 @@ public class Dropdown extends Crope {
       selected_type = mousePressed;
     }
     open_dropdown(); 
-
-    if(!locked) {
-      dropdownOpen = false ;
-    }
   }
 
 
@@ -350,7 +369,6 @@ public class Dropdown extends Crope {
   
   private void show_box() {
     if(locked) {
-      dropdownOpen = true ;
       int step = box_starting_rank_position;
       //give the position in list of Item with the position from the slider's molette
       if (slider) {
