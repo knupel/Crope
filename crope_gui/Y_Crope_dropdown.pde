@@ -32,7 +32,7 @@ boolean dropdown_is() {
 
 /**
 DROPDOWN class
-v 2.4.1
+v 2.5.0
 2014-2018
 */
 public class Dropdown extends Crope {
@@ -83,6 +83,8 @@ public class Dropdown extends Crope {
   private float missing ;
 
   private int box_starting_rank_position = 1;
+
+  private boolean wheel_is = false;
 
   /**
   CONSTRUCTOR
@@ -245,6 +247,10 @@ public class Dropdown extends Crope {
     return this;
   }
 
+  public void wheel(boolean wheel_is) {
+    this.wheel_is = wheel_is;
+  }
+
 
   private void update_slider() {
     iVec2 size_slider = iVec2(round(height_box *.5), round((end *height_box) -pos.z));
@@ -272,6 +278,8 @@ public class Dropdown extends Crope {
     slider_dd.set_molette(RECT);
     slider_dd.set_fill(colour_structure);
     slider_dd.set_fill_molette(colour_box_in,colour_box_out);
+    println(wheel_is);
+    slider_dd.wheel(wheel_is);
   }
 
   public void offset(int x, int y) {
@@ -285,7 +293,8 @@ public class Dropdown extends Crope {
     offset(offset.x, offset.y);
   }
 
-  public void update() {
+  public void update(int x,int y) {
+    cursor(x,y);
     if(!select_is) {
       selected_type = mousePressed;
     }
@@ -308,7 +317,7 @@ public class Dropdown extends Crope {
 
 
   private void open_dropdown() {
-    boolean inside = inside(get_pos(), get_size(),iVec2(mouseX,mouseY),RECT);
+    boolean inside = inside(get_pos(), get_size(),cursor,RECT);
     if (inside) {
       if(selected_type) {
         locked = true;
@@ -343,7 +352,7 @@ public class Dropdown extends Crope {
   }
 
   private void show_selection(int x,int y) {
-    if (inside(pos,size,iVec2(mouseX,mouseY),RECT)) {
+    if (inside(pos,size,cursor,RECT)) {
       fill(colour_header_text_in); 
     } else {
       fill(colour_header_text_out);
@@ -354,7 +363,7 @@ public class Dropdown extends Crope {
   
    private void show_header() {
     noStroke();
-    if (inside(pos,size,iVec2(mouseX,mouseY),RECT)) {
+    if (inside(pos,size,cursor,RECT)) {
       fill(colour_header_in); 
     } else {
       fill(colour_header_out);
@@ -364,7 +373,7 @@ public class Dropdown extends Crope {
 
 
   private void show_header_text() {
-    if (inside(pos,size,iVec2(mouseX,mouseY),RECT)) {
+    if (inside(pos,size,cursor,RECT)) {
       fill(colour_header_text_in); 
     } else {
       fill(colour_header_text_out);
@@ -390,7 +399,7 @@ public class Dropdown extends Crope {
           slider_dd.pos(x,y);
           inside_slider_is = slider_dd.inside_molette_rect();
           slider_dd.select(true);
-          slider_dd.update();
+          slider_dd.update(cursor);
           slider_dd.show_structure();
           slider_dd.show_molette();
         }
@@ -405,7 +414,7 @@ public class Dropdown extends Crope {
     //display
     // box part
     noStroke() ;
-    if (inside(temp_pos,size_box,iVec2(mouseX,mouseY),RECT)) {
+    if (inside(temp_pos,size_box,cursor,RECT)) {
       fill(colour_box_in); 
     } else {
       fill(colour_box_out);
@@ -420,7 +429,7 @@ public class Dropdown extends Crope {
     rect(temp_pos, size_box);
     
     // text part
-    if (inside(temp_pos,size_box,iVec2(mouseX,mouseY),RECT)) {
+    if (inside(temp_pos,size_box,cursor,RECT)) {
       fill(colour_box_text_in); 
     } else {
       fill(colour_box_text_out);
@@ -442,9 +451,9 @@ public class Dropdown extends Crope {
   */
   //Check the dropdown when this one is open
   public int get_select_line() {
-    if(mouseX >= pos.x && mouseX <= pos.x +size_box.x && mouseY >= pos.y && mouseY <= ((content.length+1) *size.y) +pos.y) {
+    if(cursor.x >= pos.x && cursor.x <= pos.x +size_box.x && cursor.y >= pos.y && cursor.y <= ((content.length+1) *size.y) +pos.y) {
       //choice the line
-      int line = floor((mouseY - (pos.y +size.y)) / size.y ) +offset_slider;
+      int line = floor((cursor.y - (pos.y +size.y)) / size.y ) +offset_slider;
       line -= (box_starting_rank_position -1);
       return line;
     } else {

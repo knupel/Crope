@@ -17,7 +17,6 @@ void draw() {
   // slider_draw();
 	// slotch_draw();
 	dropdown_draw();
-	println(dropdown_is());
 
 	stroke(255,0,0);
 	line(x,0,x,height);
@@ -48,9 +47,9 @@ void dropdown_setup(int x, int y) {
 	int num_box_display = 4 ;
 	int rank_box_position = 2;
 	for(int i = 0 ; i < dropdown.length;i++) {
-		dropdown[i].set_box(num_box_display, rank_box_position);
+		dropdown[i].wheel(true);
+		dropdown[i].set_box(num_box_display, rank_box_position);	
 	}
-	
 	add_dropdown(dropdown);
 }
 
@@ -59,7 +58,7 @@ void dropdown_draw() {
 	// slider.select(keyPressed); // by default select is mousePressed arg
 	// slider.select(mousePressed, keyPressed);
 	for(int i = 0 ; i < dropdown.length ;i++) {
-		dropdown[i].update();
+		dropdown[i].update(mouseX,mouseY);
 		dropdown[i].show();
 		int x = dropdown[i].get_pos().x + dropdown[i].get_header_text_pos().x ;
 		int y = dropdown[i].get_pos().y + dropdown[i].get_size().y + dropdown[i].get_header_text_pos().y;
@@ -107,7 +106,7 @@ void slotch_setup(int x, int y) {
 
 
 void slotch_draw() {
-	slotch.update();
+	slotch.update(mouseX,mouseY);
 
 	slotch.show_structure();
 	slotch.show_molette();
@@ -131,15 +130,30 @@ void slider_setup(int x, int y) {
   slider.set_molette(ELLIPSE);
   slider.set_rounded(20);
   slider.set_molette_pos_norm(.25);
+  slider.wheel(true);
 }
 
 
 void slider_draw() {
 	// slider.select(keyPressed); // by default select is mousePressed arg
 	// slider.select(mousePressed, keyPressed);
-	slider.update();
+	slider.update(mouseX,mouseY);
 	slider.show_structure();
 	slider.show_molette();
+}
+
+
+
+
+
+
+
+
+/**
+Processing and Rope event
+*/
+void mouseWheel(MouseEvent e) {
+	scroll(e);
 }
 
 

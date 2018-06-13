@@ -1,6 +1,6 @@
 /**
 CROPE
-v 0.5.0
+v 0.6.0
 CONTROL ROMANESCO PROCESSING ENVIRONMENT
 * Copyleft (c) 2018-2018
 *
@@ -11,6 +11,8 @@ CONTROL ROMANESCO PROCESSING ENVIRONMENT
 abstract class Crope {
   protected iVec2 pos, size;
   protected iVec2 pos_ref;
+
+  protected iVec2 cursor;
 
   protected int fill_in = color(g.colorModeX);
   protected int fill_out = color(g.colorModeX /2);
@@ -71,6 +73,23 @@ abstract class Crope {
     }
     return this;
   }
+
+
+  /**
+  private
+  */
+  protected void cursor(iVec2 cursor) {
+    cursor(cursor.x,cursor.y);
+  }
+
+  protected void cursor(int x, int y) {
+    if(cursor == null) {
+      cursor = iVec2(x,y);
+    } else {
+      cursor.set(x,y);
+    }
+  }
+
   
   /**
   set colour
@@ -167,7 +186,7 @@ abstract class Crope {
     return this;
   }
 
-    public Crope set_fill_label(int c_in, int c_out) {
+  public Crope set_fill_label(int c_in, int c_out) {
     this.color_label_in = c_in;
     this.color_label_out = c_out;
     return this;
@@ -347,12 +366,18 @@ public class Button extends Crope {
   /**
   MISC
   */
-  public void update() {
-    update(true);
+  public void update(iVec2 cursor) {
+    update(cursor.x, cursor.y);
   }
 
-  public void update(boolean authorization) {
-    this.authorization =  authorization;
+  public void update(int x, int y) {
+    cursor(x,y);
+    update(x,y,true);
+  }
+
+  public void update(int x, int y, boolean authorization) {
+    cursor(x,y);
+    this.authorization = authorization;
     if (rollover()) {
       is = !is ? true : false ;
     }
@@ -369,7 +394,7 @@ public class Button extends Crope {
     else if (size.y >= 10 && size.y < 20  ) newSize = size.y *1.2 ;  
     else if (size.y >= 20 ) newSize = size.y ;
     
-    if ( mouseX > pos.x && mouseX < pos.x + size.x && mouseY > pos.y  && mouseY < pos.y +newSize) { 
+    if (cursor.x > pos.x && cursor.x < pos.x + size.x && cursor.y > pos.y  && cursor.y < pos.y +newSize) { 
       inside = true ;
       return true ; 
     } else {
@@ -626,8 +651,24 @@ public class Slider extends Crope {
   /**
   MAIN METHOD
   */
-  public void update() {
+
+  public void update(iVec2 cursor) {
+    update(cursor.x, cursor.y);
+  }
+
+  public void update(int x, int y) {
+    cursor(x,y);
     molette_update();
+  }
+  
+
+  private boolean wheel_is ;
+  public void wheel(boolean wheel_is) {
+    this.wheel_is = wheel_is;  
+  }
+
+  public boolean wheel_is() {
+    return wheel_is;
   }
 
   protected void molette_update() {
@@ -658,10 +699,24 @@ public class Slider extends Crope {
     inside_slider();
     if (molette_used_is) {
       if (size.x >= size.y) { 
-        pos_molette.x = round(constrain(mouseX -(size_molette.x *.5), pos_min.x, pos_max.x));
+        pos_molette.x = round(constrain(cursor.x -(size_molette.x *.5), pos_min.x, pos_max.x));
       } else { 
-        pos_molette.y = round(constrain(mouseY -(size_molette.y *.5), pos_min.y, pos_max.y));
+        pos_molette.y = round(constrain(cursor.y -(size_molette.y *.5), pos_min.y, pos_max.y));
       }
+    }
+
+    if(wheel_is()) {
+      if(get_scroll() == null) {
+        printErrTempo(60, "class Slider method molette_update(): the wheelevent is innacessible \nmay be you must use method scroll(MouseEvent e) in void mouseWheel(MouseEvent e)");
+
+      } else {
+        if (size.x >= size.y) { 
+          pos_molette.x -= get_scroll().x;
+        } else { 
+          pos_molette.y -= get_scroll().y;
+        }
+      }
+      
     }
   }
 
@@ -889,7 +944,7 @@ public class Slider extends Crope {
   
   // check if the mouse is inside the molette or not
   public boolean inside_slider() { 
-    if(inside(pos,size,iVec2(mouseX,mouseY),RECT)) {
+    if(inside(pos,size,cursor,RECT)) {
       inside_molette_is = true ; 
     } else {
       inside_molette_is = false ;
@@ -898,7 +953,7 @@ public class Slider extends Crope {
   }
    
   public boolean inside_molette_rect() {
-    if(inside(pos_molette,size_molette,iVec2(mouseX,mouseY),RECT)) {
+    if(inside(pos_molette,size_molette,cursor,RECT)) {
       inside_molette_is = true ; 
     } else {
       inside_molette_is = false ;
@@ -912,7 +967,7 @@ public class Slider extends Crope {
     float radius = size_molette.x ;
     int posX = int(radius *.5 +pos_molette.x ) ; 
     int posY = int(size.y *.5 +pos_molette.y) ;
-    if(pow((posX -mouseX),2) + pow((posY -mouseY),2) < pow(radius,sqrt(3))) {
+    if(pow((posX -cursor.x),2) + pow((posY -cursor.y),2) < pow(radius,sqrt(3))) {
       inside_molette_is = true ; 
     } else {
       inside_molette_is = false ;
@@ -1023,7 +1078,8 @@ public class Slotch extends Slider {
 
 
 
-  public void update() {
+  public void update(int x, int y) {
+    cursor(x,y);
     molette_update();
     if (size.x >= size.y) { 
       if(notch_is) {
@@ -1111,9 +1167,6 @@ public class Slotch extends Slider {
       }
     } 
   }
-
-
-
 
 
 
@@ -1267,10 +1320,10 @@ public class Sladj extends Slider {
         if (newPosMin.x < pos_min.x ) newPosMin.x = pos_min.x ;
         else if (newPosMin.x > pos_max.x -range) newPosMin.x = round(pos_max.x -range);
         
-        newPosMin.x = round(constrain(mouseX, pos.x, pos.x+size.x -range)); 
+        newPosMin.x = round(constrain(cursor.x, pos.x, pos.x+size.x -range)); 
         // norm the value to return to method minMaxSliderUpdate
         min_norm = map(newPosMin.x, pos_min.x, pos_max.x, min_norm,max_norm) ;
-      } else newPosMin.y = round(constrain(mouseY -sizeMinMax.y, pos_min.y, pos_max.y)); // this line is not reworking for the vertical slider
+      } else newPosMin.y = round(constrain(cursor.y -sizeMinMax.y, pos_min.y, pos_max.y)); // this line is not reworking for the vertical slider
     }
   }
   
@@ -1287,13 +1340,13 @@ public class Sladj extends Slider {
         // security
         if (newPosMax.x < pos_min.x +range)  newPosMax.x = round(pos_min.x +range);
         else if (newPosMax.x > pos_max.x ) newPosMax.x = pos_max.x ;
-         newPosMax.x = round(constrain(mouseX -(size.y *.5) , pos.x +range, pos.x +size.x -(size.y *.5))); 
+         newPosMax.x = round(constrain(cursor.x -(size.y *.5) , pos.x +range, pos.x +size.x -(size.y *.5))); 
          // norm the value to return to method minMaxSliderUpdate
         pos_max = iVec2(round(pos.x -size_molette.x +(size.x *max_norm)), pos.y) ;
         // we use a temporary position for a good display of the max slider 
         Vec2 tempPosMax = Vec2(pos.x -(size.y *.5) +(size.x *max_norm), pos_max.y) ;
         max_norm = map(newPosMax.x, pos_min.x, tempPosMax.x, min_norm, max_norm) ;
-      } else newPosMax.y = round(constrain(mouseY -sizeMinMax.y, pos_min.y, pos_max.y)); // this line is not reworking for the vertical slider
+      } else newPosMax.y = round(constrain(cursor.y -sizeMinMax.y, pos_min.y, pos_max.y)); // this line is not reworking for the vertical slider
     }
     
   }
@@ -1344,23 +1397,31 @@ public class Sladj extends Slider {
     int x = round(pos_min.x);
     int y = round(pos_min.y +sizeMinMax.y *pos_norm_adj.y) ;
     iVec2 temp_pos_min = iVec2(x,y);
-    if(inside(temp_pos_min,sizeMolMinMax,iVec2(mouseX,mouseY),RECT)) return true ; else return false ;
+    if(inside(temp_pos_min,sizeMolMinMax,cursor,RECT)) return true ; else return false ;
   }
   
   private boolean inside_max() {
     int x = round(pos_max.x);
     int y = round(pos_max.y +sizeMinMax.y *pos_norm_adj.y) ;
     iVec2 temp_pos_max =  iVec2(x,y);
-    if(inside(temp_pos_max, sizeMolMinMax,iVec2(mouseX,mouseY),RECT)) return true ; else return false ;
+    if(inside(temp_pos_max, sizeMolMinMax,cursor,RECT)) return true ; else return false ;
   }
   
   //LOCKED
   private boolean locked_min() {
-    if (inside_min() && mousePressed) return true ; else return false ;
+    if (inside_min() && mousePressed) {
+      return true; 
+    } else {
+      return false;
+    }
   }
   
   private boolean locked_max() {
-    if (inside_max() && mousePressed) return true ; else return false ;
+    if (inside_max() && mousePressed) {
+      return true; 
+    } else {
+      return false;
+    }
   }
 }
 
