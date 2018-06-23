@@ -4,6 +4,7 @@
 void setup() {
   size(400,200);
   slider_setup(x,y);
+  slider_double_setup(x,y);
   slotch_setup(x,y);
   dropdown_setup(x,y);
 
@@ -15,8 +16,9 @@ void draw() {
 	background(0);
   
   // slider_draw();
-	// slotch_draw();
-	dropdown_draw();
+  // slider_double_draw();
+	slotch_draw();
+	// dropdown_draw();
 
 	stroke(255,0,0);
 	line(x,0,x,height);
@@ -24,6 +26,56 @@ void draw() {
 	line(x+slider.get_size().x,0,x+slider.get_size().x,height);
 	line(0,y,width,y);
 }
+
+
+
+
+
+/**
+slider
+*/
+Slider slider ;
+void slider_setup(int x, int y) {
+	slider = new Slider(iVec2(x,y),iVec2(200,20));
+  slider.set_molette(ELLIPSE);
+  slider.set_rounded(20);
+  slider.set_molette_pos_norm(.25);
+  slider.wheel(true);
+}
+
+
+void slider_draw() {
+	// slider.select(keyPressed); // by default select is mousePressed arg
+	// slider.select(mousePressed, keyPressed);
+	slider.update(mouseX,mouseY);
+	slider.show_structure();
+	slider.show_molette();
+}
+
+
+Slider slider_double ;
+void slider_double_setup(int x, int y) {
+	slider_double = new Slider(iVec2(x,y),iVec2(200,20));
+  slider_double.set_molette(ELLIPSE);
+  slider_double.set_rounded(20);
+  slider_double.set_molette_pos_norm(.25,.5);
+  slider_double.wheel(true);
+}
+
+
+void slider_double_draw() {
+	// slider_double.select(keyPressed); // by default select is mousePressed arg
+	// slider_double.select(mousePressed, keyPressed);
+	slider_double.update(mouseX,mouseY);
+	slider_double.show_structure();
+	slider_double.show_molette();
+}
+
+
+
+
+
+
 
 
 
@@ -115,32 +167,11 @@ void slotch_draw() {
 	// slotch.set_colour_notch(230);
 	slotch.set_aspect_notch(230,.5);
 	slotch.show_notch(-5,10);
-
 }
 
 
 
 
-/**
-slider
-*/
-Slider slider ;
-void slider_setup(int x, int y) {
-	slider = new Slider(iVec2(x,y),iVec2(200,20));
-  slider.set_molette(ELLIPSE);
-  slider.set_rounded(20);
-  slider.set_molette_pos_norm(.25);
-  slider.wheel(true);
-}
-
-
-void slider_draw() {
-	// slider.select(keyPressed); // by default select is mousePressed arg
-	// slider.select(mousePressed, keyPressed);
-	slider.update(mouseX,mouseY);
-	slider.show_structure();
-	slider.show_molette();
-}
 
 
 
