@@ -16,9 +16,9 @@ void draw() {
 	background(0);
   
   // slider_draw();
- slider_double_draw();
+ // slider_double_draw();
 	// slotch_draw();
-	// dropdown_draw();
+	dropdown_draw();
 
 	stroke(255,0,0);
 	line(x,0,x,height);
@@ -58,7 +58,7 @@ void slider_double_setup(int x, int y) {
 	slider_double = new Slider(iVec2(x,y),iVec2(200,20));
   slider_double.set_molette(ELLIPSE);
   slider_double.set_rounded(20);
-  slider_double.set_molette_pos_norm(.25,.5);
+  slider_double.set_molette_pos_norm(.25,.5,.75);
 }
 
 

@@ -32,7 +32,7 @@ boolean dropdown_is() {
 
 /**
 DROPDOWN class
-v 2.5.4
+v 2.5.5
 2014-2018
 */
 public class Dropdown extends Crope {
@@ -354,7 +354,6 @@ public class Dropdown extends Crope {
     show_header();
     show_header_text();
     show_box();
-    // show_box_text();
   }
 
   private void show_selection(int x,int y) {
@@ -409,8 +408,7 @@ public class Dropdown extends Crope {
           int x = pos.x -slider_dd.get_size().x;
           int y = pos.y +(height_box *box_starting_rank_position);
           slider_dd.pos(x,y);
-          // inside_slider_is = slider_dd.inside_molette_rect(index);
-          slider_dd.select(true);
+          //slider_dd.select(false);
           slider_dd.update(cursor);
           slider_dd.show_structure();
           slider_dd.show_molette();

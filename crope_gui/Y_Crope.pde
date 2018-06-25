@@ -695,17 +695,21 @@ public class Slider extends Crope {
 
 
 
-
+  /**
+  UPDATE MOLETTE
+  */
   protected void molette_update() {
     inside_slider();
-
     for(int i = 0 ; i < molette.length ; i++) {
       if(!select_is) {
         selected_type = mousePressed;
         molette[i].used_is = select(molette_used_is(i),molette[i].used_is,true);
+        if(molette[i].used_is) {
+          mol_update_pos(i,temp_min(i),temp_max(i));
+          mol_update_used(i,temp_min(i),temp_max(i));
+          break;
+        }   
       }
-      mol_update_pos(i);
-      mol_update_used(i);
     }
 
     if(wheel_is()) {
@@ -717,59 +721,24 @@ public class Slider extends Crope {
         } else { 
           molette[0].pos.y -= get_scroll().y;
         }
+        mol_update_pos(0,temp_min(0),temp_max(0));
       }   
     }
   }
+  
 
-  private void mol_update_used(int index) {
+  private void mol_update_used(int index, iVec2 min, iVec2 max) {
     if (molette[index].used_is) {
       if (size.x >= size.y) { 
-        molette[index].pos.x = round(constrain(cursor.x -(molette[index].size.x *.5), pos_min.x, pos_max.x));
+        molette[index].pos.x = round(constrain(cursor.x -(molette[index].size.x *.5), min.x, max.x));
       } else { 
-        molette[index].pos.y = round(constrain(cursor.y -(molette[index].size.y *.5), pos_min.y, pos_max.y));
+        molette[index].pos.y = round(constrain(cursor.y -(molette[index].size.y *.5), min.y, max.y));
       }
     }
   }
 
-  private void mol_update_pos(int index) {
-    iVec2 min = pos_min.copy();
-    iVec2 max = pos_max.copy();
-    // def min
-    if(molette.length > 1 && index > 0) {
-      min.set(molette[index-1].pos);
-      if(molette_type == ELLIPSE) {
-       if(size.x >= size.y) {
-          min.x += (size.y /2);
-        } else {
-          min.y += (size.x/2);
-        }
-      } else {
-        if(size.x >= size.y) {
-          min.x += size.y;
-        } else {
-          min.y += size.x;
-        }  
-      }
-    }
-    // def max
-    if(molette.length > 1 && index < molette.length -1) {
-      max.set(molette[index+1].pos) ;
-      if(molette_type == ELLIPSE) {
-       if(size.x >= size.y) {
-          max.x -= size.y;
-        } else {
-          max.y -= size.x;
-        }
-      } else {
-        if(size.x >= size.y) {
-          max.x -= size.y;
-        } else {
-          max.y -= size.x;
-        }  
-      }
-    }
 
-
+  private void mol_update_pos(int index, iVec2 min, iVec2 max) {
     if(size.x >= size.y) {
       // for the horizontal slider
       if (molette[index].pos.x < min.x) {
@@ -788,6 +757,49 @@ public class Slider extends Crope {
       }
     }
   }
+
+  private iVec2 temp_min(int index) {
+    iVec2 min = pos_min.copy();
+    // def min
+    if(molette.length > 1 && index > 0) {
+      min.set(molette[index-1].pos);
+      if(molette_type == ELLIPSE) {
+       if(size.x >= size.y) {
+          min.x += (size.y /2);
+        } else {
+          min.y += (size.x/2);
+        }
+      } else {
+        if(size.x >= size.y) {
+          min.x += size.y;
+        } else {
+          min.y += size.x;
+        }  
+      }
+    }
+    return min;
+  }
+
+  private iVec2 temp_max(int index) {
+    iVec2 max = pos_max.copy();
+     if(molette.length > 1 && index < molette.length -1) {
+      max.set(molette[index+1].pos) ;
+      if(molette_type == ELLIPSE) {
+       if(size.x >= size.y) {
+          max.x -= size.y;
+        } else {
+          max.y -= size.x;
+        }
+      } else {
+        if(size.x >= size.y) {
+          max.x -= size.y;
+        } else {
+          max.y -= size.x;
+        }  
+      }
+    }
+    return max;
+  }
  
 
 
@@ -795,6 +807,13 @@ public class Slider extends Crope {
 
 
   
+
+
+
+
+
+
+
 
   public void select(boolean authorization) {
     for(int i = 0 ; i < molette.length ; i++) {
@@ -1044,7 +1063,6 @@ public class Slider extends Crope {
 
   public void show_molette() {
     for(int i = 0 ; i < molette.length ; i++) {
-      
       if(molette[i].inside_is) {
         aspect_rope(fill_molette_in,stroke_molette_in,thickness_molette);
         molette_shape(i);
