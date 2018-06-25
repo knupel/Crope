@@ -48,7 +48,7 @@ public class Dropdown extends Crope {
   private String content[];
 
   private boolean locked;
-  private boolean slider, inside_slider_is;
+  private boolean slider;
   // color
   private int colour_structure = r.GRAY_2;
 
@@ -280,7 +280,7 @@ public class Dropdown extends Crope {
     slider_dd.size_molette(size_molette);
     if(keep_pos_mol_is) {
       int pos_mol_x = slider_dd.get_molette_pos(index).x;
-      slider_dd.pos_molette(index,pos_mol_x,pos_mol_y);
+      slider_dd.set_pos_molette(index,pos_mol_x,pos_mol_y);
     }
     slider_dd.set_molette(RECT);
     slider_dd.set_fill(colour_structure);
@@ -328,7 +328,7 @@ public class Dropdown extends Crope {
       if(selected_type) {
         locked = true;
       }
-    } else if(!inside && selected_type && !inside_slider_is) {
+    } else if(!inside && selected_type && !slider_dd.inside_slider()) {
       locked = false;
     }  
 
@@ -409,7 +409,7 @@ public class Dropdown extends Crope {
           int x = pos.x -slider_dd.get_size().x;
           int y = pos.y +(height_box *box_starting_rank_position);
           slider_dd.pos(x,y);
-          inside_slider_is = slider_dd.inside_molette_rect(index);
+          // inside_slider_is = slider_dd.inside_molette_rect(index);
           slider_dd.select(true);
           slider_dd.update(cursor);
           slider_dd.show_structure();
