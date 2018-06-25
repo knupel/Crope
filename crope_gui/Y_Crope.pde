@@ -590,7 +590,7 @@ public class Button_dynamic extends Button {
 
 /**
 SLIDER
-v 1.4.1
+v 1.4.2
 */
 boolean molette_already_selected ;
 public class Slider extends Crope {
@@ -847,6 +847,7 @@ public class Slider extends Crope {
           result = true ;
         }
       } else if(locked_method) {
+        select_is = false;
         result = true ;
       }
 

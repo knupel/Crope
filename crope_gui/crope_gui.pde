@@ -15,10 +15,10 @@ void setup() {
 void draw() {
 	background(0);
   
-  // slider_draw();
+  slider_draw();
  // slider_double_draw();
 	// slotch_draw();
-	dropdown_draw();
+	// dropdown_draw();
 
 	stroke(255,0,0);
 	line(x,0,x,height);
@@ -46,7 +46,8 @@ void slider_setup(int x, int y) {
 
 void slider_draw() {
 	// slider.select(keyPressed); // by default select is mousePressed arg
-	// slider.select(mousePressed, keyPressed);
+	slider.select(mousePressed, keyPressed);
+	// slider.select(false);
 	slider.update(mouseX,mouseY);
 	slider.show_structure();
 	slider.show_molette();
