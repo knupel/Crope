@@ -593,7 +593,7 @@ public class Button_dynamic extends Button {
 
 /**
 SLIDER
-v 1.4.0
+v 1.4.1
 */
 boolean molette_already_selected ;
 public class Slider extends Crope {
@@ -1118,6 +1118,17 @@ public class Slider extends Crope {
   }
   
   // inside molette
+  public boolean inside_molette_rect() {
+    boolean state = false;
+    for(int i = 0 ; i < molette.length; i++) {
+      if(inside_molette_rect(i)) {
+        state = true;
+        break;
+      }
+    }
+    return state;
+  }
+
   public boolean inside_molette_rect(int index) {
     if(inside(molette[index].pos,molette[index].size,cursor,RECT)) {
       molette[index].inside_is = true ; 
@@ -1125,6 +1136,16 @@ public class Slider extends Crope {
       molette[index].inside_is = false ;
     }
     return molette[index].inside_is;
+  }
+  
+  public boolean inside_molette_ellipse() {
+    boolean state = false;
+    for(int i = 0 ; i < molette.length; i++) {
+      if(inside_molette_ellipse(i));
+      state true ;
+      break;
+    }
+    return state;
   }
 
   public boolean inside_molette_ellipse(int index) {
@@ -1141,6 +1162,17 @@ public class Slider extends Crope {
   }
 
   // molette used
+  public boolean molette_used_is() {
+    boolean state = false;
+    for(int i = 0 ; i < molette.length; i++) {
+      if(molette_used_is(i){
+        state = true;
+        break;
+      }
+    }
+    return state;
+  }
+
   public boolean molette_used_is(int index) {
     boolean inside = false ;
     if(molette_type == ELLIPSE) {
