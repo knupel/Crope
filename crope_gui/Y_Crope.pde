@@ -697,21 +697,14 @@ public class Slider extends Crope {
 
 
   protected void molette_update() {
+    inside_slider();
+
     for(int i = 0 ; i < molette.length ; i++) {
       if(!select_is) {
         selected_type = mousePressed;
         molette[i].used_is = select(molette_used_is(i),molette[i].used_is,true);
       }
-    }
-    
-    // move the molette is this one is locked
-    // security
-    for(int i = 0 ; i < molette.length ; i++) {
       mol_update_pos(i);
-    }
-
-    inside_slider();
-    for(int i = 0 ; i < molette.length ; i++) {
       mol_update_used(i);
     }
 
@@ -739,24 +732,63 @@ public class Slider extends Crope {
   }
 
   private void mol_update_pos(int index) {
+    iVec2 min = pos_min.copy();
+    iVec2 max = pos_max.copy();
+    // def min
+    if(molette.length > 1 && index > 0) {
+      min.set(molette[index-1].pos);
+      if(molette_type == ELLIPSE) {
+       if(size.x >= size.y) {
+          min.x += (size.y /2);
+        } else {
+          min.y += (size.x/2);
+        }
+      } else {
+        if(size.x >= size.y) {
+          min.x += size.y;
+        } else {
+          min.y += size.x;
+        }  
+      }
+    }
+    // def max
+    if(molette.length > 1 && index < molette.length -1) {
+      max.set(molette[index+1].pos) ;
+      if(molette_type == ELLIPSE) {
+       if(size.x >= size.y) {
+          max.x -= size.y;
+        } else {
+          max.y -= size.x;
+        }
+      } else {
+        if(size.x >= size.y) {
+          max.x -= size.y;
+        } else {
+          max.y -= size.x;
+        }  
+      }
+    }
+
+
     if(size.x >= size.y) {
       // for the horizontal slider
-      if (molette[index].pos.x < pos_min.x) {
-        molette[index].pos.x = pos_min.x;
+      if (molette[index].pos.x < min.x) {
+        molette[index].pos.x = min.x;
       }
-      if (molette[index].pos.x > pos_max.x) {
-        molette[index].pos.x = pos_max.x;
+      if (molette[index].pos.x > max.x) {
+        molette[index].pos.x = max.x;
       }
     } else {
       // for the vertical slider
-      if (molette[index].pos.y < pos_min.y) {
-        molette[index].pos.y = pos_min.y;
+      if (molette[index].pos.y < min.y) {
+        molette[index].pos.y = min.y;
       }
-      if (molette[index].pos.y > pos_max.y) {
-        molette[index].pos.y = pos_max.y;
+      if (molette[index].pos.y > max.y) {
+        molette[index].pos.y = max.y;
       }
     }
   }
+ 
 
 
 
@@ -1012,12 +1044,14 @@ public class Slider extends Crope {
 
   public void show_molette() {
     for(int i = 0 ; i < molette.length ; i++) {
+      
       if(molette[i].inside_is) {
         aspect_rope(fill_molette_in,stroke_molette_in,thickness_molette);
+        molette_shape(i);
       } else {
         aspect_rope(fill_molette_out,stroke_molette_out,thickness_molette);
-      }
-      molette_shape() ;
+        molette_shape(i);
+      }   
     }
   }
   
@@ -1034,12 +1068,6 @@ public class Slider extends Crope {
     }  
   }
 
-  
-  private void molette_shape() {
-    for(int i = 0 ; i < molette.length ; i++) {
-      molette_shape(i);
-    }
-  }
   
   private void molette_shape(int index) {
     if(molette_type == ELLIPSE) {
@@ -1062,7 +1090,7 @@ public class Slider extends Crope {
 
 
   
-  // check if the mouse is inside the molette or not
+  // inside slider
   public boolean inside_slider() {
     if(inside(pos,size,cursor,RECT)) {
       return true ; 
@@ -1070,7 +1098,8 @@ public class Slider extends Crope {
       return false ;
     }
   }
-   
+  
+  // inside molette
   public boolean inside_molette_rect(int index) {
     if(inside(molette[index].pos,molette[index].size,cursor,RECT)) {
       molette[index].inside_is = true ; 
@@ -1093,8 +1122,7 @@ public class Slider extends Crope {
     return molette[index].inside_is;
   }
 
-  
-  
+  // molette used
   public boolean molette_used_is(int index) {
     boolean inside = false ;
     if(molette_type == ELLIPSE) {

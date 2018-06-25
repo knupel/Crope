@@ -16,9 +16,9 @@ void draw() {
 	background(0);
   
   // slider_draw();
- //  slider_double_draw();
+ slider_double_draw();
 	// slotch_draw();
-	dropdown_draw();
+	// dropdown_draw();
 
 	stroke(255,0,0);
 	line(x,0,x,height);
