@@ -32,7 +32,7 @@ boolean dropdown_is() {
 
 /**
 DROPDOWN class
-v 2.5.5
+v 2.5.6
 2014-2018
 */
 public class Dropdown extends Crope {
@@ -328,13 +328,15 @@ public class Dropdown extends Crope {
       if(selected_type) {
         locked = true;
       }
-    } else if(!inside && selected_type && !slider_dd.inside_slider()) {
+    } else if(!inside && selected_type && slider_dd == null) {
       locked = false;
-    }  
+    } else if(!inside && selected_type && slider_dd != null && !slider_dd.inside_slider()) {
+      locked = false;
+    }
 
     if(locked) {
       int line = get_select_line();
-      if (line > -1 ) {
+      if (line > -1) {
         which_line(line);   
       } 
     }

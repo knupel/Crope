@@ -306,7 +306,7 @@ abstract class Crope {
 CROPE
 CONTROL ROMANESCO PROCESSING ENVIRONMENT
 *
-CLASS BUTTON 1.2.1
+CLASS BUTTON 1.2.3
 */
 public class Button extends Crope {
   int color_bg;
@@ -380,17 +380,14 @@ public class Button extends Crope {
   public void update(int x, int y, boolean authorization) {
     cursor(x,y);
     this.authorization = authorization;
-    if (rollover()) {
-      is = !is ? true : false ;
-    }
   }
   
   //ROLLOVER
   /**
-  this method rollover() must be refactoring, 
+  this method inside() must be refactoring, 
   it's not acceptable to have a def value inside
   */
-  private boolean rollover() {
+  public boolean inside() {
     if(cursor == null) cursor = iVec2();
     float newSize = 1  ;
     if (size.y < 10 ) newSize = size.y *1.8 ; 
@@ -422,7 +419,7 @@ public class Button extends Crope {
     int correctionX = -1 ;
     if(pic[0] != null && pic[1] != null && pic[2] != null && pic[3] != null ) {
       if (is) {
-        if (rollover() && !authorization) {
+        if (inside() && !authorization) {
           // inside
           image(pic[0],pos.x +correctionX, pos.y); 
         } else {
@@ -430,7 +427,7 @@ public class Button extends Crope {
           image(pic[1],pos.x +correctionX, pos.y);
         }
       } else {
-        if (rollover() && !authorization) {
+        if (inside() && !authorization) {
           // inside
           image(pic[2],pos.x +correctionX, pos.y); 
         } else {
@@ -449,13 +446,13 @@ public class Button extends Crope {
   public void show_label() {
     if(this.name != null) {
       if (is) {
-        if (rollover() && !authorization) {
+        if (inside() && !authorization) {
           color_on_off = color_in_ON; 
         } else {
           color_on_off = color_out_ON;
         }
       } else {
-        if (rollover() && !authorization) {
+        if (inside() && !authorization) {
           color_on_off = color_in_OFF; 
         } else {
           color_on_off = color_out_OFF;
@@ -484,13 +481,13 @@ public class Button extends Crope {
     noStroke();
     if(on_off_is) {
       if (is) {
-        if (rollover() && !authorization) {
+        if (inside() && !authorization) {
           color_on_off = color_in_ON; 
         } else {
           color_on_off = color_out_ON;
         }
       } else {
-        if (rollover() && !authorization) {
+        if (inside() && !authorization) {
           color_on_off = color_in_OFF; 
         } else {
           color_on_off = color_out_OFF;
@@ -1142,7 +1139,7 @@ public class Slider extends Crope {
     boolean state = false;
     for(int i = 0 ; i < molette.length; i++) {
       if(inside_molette_ellipse(i));
-      state true ;
+      state = true;
       break;
     }
     return state;
@@ -1165,7 +1162,7 @@ public class Slider extends Crope {
   public boolean molette_used_is() {
     boolean state = false;
     for(int i = 0 ; i < molette.length; i++) {
-      if(molette_used_is(i){
+      if(molette_used_is(i)){
         state = true;
         break;
       }
