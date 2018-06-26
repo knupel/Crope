@@ -4,7 +4,8 @@
 void setup() {
   size(400,200);
   slider_setup(x,y);
-  slider_double_setup(x,y);
+  multi_slider_setup(x,y);
+  slider_adjustable_setup(x,y);
   slotch_setup(x,y);
   dropdown_setup(x,y);
 
@@ -15,9 +16,10 @@ void setup() {
 void draw() {
 	background(0);
   
-  slider_draw();
- // slider_double_draw();
+  // slider_draw();
+  multi_slider_draw();
 	// slotch_draw();
+	//slider_adjustable_draw();
 	// dropdown_draw();
 
 	stroke(255,0,0);
@@ -32,43 +34,91 @@ void draw() {
 
 
 /**
-slider
+SLIDER CLASSIC
 */
 Slider slider ;
 void slider_setup(int x, int y) {
 	slider = new Slider(iVec2(x,y),iVec2(200,20));
   slider.set_molette(ELLIPSE);
   slider.set_rounded(20);
-  slider.set_molette_pos_norm(.25);
-  slider.wheel(true);
+  slider.set_molette_num(2);
+  //slider.set_molette_pos_norm(.25);
+  // slider.wheel(true);
 }
 
 
 void slider_draw() {
 	// slider.select(keyPressed); // by default select is mousePressed arg
-	slider.select(mousePressed, keyPressed);
-	// slider.select(false);
+	// slider.select(mousePressed, keyPressed);
+	slider.select(true);
 	slider.update(mouseX,mouseY);
 	slider.show_structure();
 	slider.show_molette();
 }
 
 
-Slider slider_double ;
-void slider_double_setup(int x, int y) {
-	slider_double = new Slider(iVec2(x,y),iVec2(200,20));
-  slider_double.set_molette(ELLIPSE);
-  slider_double.set_rounded(20);
-  slider_double.set_molette_pos_norm(.25,.5,.75);
+/**
+ADJUTABLE
+*/
+Sladj sladj ;
+void slider_adjustable_setup(int x, int y) {
+	sladj = new Sladj(iVec2(x,y),iVec2(200,20));
+  sladj.set_molette(ELLIPSE);
+  sladj.set_rounded(20);
+  sladj.set_molette_pos_norm(.25);
+  // slider.wheel(true);
 }
 
 
-void slider_double_draw() {
-	// slider_double.select(keyPressed); // by default select is mousePressed arg
-	// slider_double.select(mousePressed, keyPressed);
-	slider_double.update(mouseX,mouseY);
-	slider_double.show_structure();
-	slider_double.show_molette();
+void slider_adjustable_draw() {
+	// sladj.select(keyPressed); // by default select is mousePressed arg
+	// sladj.select(mousePressed, keyPressed);
+	sladj.select(true);
+	sladj.update(mouseX,mouseY);
+	if(!sladj.inside_max() && !sladj.locked_max_is()) {
+    sladj.inside_min();
+    sladj.select_min(keyPressed);
+    sladj.update_min();
+  }
+  // max molette
+  if(!sladj.inside_min() && !sladj.locked_min_is()) {
+    sladj.inside_max();
+    sladj.select_max(keyPressed);
+    sladj.update_max();
+  }
+  sladj.update_min_max();
+
+	sladj.show_structure();
+	sladj.show_adj();
+	sladj.show_molette();
+
+}
+
+
+
+/**
+SLIDER MULTI
+*/
+Slider multi_slider ;
+void multi_slider_setup(int x, int y) {
+	multi_slider = new Slider(iVec2(x,y),iVec2(200,20));
+	// multi_slider.set_molette(ELLIPSE);
+	multi_slider.size_molette(5,40);
+  multi_slider.set_rounded(20);
+
+  multi_slider.set_molette_num(1); // choice the num of molette, the position is set automaticly
+  // multi_slider.set_molette_pos_norm(.25,.5,.75); // choice the molette position the the num is autmatcly increment.
+}
+
+
+void multi_slider_draw() {
+	// multi_slider.select(keyPressed); // by default select is mousePressed arg
+	// multi_slider.select(mousePressed, keyPressed);
+	
+	multi_slider.update(mouseX,mouseY);
+	//multi_slider.select(true);
+	multi_slider.show_structure();
+	multi_slider.show_molette();
 }
 
 

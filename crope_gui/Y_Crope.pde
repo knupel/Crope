@@ -590,12 +590,10 @@ public class Button_dynamic extends Button {
 
 /**
 SLIDER
-v 1.4.2
+v 1.4.4
 */
 boolean molette_already_selected ;
 public class Slider extends Crope {
-
-  protected boolean select_is;
   protected boolean selected_type;
   
   protected Molette [] molette;
@@ -698,9 +696,9 @@ public class Slider extends Crope {
   protected void molette_update() {
     inside_slider();
     for(int i = 0 ; i < molette.length ; i++) {
-      if(!select_is) {
+      if(!molette[i].select_is) {
         selected_type = mousePressed;
-        molette[i].used_is = select(molette_used_is(i),molette[i].used_is,true);
+        molette[i].used_is = select(i,molette_used_is(i),molette[i].used_is,true);
         if(molette[i].used_is) {
           mol_update_pos(i,temp_min(i),temp_max(i));
           mol_update_used(i,temp_min(i),temp_max(i));
@@ -819,9 +817,9 @@ public class Slider extends Crope {
   }
 
   private void select(int index, boolean authorization) {
-    select_is = true;
+    molette[index].select_is = true;
     selected_type = mousePressed;
-    molette[index].used_is = select(molette_used_is(index),molette[index].used_is,authorization);
+    molette[index].used_is = select(index, molette_used_is(index),molette[index].used_is,authorization);
   }
   
   //
@@ -832,32 +830,44 @@ public class Slider extends Crope {
   }
 
   private void select(int index, boolean authorization_1, boolean authorization_2) {
-    select_is = true;
+    molette[index].select_is = true;
     selected_type = authorization_1;
-    molette[index].used_is = select(molette_used_is(index),molette[index].used_is,authorization_2);
+    molette[index].used_is = select(index,molette_used_is(index),molette[index].used_is,authorization_2);
+  }
+  
+
+  // this method is used to switch false all select_is molette
+  protected boolean select(boolean locked_method, boolean result, boolean authorization) {
+    return select(-1, locked_method,result,authorization);
   }
 
 
   // privat method
-  protected boolean select(boolean locked_method, boolean result, boolean authorization) {
+  protected boolean select(int index, boolean locked_method, boolean result, boolean authorization) {
     if(authorization) {
       if(!molette_already_selected) {
         if (locked_method) {
-          molette_already_selected = true ;
-          result = true ;
+          molette_already_selected = true;
+          result = true;
         }
       } else if(locked_method) {
-        select_is = false;
+        if(index == -1) {
+          for(int i = 0 ; i < molette.length ;i++) {
+            molette[i].select_is = false;
+          }
+        } else if(index >= 0 && index < molette.length) {
+          molette[index].select_is = false;
+        }
+        
         result = true ;
       }
 
       if (!selected_type) { 
         result = false ; 
-        molette_already_selected = false ;
+        molette_already_selected = false;
       }
-      return result ;
-
-    } else return false ;   
+      return result;
+    } else return false;   
   }
 
 
@@ -951,6 +961,16 @@ public class Slider extends Crope {
 
   
   // set_molette
+  public Slider set_molette_num(int num) {
+    float [] pos_norm = new float[num];
+    float step = 1. / (num+1) ;
+    for(int i = 0 ; i < num ; i++) {
+      pos_norm[i] = (i+1)*step;
+    }
+    set_molette_pos_norm(pos_norm);
+    return this;
+  }
+
   // Give a normal position between 0 and 1
   public Slider set_molette_pos_norm(float... pos_norm) {
     Arrays.sort(pos_norm);
@@ -1027,7 +1047,7 @@ public class Slider extends Crope {
 
   /**
   DISPLAY SLIDER
-  v 2.0.2
+  v 2.0.3
   */
   public void show_structure() {
     if(thickness > 0 && alpha(stroke_in) > 0 && alpha(stroke_out) > 0) {
@@ -1091,14 +1111,26 @@ public class Slider extends Crope {
       iVec2 pos = iadd(molette[index].pos,temp);
       ellipse(pos,molette[index].size);
     } else if(molette_type == RECT) {
-      rect(molette[index].pos,molette[index].size);
+      molette_rect(index);
+      // rect(molette[index].pos,molette[index].size);
     } else {
-      rect(molette[index].pos,molette[index].size);
+      molette_rect(index);
+      //rect(molette[index].pos,molette[index].size);
     }
   }
   
 
-
+  private void molette_rect(int index) {
+    if(size.x > size.y) {
+      iVec2 pos = molette[index].pos.copy();
+      pos.y = pos.y -((molette[index].size.y -size.y)/2);
+      rect(pos,molette[index].size);
+    } else {
+      iVec2 pos = molette[index].pos;
+      pos.x = pos.x -((molette[index].size.x -size.x)/2);
+      rect(pos,molette[index].size);
+    }
+  }
   
 
 
@@ -1296,6 +1328,8 @@ public class Slider extends Crope {
 
     protected int new_midi_value;
     protected int id_midi = -2 ;
+
+    protected boolean select_is;
 
     Molette() {
     }
@@ -1595,7 +1629,7 @@ public class Sladj extends Slider {
   
   // update max
   public void select_max(boolean authorization) {
-    locked_max = select(locked_max(), locked_max, authorization) ;
+    locked_max = select(-1,locked_max(), locked_max, authorization) ;
   }
   // update maxvalue
   public void update_max() {

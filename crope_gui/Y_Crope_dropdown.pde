@@ -32,11 +32,10 @@ boolean dropdown_is() {
 
 /**
 DROPDOWN class
-v 2.5.6
+v 2.5.7
 2014-2018
 */
 public class Dropdown extends Crope {
-  protected boolean select_is;
   protected boolean selected_type;
   //Slider dropdown
   private Slider slider_dd;
@@ -301,25 +300,10 @@ public class Dropdown extends Crope {
 
   public void update(int x,int y) {
     cursor(x,y);
-    if(!select_is) {
-      selected_type = mousePressed;
-    }
+    selected_type = mousePressed;
     open_dropdown(); 
   }
 
-
-
-
-
-  public void select(boolean authorization) {
-    select_is = true;
-    selected_type = mousePressed;
-  }
-
-  public void select(boolean authorization_1, boolean authorization_2) {
-    select_is = true;
-    selected_type = authorization_1;
-  }
 
 
   private void open_dropdown() {
