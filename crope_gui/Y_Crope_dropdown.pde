@@ -32,7 +32,7 @@ boolean dropdown_is() {
 
 /**
 DROPDOWN class
-v 2.5.7
+v 2.5.8
 2014-2018
 */
 public class Dropdown extends Crope {
@@ -89,6 +89,7 @@ public class Dropdown extends Crope {
   CONSTRUCTOR
   */
   public Dropdown(iVec2 pos, iVec2 size, String name, String [] content) {
+    super("Dropdown");
     int size_header_text = int(size.y *.6);
     this.font = createFont("defaultFont",size_header_text);
     int size_content_text = int(size.y *.6);
@@ -275,7 +276,7 @@ public class Dropdown extends Crope {
       keep_pos_mol_is = true ;
     }
 
-    slider_dd = new Slider(pos_slider, size_slider);
+    slider_dd = new Slider("Slider Dropdown",pos_slider, size_slider);
     slider_dd.size_molette(size_molette);
     if(keep_pos_mol_is) {
       int pos_mol_x = slider_dd.get_molette_pos(index).x;

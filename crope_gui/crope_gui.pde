@@ -4,12 +4,15 @@
 void setup() {
   size(400,200);
   slider_setup(x,y);
-  multi_slider_setup(x,y);
+  
   slider_adjustable_setup(x,y);
   slotch_setup(x,y);
   dropdown_setup(x,y);
+  multi_slider_setup(x,y);
+  // print_crope();
 
 
+  
 }
 
 
@@ -27,6 +30,19 @@ void draw() {
 	line(x+(slider.get_size().x/2),0,x+(slider.get_size().x/2),height);
 	line(x+slider.get_size().x,0,x+slider.get_size().x,height);
 	line(0,y,width,y);
+}
+
+
+void print_crope() {
+	for(Crope crope : get_crope()) {
+		println(crope.get_name());
+  	println(crope.get_rank());
+  	println(crope.get_type());
+  	if(crope instanceof Slider) {
+			Slider s = (Slider) crope ;
+  		printArray(s.get_value());
+  	}
+  }
 }
 
 
@@ -106,8 +122,10 @@ void multi_slider_setup(int x, int y) {
 	multi_slider.size_molette(5,40);
   multi_slider.set_rounded(20);
 
+
   multi_slider.set_molette_num(1); // choice the num of molette, the position is set automaticly
   // multi_slider.set_molette_pos_norm(.25,.5,.75); // choice the molette position the the num is autmatcly increment.
+  println(multi_slider.get_rank());
 }
 
 
@@ -119,6 +137,7 @@ void multi_slider_draw() {
 	//multi_slider.select(true);
 	multi_slider.show_structure();
 	multi_slider.show_molette();
+	
 }
 
 

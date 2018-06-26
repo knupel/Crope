@@ -1,6 +1,6 @@
 /**
 CROPE
-v 0.7.0
+v 0.8.0
 CONTROL ROMANESCO PROCESSING ENVIRONMENT
 * Copyleft (c) 2018-2018
 *
@@ -10,7 +10,22 @@ CONTROL ROMANESCO PROCESSING ENVIRONMENT
 */
 import java.util.Arrays;
 
-abstract class Crope {
+/**
+Crope Manager
+v 0.0.1
+*/
+int rank_crope = 0;
+ArrayList<Crope> object_crope ;
+ArrayList<Crope> get_crope() {
+  return object_crope;
+}
+
+
+/**
+class Crope
+v 0.8.0
+*/
+class Crope {
   protected iVec2 pos, size;
   protected iVec2 pos_ref;
 
@@ -39,6 +54,14 @@ abstract class Crope {
   protected int id = -1;
 
   private int rank;
+
+  private String type = "Crope";
+
+  Crope(String type) {
+    this.rank = rank_crope++;
+    this.type = type;
+    add_crope(this);
+  }
 
   /**
   set structure
@@ -234,15 +257,6 @@ abstract class Crope {
     return this;
   }
 
-  public Crope set_rank(int rank) {
-    this.rank = rank;
-    return this;
-  }
-
-
-
-
-
 
 
   /**
@@ -273,14 +287,35 @@ abstract class Crope {
     return this.id;
   }
 
-  public int get_rank() {
-    return rank;
-  }
 
   public PFont get_font() {
     return font;
   }
+
+  public int get_rank() {
+    return rank;
+  }
+
+  public String get_type() {
+    return type;
+  }
+
+
+
+
+  public void add_crope(Crope crope) {
+    if(object_crope == null) {
+      object_crope = new ArrayList<Crope>();
+    }
+    object_crope.add(crope);
+  }
 }
+
+
+
+
+
+
 
 
 
@@ -320,17 +355,43 @@ public class Button extends Crope {
   boolean authorization;
   boolean is = false;  
 
-  protected Button() {}
+  protected Button() {
+    super("Button");
+  }
 
   //complexe
+  /*
   public Button(int pos_x, int pos_y, int size_x, int size_y) {
     this.pos(pos_x, pos_y);
     this.size(size_x,size_y);
+    super("Button");
   }
+  */
 
   public Button(iVec2 pos, iVec2 size) {
+    super("Button");
     this.pos(pos);
     this.size(size);
+  }
+
+
+  private Button(String type) {
+    super(type);
+  }
+
+  //complexe
+  /*
+  private Button(String type, int pos_x, int pos_y, int size_x, int size_y) {
+    this.pos(pos_x, pos_y);
+    this.size(size_x,size_y);
+    super(type);
+  }
+  */
+
+  private Button(String type, iVec2 pos, iVec2 size) {
+    super(type);
+    this.pos(pos);
+    this.size(size); 
   }
 
   /**
@@ -512,11 +573,11 @@ BUTTON DYNAMIC
 public class Button_dynamic extends Button {
   public iVec2 change_pos = iVec2() ;
   public Button_dynamic() {
-    super() ;
+    super("Button dynamic") ;
   }
 
   public Button_dynamic(iVec2 pos, iVec2 size) {
-    super(pos, size);
+    super("Button dynamic",pos, size);
   }
   
   public void change_pos(int x, int y) {
@@ -620,11 +681,18 @@ public class Slider extends Crope {
   
   //CONSTRUCTOR minimum
   public Slider(iVec2 pos, iVec2 size) {
+    super("Slider");
+    constructor(pos,size);
+  }
+
+  public Slider(String type, iVec2 pos, iVec2 size) {
+    super(type);
+    constructor(pos,size);
+  }
+
+  private void constructor(iVec2 pos, iVec2 size) {
     this.pos(pos);
     this.size(size);
-
-
-
     molette = new Molette[1];
     molette[0] = new Molette();
    
@@ -1112,10 +1180,8 @@ public class Slider extends Crope {
       ellipse(pos,molette[index].size);
     } else if(molette_type == RECT) {
       molette_rect(index);
-      // rect(molette[index].pos,molette[index].size);
     } else {
       molette_rect(index);
-      //rect(molette[index].pos,molette[index].size);
     }
   }
   
@@ -1366,7 +1432,7 @@ public class Slotch extends Slider {
   int colour_notch = int(g.colorModeX);
   float thickness_notch = 1.;
   Slotch(iVec2 pos, iVec2 size) {
-    super(pos, size);   
+    super("Slotch",pos, size);   
   }
 
 
@@ -1524,7 +1590,7 @@ public class Sladj extends Slider {
   private boolean locked_min, locked_max;
     
   Sladj(iVec2 pos, iVec2 size) {
-    super(pos, size);
+    super("Sladj",pos, size);
     this.new_pos_max = iVec2();
     this.new_pos_min = pos.copy();
     this.size_min_max = size.copy();
@@ -1730,6 +1796,8 @@ public class Sladj extends Slider {
     }
   }
 }
+
+
 
 
 
