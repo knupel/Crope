@@ -9,7 +9,7 @@ void setup() {
   slotch_setup(x,y);
   dropdown_setup(x,y);
   multi_slider_setup(x,y);
-  // print_crope();
+  print_crope();
 
 
   
@@ -35,11 +35,13 @@ void draw() {
 
 void print_crope() {
 	for(Crope crope : get_crope()) {
-		println(crope.get_name());
-  	println(crope.get_rank());
-  	println(crope.get_type());
+		println("name",crope.get_name());
+		println("birth",crope.get_birth());
+  	println("rank",crope.get_rank());
+  	println("type",crope.get_type());
   	if(crope instanceof Slider) {
 			Slider s = (Slider) crope ;
+			println("value");
   		printArray(s.get_value());
   	}
   }

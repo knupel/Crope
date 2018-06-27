@@ -1,6 +1,6 @@
 /**
 CROPE
-v 0.8.0
+v 0.8.1
 CONTROL ROMANESCO PROCESSING ENVIRONMENT
 * Copyleft (c) 2018-2018
 *
@@ -13,17 +13,156 @@ import java.util.Arrays;
 /**
 Crope Manager
 v 0.0.1
+2018-2018
 */
-int rank_crope = 0;
+int birth_crope = 0;
 ArrayList<Crope> object_crope ;
 ArrayList<Crope> get_crope() {
   return object_crope;
 }
 
 
+
+
+
+
+
+/**
+Crope info > Cropinfo
+v 0.0.1
+2018-2018
+*/
+public class Cropinfo() {
+  private int rank;
+  private int id;
+  private int id_midi;
+  private String name;
+  private String type;
+  private boolean is; // button
+  private float[] value; // slider
+  private float min; // slider
+  private float max; // slider
+  private int line; // dropdown
+  
+  public Cropinfo() {
+  }
+  
+  // set
+  public Cropinfo set_rank(int rank){
+    this.rank = rank;
+    return this;
+  }
+
+  public Cropinfo set_id(int id){
+    this.id = id;
+    return this;
+  }
+
+  public Cropinfo set_id_midi(int id_midi){
+    this.id_midi;
+    return this;
+  }
+
+  public Cropinfo set_name(String name){
+    this.name = name;
+    return this;
+  }
+
+  public Cropinfo set_type(String type){
+    this.type = type;
+    return this;
+  }
+  
+  // set button info
+  public Cropinfo set_is(boolean is){
+    this.is = is;
+    return this;
+  }
+
+  // set slider info
+  public Cropinfo[] set_value(float... value){
+    this.value = new float[value.length];
+    for(int i = 0 ; i < this.value.length ; i++) {
+      this.value[i] = value[i];
+    }
+    return this;
+  }
+
+  public Cropinfo set_min(float min){
+    this.min = min;
+    return this;
+  }
+  
+  public Cropinfo set_max(float max){
+    this.max = max;
+    return this;
+  }
+  
+  // set dropdown 
+  public Cropinfo set_line(int line){
+    this.line = line;
+    return this;
+  }
+
+  // get crope info
+  public int get_rank(){
+    return this.rank;
+  }
+
+  public int get_id(){
+    return this.id;
+  }
+
+  public int get_id_midi(){
+    return this.id_midi;
+  }
+
+  public String get_name(){
+    return this.name;
+  }
+
+  public String get_type(){
+    return this.type;
+  }
+  
+  // get button info
+  public boolean get_is(){
+    return this.is;
+  }
+  
+  // get slider info
+  public float [] get_value(){
+    return this.value;
+  }
+
+  public float get_min(){
+    return this.min;
+  }
+  
+  public float get_max(){
+    return this.max;
+  }
+  
+  // get dropdown info
+  public int get_line(){
+    return this.line;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
 /**
 class Crope
-v 0.8.0
+v 0.8.1
+2018-2018
 */
 class Crope {
   protected iVec2 pos, size;
@@ -34,7 +173,7 @@ class Crope {
   protected int fill_in = color(g.colorModeX);
   protected int fill_out = color(g.colorModeX /2);
   protected int stroke_in = fill_in;
-  protected int stroke_out= fill_out;
+  protected int stroke_out = fill_out;
   protected float thickness = 0;
   protected int color_label_in = fill_in;
   protected int color_label_out = fill_out;
@@ -54,11 +193,12 @@ class Crope {
   protected int id = -1;
 
   private int rank;
+  private int birth;
 
   private String type = "Crope";
 
   Crope(String type) {
-    this.rank = rank_crope++;
+    this.birth = birth_crope++;
     this.type = type;
     add_crope(this);
   }
@@ -257,6 +397,11 @@ class Crope {
     return this;
   }
 
+  public Crope set_rank(int rank) {
+    this.rank = rank;
+    return this;
+  }
+
 
 
   /**
@@ -294,6 +439,10 @@ class Crope {
 
   public int get_rank() {
     return rank;
+  }
+
+  public int get_birth() {
+    return birth;
   }
 
   public String get_type() {
@@ -337,11 +486,11 @@ class Crope {
 
 
 
+
 /**
-CROPE
-CONTROL ROMANESCO PROCESSING ENVIRONMENT
-*
-CLASS BUTTON 1.2.3
+CLASS BUTTON 
+v 1.2.3
+2013-2018
 */
 public class Button extends Crope {
   int color_bg;
@@ -652,6 +801,7 @@ public class Button_dynamic extends Button {
 /**
 SLIDER
 v 1.4.4
+2013-2018
 */
 boolean molette_already_selected ;
 public class Slider extends Crope {
@@ -666,9 +816,8 @@ public class Slider extends Crope {
   protected int fill_molette_in = color(g.colorModeX *.4);
   protected int fill_molette_out = color(g.colorModeX *.2);
   protected int stroke_molette_in = fill_molette_in;
-  protected int stroke_molette_out =fill_molette_out;
+  protected int stroke_molette_out = fill_molette_out;
   protected float thickness_molette = 0;
-
 
   protected float min_norm = 0 ;
   protected float max_norm = 1 ;
@@ -679,7 +828,6 @@ public class Slider extends Crope {
   int notches_num;
   int notch;
   
-  //CONSTRUCTOR minimum
   public Slider(iVec2 pos, iVec2 size) {
     super("Slider");
     constructor(pos,size);
@@ -695,10 +843,7 @@ public class Slider extends Crope {
     this.size(size);
     molette = new Molette[1];
     molette[0] = new Molette();
-   
     this.set_pos_molette();
-
-    //which molette for slider horizontal or vertical
     size_molette(0);
 
     for(int i = 0 ; i < 1 ; i++) {
@@ -1113,10 +1258,8 @@ public class Slider extends Crope {
 
 
 
-  /**
-  DISPLAY SLIDER
-  v 2.0.3
-  */
+
+  // display slider
   public void show_structure() {
     if(thickness > 0 && alpha(stroke_in) > 0 && alpha(stroke_out) > 0) {
       strokeWeight(thickness);
@@ -1142,9 +1285,6 @@ public class Slider extends Crope {
       rect(pos,size);
     }
   }
-
-
-
 
 
   public void show_molette() {
@@ -1426,6 +1566,7 @@ public class Slider extends Crope {
 /**
 SLOTCH > notch's slider
 v 0.1.0
+2018-2018
 */
 public class Slotch extends Slider {
   float [] notches_pos ;
@@ -1568,6 +1709,7 @@ public class Slotch extends Slider {
 /**
 SLADJ > SLIDER ADJUSTABLE
 v 1.3.0
+2016-2018
 */
 public class Sladj extends Slider {
   // size
