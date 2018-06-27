@@ -1,6 +1,6 @@
 /**
 CROPE
-v 0.8.1
+v 0.9
 CONTROL ROMANESCO PROCESSING ENVIRONMENT
 * Copyleft (c) 2018-2018
 *
@@ -29,20 +29,20 @@ ArrayList<Crope> get_crope() {
 
 /**
 Crope info > Cropinfo
-v 0.0.1.1
+v 0.0.2
 2018-2018
 */
 public class Cropinfo {
-  private int rank;
-  private int id;
-  private int id_midi;
-  private String name;
-  private String type;
+  private int rank = -1;
+  private int id = -1;
+  private int id_midi = -1;
+  private String name = null;
+  private String type = null;
   private boolean is; // button
   private float[] value; // slider
-  private float min; // slider
-  private float max; // slider
-  private int line; // dropdown
+  private float min = 0; // slider
+  private float max = 1; // slider
+  private int line = -1; // dropdown
   
   public Cropinfo() {
   }
@@ -135,6 +135,10 @@ public class Cropinfo {
     return this.value;
   }
 
+  public float get_value(int index){
+    return this.value[index];
+  }
+
   public float get_min(){
     return this.min;
   }
@@ -146,6 +150,23 @@ public class Cropinfo {
   // get dropdown info
   public int get_line(){
     return this.line;
+  }
+
+  @Override String toString() {
+    String info = "";
+    info += "type: "+type + ", ";
+    info += "rank: "+rank + ", ";
+    info += "name: "+name + ", ";
+    info += "id: "+id + ", ";
+    info += "midi: "+id_midi + ", ";
+    info += "is: "+is + ", ";
+    for(int i = 0 ; i < value.length ;i++) {
+      info += "value "+i+": "+value[i] + ", ";
+    }
+    info += "min: "+min+ ", ";
+    info += "max: "+max+ ", ";
+    info += "dropdown line: "+line+ ", ";
+    return info;
   }
 }
 
