@@ -29,10 +29,10 @@ ArrayList<Crope> get_crope() {
 
 /**
 Crope info > Cropinfo
-v 0.0.1
+v 0.0.1.1
 2018-2018
 */
-public class Cropinfo() {
+public class Cropinfo {
   private int rank;
   private int id;
   private int id_midi;
@@ -59,7 +59,7 @@ public class Cropinfo() {
   }
 
   public Cropinfo set_id_midi(int id_midi){
-    this.id_midi;
+    this.id_midi = id_midi;
     return this;
   }
 
@@ -80,7 +80,7 @@ public class Cropinfo() {
   }
 
   // set slider info
-  public Cropinfo[] set_value(float... value){
+  public Cropinfo set_value(float... value){
     this.value = new float[value.length];
     for(int i = 0 ; i < this.value.length ; i++) {
       this.value[i] = value[i];
