@@ -173,7 +173,6 @@ void dropdown_setup(int x, int y) {
 		dropdown[i].wheel(true);
 		dropdown[i].set_box(num_box_display, rank_box_position);	
 	}
-	add_dropdown(dropdown);
 }
 
 
