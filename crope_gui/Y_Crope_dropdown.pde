@@ -1,6 +1,6 @@
 /**
 DROPDOWN 
-v 0.1.1
+v 0.1.2
 2018-2018
 */
 /**
@@ -465,11 +465,12 @@ public class Dropdown extends Crope {
   public int get_selection() {
     float size_temp_y = size_box.y *num_box;
     iVec2 temp_size = iVec2(size_box.x, (int)size_temp_y);
-    boolean inside_open_box = inside(pos,temp_size,cursor,RECT);
+    iVec2 temp_pos = pos.copy();
+    temp_pos.y += (box_starting_rank_position *height_box);
+    boolean inside_open_box = inside(temp_pos,temp_size,cursor,RECT);
     if(!inside_open_box) {
       line = current_line;
     }
-
     if(!locked && inside_open_box) {
       if(line >= 0 && line < content.length) {
         current_line = line ;     

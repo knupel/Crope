@@ -17,13 +17,14 @@ void setup() {
 
 
 void draw() {
+	println((int)frameRate);
 	background(0);
   
   // slider_draw();
   multi_slider_draw();
 	// slotch_draw();
 	//slider_adjustable_draw();
-	// dropdown_draw();
+	dropdown_draw();
 
 	stroke(255,0,0);
 	line(x,0,x,height);
