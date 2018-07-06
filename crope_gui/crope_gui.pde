@@ -18,6 +18,7 @@ void setup() {
 
 void draw() {
 	println((int)frameRate);
+	println("crope",get_crope().size());
 	background(0);
   
   // slider_draw();

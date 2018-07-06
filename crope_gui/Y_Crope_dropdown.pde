@@ -272,7 +272,13 @@ public class Dropdown extends Crope {
       keep_pos_mol_is = true ;
     }
 
-    slider_dd = new Slider("Slider Dropdown",pos_slider, size_slider);
+    if(slider_dd == null) {
+      slider_dd = new Slider("Slider Dropdown",pos_slider, size_slider);
+    } else {
+      slider_dd.pos(pos_slider);
+      slider_dd.size(size_slider);
+      slider_dd.set_pos_molette();
+    }
     slider_dd.size_molette(size_molette);
     if(keep_pos_mol_is) {
       int pos_mol_x = slider_dd.get_molette_pos(index).x;
