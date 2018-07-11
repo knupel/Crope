@@ -21,11 +21,11 @@ void draw() {
 	println("crope",get_crope().size());
 	background(0);
   
-  // slider_draw();
-  multi_slider_draw();
+  slider_draw();
+  //multi_slider_draw();
 	// slotch_draw();
 	//slider_adjustable_draw();
-	dropdown_draw();
+	//dropdown_draw();
 
 	stroke(255,0,0);
 	line(x,0,x,height);
@@ -61,7 +61,7 @@ void slider_setup(int x, int y) {
 	slider = new Slider(iVec2(x,y),iVec2(200,20));
   slider.set_molette(ELLIPSE);
   slider.set_rounded(20);
-  slider.set_molette_num(2);
+  slider.set_molette_num(1);
   //slider.set_molette_pos_norm(.25);
   // slider.wheel(true);
 }
@@ -69,8 +69,8 @@ void slider_setup(int x, int y) {
 
 void slider_draw() {
 	// slider.select(keyPressed); // by default select is mousePressed arg
-	// slider.select(mousePressed, keyPressed);
-	slider.select(true);
+	slider.keep_selection(keyPressed);
+	slider.select(mousePressed);
 	slider.update(mouseX,mouseY);
 	slider.show_structure();
 	slider.show_molette();
