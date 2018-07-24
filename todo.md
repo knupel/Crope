@@ -2,6 +2,9 @@
 
 little bug when the slider is on the to or botton of scroll
 
+*dropdown
+
+Hard to select when there is only 2 choices
 
 *notch
 
