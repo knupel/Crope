@@ -17,8 +17,8 @@ void setup() {
 
 
 void draw() {
-	println((int)frameRate);
-	println("crope",get_crope().size());
+	// println((int)frameRate);
+	// println("crope",get_crope().size());
 	background(0);
   
   // slider_draw();
@@ -138,7 +138,7 @@ void multi_slider_draw() {
 	// multi_slider.select(mousePressed, keyPressed);
 	
 	multi_slider.update(mouseX,mouseY);
-	//multi_slider.select(true);
+	// multi_slider.select(true);
 	multi_slider.show_structure();
 	multi_slider.show_molette();
 	
@@ -164,9 +164,13 @@ dropdown
 */
 Dropdown [] dropdown;
 void dropdown_setup(int x, int y) {
-	String [] content_0 = {"chien","chat", "poisson rouge","hamster","rat","souris"};
+	String [] content_0 = {"chien","chat"};
+	//String [] content_0 = {"chien","chat", "poisson rouge","hamster","rat","souris"};
 	String [] content_1 = {"tigre","lynx", "puma","chat","panthère","loup","ours"};
-	dropdown = new Dropdown[2];
+	//String [] content_0 = {"chien","chat"};
+	// String [] content_1 = {"tigre","lynx"};
+	int num = 2;
+	dropdown = new Dropdown[num];
 	dropdown[0] = new Dropdown(iVec2(x,y),iVec2(60,20), "Menu", content_0);
 	dropdown[1] = new Dropdown(iVec2(x*8,y),iVec2(60,20), "Menu", content_1);
 	int num_box_display = 4 ;
@@ -184,11 +188,10 @@ void dropdown_draw() {
 	for(int i = 0 ; i < dropdown.length ;i++) {
 		dropdown[i].update(mouseX,mouseY);
 		dropdown[i].show();
-		int x = dropdown[i].get_pos().x + dropdown[i].get_header_text_pos().x ;
+		int x = dropdown[i].get_pos().x + dropdown[i].get_header_text_pos().x;
 		int y = dropdown[i].get_pos().y + dropdown[i].get_size().y + dropdown[i].get_header_text_pos().y;
 		dropdown[i].show_selection(x,y);
 	}
-	
 	
 	/*
 	println("highlighted",dropdown.get_highlighted());
