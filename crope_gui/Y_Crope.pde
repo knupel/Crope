@@ -1,6 +1,6 @@
 /**
 CROPE
-v 0.9.2
+v 0.9.3
 CONTROL ROMANESCO PROCESSING ENVIRONMENT
 * Copyleft (c) 2018-2018
 *
@@ -823,7 +823,7 @@ public class Button_dynamic extends Button {
 
 /**
 SLIDER
-v 1.5.1
+v 1.5.2
 2013-2018
 */
 boolean molette_already_selected ;
@@ -1043,16 +1043,56 @@ public class Slider extends Crope {
 
 
 
-  boolean keep_selection = true;
-  public void keep_selection(boolean state) {
-    if(state) {
-      this.keep_selection = false;
-     } else {
-      this.keep_selection = true;
+  // state information
+  public boolean molette_used_is() {
+    boolean state = false;
+    for(int i = 0 ; i < molette.length; i++) {
+      if(molette_used_is(i)){
+        state = true;
+        break;
+      }
+    }
+    return state;
+  }
+
+  public boolean molette_used_is(int index) {
+    boolean inside = false ;
+    if(molette_type == ELLIPSE) {
+      inside = inside_molette_ellipse(index);
+    } else {
+      inside = inside_molette_rect(index);
+    }
+    if (inside && selected_type) {
+      return true ; 
+    } else {
+      return false ;
     }
   }
 
-  // state information
+
+  public boolean molette_inside_is() {
+    boolean is = false; 
+    for(int i = 0 ; i < molette.length ; i++) {
+      if(molette[i].inside_is()) {
+        is = true ;
+        break;
+      }
+    }
+    return is;
+  }
+
+
+  public boolean molette_inside_is(int index) {
+    boolean is = false; 
+    if(index >= 0 && index < molette.length) {
+      is = molette[index].inside_is();
+    }
+    return is;
+  }
+
+
+
+
   public boolean select_is() {
     boolean is = false; 
     for(int i = 0 ; i < molette.length ; i++) {
@@ -1094,6 +1134,20 @@ public class Slider extends Crope {
   }
 
 
+
+
+
+
+  boolean keep_selection = true;
+  public void keep_selection(boolean state) {
+    if(state) {
+      this.keep_selection = false;
+     } else {
+      this.keep_selection = true;
+    }
+  }
+
+  // select
   public void select(boolean authorization) {
     for(int i = 0 ; i < molette.length ; i++) {
       select(i,authorization);
@@ -1360,7 +1414,7 @@ public class Slider extends Crope {
 
   public void show_molette() {
     for(int i = 0 ; i < molette.length ; i++) {
-      if(molette[i].inside_is) {
+      if(molette[i].inside_is()) {
         aspect_rope(fill_molette_in,stroke_molette_in,thickness_molette);
         molette_shape(i);
       } else {
@@ -1468,31 +1522,7 @@ public class Slider extends Crope {
     return molette[index].inside_is;
   }
 
-  // molette used
-  public boolean molette_used_is() {
-    boolean state = false;
-    for(int i = 0 ; i < molette.length; i++) {
-      if(molette_used_is(i)){
-        state = true;
-        break;
-      }
-    }
-    return state;
-  }
 
-  public boolean molette_used_is(int index) {
-    boolean inside = false ;
-    if(molette_type == ELLIPSE) {
-      inside = inside_molette_ellipse(index);
-    } else {
-      inside = inside_molette_rect(index);
-    }
-    if (inside && selected_type) {
-      return true ; 
-    } else {
-      return false ;
-    }
-  }
 
 
 
