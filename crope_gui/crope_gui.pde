@@ -21,11 +21,11 @@ void draw() {
 	// println("crope",get_crope().size());
 	background(0);
   
-  // slider_draw();
+  slider_draw();
   //multi_slider_draw();
 	// slotch_draw();
 	//slider_adjustable_draw();
-	dropdown_draw();
+	// dropdown_draw();
 
 	stroke(255,0,0);
 	line(x,0,x,height);
@@ -71,6 +71,8 @@ void slider_draw() {
 	// slider.select(keyPressed); // by default select is mousePressed arg
 	slider.keep_selection(keyPressed);
 	slider.select(mousePressed);
+	// println("select",slider.select_is(), frameCount);
+	println("used",slider.used_is(), frameCount);
 	slider.update(mouseX,mouseY);
 	slider.show_structure();
 	slider.show_molette();
