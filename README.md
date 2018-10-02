@@ -12,3 +12,4 @@ This systeme provide a GUI control:
 >notch slider
 >adjustable slider
 >dropdown menu
+>each object crope have a dna integer id not equal to "zero"

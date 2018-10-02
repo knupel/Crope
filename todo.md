@@ -1,3 +1,8 @@
+*dna
+
+Improve system dna for the id, go to add the dna system
+
+
 *wheel event
 
 little bug when the slider is on the to or botton of scroll
