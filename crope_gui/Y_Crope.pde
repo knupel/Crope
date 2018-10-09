@@ -1,6 +1,6 @@
 /**
 CROPE
-v 0.9.5
+v 0.9.6
 CONTROL ROMANESCO PROCESSING ENVIRONMENT
 * Copyleft (c) 2018-2018
 *
@@ -194,7 +194,7 @@ public class Cropinfo {
 
 /**
 class Crope
-v 0.9.0
+v 0.9.1
 2018-2018
 */
 public class Crope {
@@ -235,7 +235,7 @@ public class Crope {
     this.birth = birth_crope++;
     this.type = type;
     add_crope(this);
-    dna = floot(radom(Integer.MIN_VALUE,Integer.MAX_VALUE));
+    dna = floor(random(Integer.MIN_VALUE,Integer.MAX_VALUE));
     if(dna == 0) dna = 1;
   }
 
