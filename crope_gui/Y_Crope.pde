@@ -1463,7 +1463,7 @@ public class Slider extends Crope {
   
   private void molette_shape(int index) {
     if(molette_type == ELLIPSE) {
-      iVec2 temp = round(mult(molette[index].size,.5));
+      iVec2 temp = iVec2(round(mult(molette[index].size,.5)));
       iVec2 pos = iadd(molette[index].pos,temp);
       ellipse(pos,molette[index].size);
     } else if(molette_type == RECT) {
