@@ -1,7 +1,7 @@
 /**
 * CROPE
 *CONTROL ROMANESCO PROCESSING ENVIRONMENT
-* v 0.9.8
+* v 0.9.9
 * Copyleft (c) 2018-2019
 * Processing 3.4
 * @author Stan le Punk
@@ -194,8 +194,8 @@ public class Cropinfo {
 
 /**
 class Crope
-v 0.9.1
-2018-2018
+v 0.9.3
+2018-2019
 */
 public class Crope {
   protected iVec2 pos, size;
@@ -203,7 +203,7 @@ public class Crope {
 
   protected iVec2 cursor;
 
-  protected int fill_in = color(g.colorModeX);
+  protected int fill_in = color(g.colorModeX -(g.colorModeX *.1));
   protected int fill_out = color(g.colorModeX /2);
   protected int stroke_in = fill_in;
   protected int stroke_out = fill_out;
@@ -230,6 +230,8 @@ public class Crope {
   private int birth;
 
   private String type = "Crope";
+
+  protected boolean crope_build_is = false;
 
   public Crope(String type) {
     this.birth = birth_crope++;
@@ -366,17 +368,23 @@ public class Crope {
     return this;
   }
 
-  public Crope set_label(String name, iVec2 pos_label) {
+  public Crope set_label(String name, int x, int y) {
     this.name = name;
     if(this.pos_label == null) {
-      this.pos_label = iVec2(pos_label);
+      this.pos_label = iVec2(x,y);
     } else {
-      this.pos_label.set(pos_label);
+      this.pos_label.set(x,y);
     }
     return this;
   }
+
+  public Crope set_label(String name, iVec2 pos_label) {
+    set_label(name, pos_label.x, pos_label.y);
+    return this;
+  }
+
   public Crope set_pos_label(iVec2 pos) {
-    set_pos_label(pos.x, pos.y);
+    set_pos_label(pos.x,pos.y);
     return this;
   }
 
@@ -718,7 +726,7 @@ public class Button extends Crope {
       if(pos_label == null) {
         pos_label = iVec2();
       }
-
+      // display text
       if(font != null) textFont(font);
       if(font_size > 0) textSize(font_size);
       textAlign(align);
@@ -846,7 +854,7 @@ public class Button_dynamic extends Button {
 
 /**
 SLIDER
-v 1.5.2
+v 1.5.3
 2013-2018
 */
 boolean molette_already_selected ;
@@ -873,15 +881,23 @@ public class Slider extends Crope {
   boolean notch_is;
   int notches_num;
   int notch;
+
+  public Slider() {
+    super("Slider");
+    constructor(iVec2(-1),iVec2(-1));
+    crope_build_is = false;
+  }
   
   public Slider(iVec2 pos, iVec2 size) {
     super("Slider");
     constructor(pos,size);
+    crope_build_is = true;
   }
 
   public Slider(String type, iVec2 pos, iVec2 size) {
     super(type);
     constructor(pos,size);
+    crope_build_is = true;
   }
 
   private void constructor(iVec2 pos, iVec2 size) {
@@ -926,8 +942,14 @@ public class Slider extends Crope {
   }
 
   public void update(int x, int y) {
+    // check if slider is build
+    if(!crope_build_is && all(greaterThan(this.pos,iVec2(-1))) && all(greaterThan(this.size,iVec2(-1)))) {
+      constructor(this.pos,this.size);
+      crope_build_is = true;
+    }
     cursor(x,y);
     molette_update();
+    
   }
   
   private boolean wheel_is;
@@ -1450,7 +1472,8 @@ public class Slider extends Crope {
   public void show_label() {
     if(this.name != null) {
        textAlign(align);
-       textFont(font);
+       if(font != null) textFont(font);
+       if(font_size > 0) textSize(font_size);
        if(inside_slider()) {
         fill(color_label_in);
       } else {
@@ -1459,6 +1482,7 @@ public class Slider extends Crope {
       text(name,add(pos,pos_label));
     }  
   }
+
 
   
   private void molette_shape(int index) {
