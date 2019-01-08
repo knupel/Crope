@@ -76,6 +76,11 @@ void slider_draw() {
 	slider.update(mouseX,mouseY);
 	slider.show_structure();
 	slider.show_molette();
+
+	slider.show_label(); 
+
+	slider.show_value(1.2); // add array value display under the label, useful when the slider value has mapped
+	slider.show_value(); // display the normal array value return by the slider
 }
 
 

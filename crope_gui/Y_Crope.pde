@@ -1,7 +1,7 @@
 /**
 * CROPE
 *CONTROL ROMANESCO PROCESSING ENVIRONMENT
-* v 0.9.9
+* v 0.9.10
 * Copyleft (c) 2018-2019
 * Processing 3.4
 * @author Stan le Punk
@@ -854,7 +854,7 @@ public class Button_dynamic extends Button {
 
 /**
 SLIDER
-v 1.5.3
+v 1.5.4
 2013-2018
 */
 boolean molette_already_selected ;
@@ -1483,6 +1483,56 @@ public class Slider extends Crope {
     }  
   }
 
+  public void show_value() {
+    if(this.name != null) {
+       textAlign(align);
+       if(font != null) textFont(font);
+       if(font_size > 0) textSize(font_size);
+       if(inside_slider()) {
+        fill(color_label_in);
+      } else {
+        fill(color_label_out);
+      }
+
+
+      String value = "[ ";
+      for(int i = 0 ; i < get_value().length ; i++) {
+        float f = truncate(get_value()[i],2);
+        value += f;
+        if(i < get_value().length -1) value += ",";
+      }
+      value += " ]";
+      Vec2 final_pos = add(pos,pos_label);
+      final_pos.y += font_size;
+      text(value,final_pos);
+    }
+  }
+
+  public void show_value(float... external_value) {
+    if(this.name != null) {
+       textAlign(align);
+       if(font != null) textFont(font);
+       if(font_size > 0) textSize(font_size);
+       if(inside_slider()) {
+        fill(color_label_in);
+      } else {
+        fill(color_label_out);
+      }
+
+
+      String value = "[ ";
+      for(int i = 0 ; i < external_value.length ; i++) {
+        float f = truncate(external_value[i],2);
+        value += f;
+        if(i < external_value.length -1) value += ",";
+      }
+      value += " ]";
+      Vec2 final_pos = add(pos,pos_label);
+      final_pos.y += font_size;
+      text(value,final_pos);
+    }
+  }
+
 
   
   private void molette_shape(int index) {
@@ -1686,8 +1736,7 @@ public class Slider extends Crope {
     protected boolean used_is;
     protected boolean inside_is;
 
-    Molette() {
-    }
+    Molette() { }
 
 
     private boolean select_is() {
