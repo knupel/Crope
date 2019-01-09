@@ -1,7 +1,7 @@
 /**
 * CROPE
 *CONTROL ROMANESCO PROCESSING ENVIRONMENT
-* v 0.9.10
+* v 0.9.13
 * Copyleft (c) 2018-2019
 * Processing 3.4
 * @author Stan le Punk
@@ -854,8 +854,8 @@ public class Button_dynamic extends Button {
 
 /**
 SLIDER
-v 1.5.4
-2013-2018
+v 1.5.6
+2013-2019
 */
 boolean molette_already_selected ;
 public class Slider extends Crope {
@@ -884,53 +884,23 @@ public class Slider extends Crope {
 
   public Slider() {
     super("Slider");
-    constructor(iVec2(-1),iVec2(-1));
-    crope_build_is = false;
+    this.pos(iVec2(-1));
+    this.size(iVec2(-1));
   }
   
   public Slider(iVec2 pos, iVec2 size) {
     super("Slider");
-    constructor(pos,size);
-    crope_build_is = true;
+    this.pos(pos);
+    this.size(size);
   }
 
   public Slider(String type, iVec2 pos, iVec2 size) {
     super(type);
-    constructor(pos,size);
-    crope_build_is = true;
-  }
-
-  private void constructor(iVec2 pos, iVec2 size) {
     this.pos(pos);
     this.size(size);
-    molette = new Molette[1];
-    molette[0] = new Molette();
-    this.set_pos_molette();
-    size_molette(0);
-
-    for(int i = 0 ; i < 1 ; i++) {
-      molette[i].id = 0;
-      molette[i].used_is = false;
-      molette[i].inside_is = false;
-      init_molette_is = true;
-    }
-    set_molette_min_max_pos();
   }
-  
 
 
-  private Slider set_molette_min_max_pos() {
-    for(int i = 0 ; i < molette.length ; i++) {
-      if(size.x > size.y) {
-        pos_min = pos.copy();
-        pos_max = iVec2(pos.x +size.x -molette[i].size.x, pos.y) ;
-      } else {
-        pos_min = pos.copy();
-        pos_max = iVec2(pos.x, pos.y +size.y -molette[i].size.y) ;
-      }
-    }  
-    return this;
-  }
 
 
 
@@ -938,15 +908,14 @@ public class Slider extends Crope {
   MAIN METHOD
   */
   public void update(iVec2 cursor) {
-    update(cursor.x, cursor.y);
+    update(cursor.x,cursor.y);
   }
 
   public void update(int x, int y) {
-    // check if slider is build
-    if(!crope_build_is && all(greaterThan(this.pos,iVec2(-1))) && all(greaterThan(this.size,iVec2(-1)))) {
-      constructor(this.pos,this.size);
-      crope_build_is = true;
+    if(!crope_build_is) {
+      molette_builder(1);
     }
+
     cursor(x,y);
     molette_update();
     
@@ -972,10 +941,13 @@ public class Slider extends Crope {
 
 
   /**
-  UPDATE MOLETTE
+  MOLETTE
   */
   protected void molette_update() {
     inside_slider();
+    if(molette == null) {
+      init_molette(1);
+    }
     for(int i = 0 ; i < molette.length ; i++) {
       if(!molette[i].select_is) {
         selected_type = mousePressed;
@@ -1185,6 +1157,7 @@ public class Slider extends Crope {
 
   boolean keep_selection = true;
   public void keep_selection(boolean state) {
+
     if(state) {
       this.keep_selection = false;
      } else {
@@ -1262,28 +1235,49 @@ public class Slider extends Crope {
 
 
   /**
-  setting
+  MOLETTE SETTING and BUILDING
   */
+  private void init_molette(int len) {
+    if(molette == null || len != molette.length) {
+      molette_builder(len);
+    }
+  }
+
+
+  private void molette_builder(int num) {
+    molette = new Molette[num]; // create list of molette
+    for(int i = 0 ; i < num ; i++) {
+      molette[i] = new Molette();
+      this.set_pos_molette(i);
+      size_molette(i);
+      molette[i].id = 0;
+      molette[i].used_is = false;
+      molette[i].inside_is = false;
+      init_molette_is = true;
+    }
+    set_molette_min_max_pos();
+    crope_build_is = true;
+  } 
+
+  private Slider set_molette_min_max_pos() {
+    for(int i = 0 ; i < molette.length ; i++) {
+      if(size.x > size.y) {
+        pos_min = pos.copy();
+        pos_max = iVec2(pos.x +size.x -molette[i].size.x, pos.y) ;
+      } else {
+        pos_min = pos.copy();
+        pos_max = iVec2(pos.x, pos.y +size.y -molette[i].size.y) ;
+      }
+    }  
+    return this;
+  }
+
   public Slider set_molette(int type) {
     this.molette_type = type;
     return this;
   }
 
-  private void init_molette(int len) {
-    if(len != molette.length) {
-      init_molette_is = false;
-      molette = new Molette[len];
-    }
-    for(int i = 0 ; !init_molette_is && i < len ; i++) {
-      molette[i] = new Molette();
-      size_molette(i);
-      molette[i].used_is = false;
-      molette[i].inside_is = false;
-      if(i == len-1) init_molette_is = true;
-    }
-  }
 
-  
   // set size
   private void size_molette(int index) {
     if (size.x >= size.y) {
@@ -1299,6 +1293,9 @@ public class Slider extends Crope {
   }
 
   public Slider size_molette(int x, int y) {
+    if(molette == null) {
+      init_molette(1);
+    }
     for(int i = 0 ; i < molette.length ; i++) {
       molette[i].size.set(x,y);
     }
@@ -1345,6 +1342,7 @@ public class Slider extends Crope {
   
   // set_molette
   public Slider set_molette_num(int num) {
+    init_molette(num);
     float [] pos_norm = new float[num];
     float step = 1. / (num+1) ;
     for(int i = 0 ; i < num ; i++) {
@@ -1362,8 +1360,8 @@ public class Slider extends Crope {
       molette[i].pos = iVec2();
       molette[i].id = i;
       // security to constrain the value in normalizing range.
-      if(pos_norm[i] > 1.) pos_norm[i] = 1. ;
-      if(pos_norm[i] < 0) pos_norm[i] = 0 ;
+      if(pos_norm[i] > 1.) pos_norm[i] = 1.;
+      if(pos_norm[i] < 0.) pos_norm[i] = 0.;
       // check if it's horizontal or vertical slider
       
       if(size.x >= size.y) {;
@@ -1496,10 +1494,10 @@ public class Slider extends Crope {
 
 
       String value = "[ ";
-      for(int i = 0 ; i < get_value().length ; i++) {
-        float f = truncate(get_value()[i],2);
+      for(int i = 0 ; i < get().length ; i++) {
+        float f = truncate(get()[i],2);
         value += f;
-        if(i < get_value().length -1) value += ",";
+        if(i < get().length -1) value += ",";
       }
       value += " ]";
       Vec2 final_pos = add(pos,pos_label);
@@ -1651,25 +1649,32 @@ public class Slider extends Crope {
 
 
 
-  public float [] get_value() {
-    float [] value = new float[molette.length];
-    for(int i = 0 ; i < value.length ; i++) {
-      if (size.x >= size.y) {
-        value[i] = map (molette[i].pos.x, pos_min.x, pos_max.x, min_norm, max_norm); 
-      } else {
-        value[i] = map (molette[i].pos.y, pos_min.y, pos_max.y, min_norm, max_norm);
-      }
+
+
+
+  /**
+  GET
+  */
+  public float [] get() {
+    int num = 1;
+    if(molette != null) {
+      num = molette.length;
     }
-    return value ;
+    float [] value = new float[num];
+    for(int i = 0 ; i < value.length ; i++) {
+      value[i] = get(i);
+    }
+    return value;
   }
 
-  public float get_value(int index) {
-    float value = Float.NaN ;
-    if(index < molette.length) {
+  public float get(int index) {
+    float value = 0;
+    if(molette != null && index < molette.length 
+      && pos_min.x > 0 && pos_min.y > 0 && pos_max.x > 0 && pos_max.y > 0) {
       if (size.x >= size.y) {
-        value = map (molette[index].pos.x, pos_min.x, pos_max.x, min_norm, max_norm); 
+        value = map(molette[index].pos.x,pos_min.x,pos_max.x,min_norm,max_norm); 
       } else {
-        value = map (molette[index].pos.y, pos_min.y, pos_max.y, min_norm, max_norm);
+        value = map(molette[index].pos.y,pos_min.y,pos_max.y,min_norm,max_norm);
       }
     }
     return value ;
@@ -1683,18 +1688,16 @@ public class Slider extends Crope {
     return max_norm ;
   }
   
-  public iVec2 get_pos_min() {
+  public iVec2 get_min_pos() {
     return pos_min;
   }
 
-  public iVec2 get_pos_max() {
+  public iVec2 get_max_pos() {
     return pos_max;
   }
 
   
 
-
-  
   public iVec2 [] get_molette_pos() {
     iVec2 [] pos = new iVec2[molette.length] ;
     for(int i = 0 ; i < molette.length ;i++) {
