@@ -4,8 +4,9 @@ v 0.1.0
 2018-2018
 * Copyleft (c) 2018-2018
 
-Rope: Romanesco Processing Environment
-[Rope on github](https://github.com/StanLepunK/Rope)
+## rope library
+to use the set rope method you need to downlow Rope library
+[download](https://github.com/StanLepunK/Rope/blob/master/Rope.zip)
 
 This systeme provide a GUI control:
 >simple slider
