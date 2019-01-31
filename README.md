@@ -6,7 +6,7 @@ v 0.1.0
 
 ## rope library
 to use the set rope method you need to downlow Rope library
-[download](https://github.com/StanLepunK/Rope/blob/master/Rope.zip)
+[download](https://github.com/StanLepunK/Rope/blob/master/build_rope/Rope.zip)
 
 This systeme provide a GUI control:
 >simple slider
