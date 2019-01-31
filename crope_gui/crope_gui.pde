@@ -59,7 +59,7 @@ SLIDER CLASSIC
 */
 Slider slider ;
 void slider_setup(int x, int y) {
-	slider = new Slider(iVec2(x,y),iVec2(200,20));
+	slider = new Slider(ivec2(x,y),ivec2(200,20));
   slider.set_molette(ELLIPSE);
   slider.set_rounded(20);
   slider.set_molette_num(1);
@@ -90,7 +90,7 @@ ADJUTABLE
 */
 Sladj sladj ;
 void slider_adjustable_setup(int x, int y) {
-	sladj = new Sladj(iVec2(x,y),iVec2(200,20));
+	sladj = new Sladj(ivec2(x,y),ivec2(200,20));
   sladj.set_molette(ELLIPSE);
   sladj.set_rounded(20);
   sladj.set_molette_pos_norm(.25);
@@ -129,7 +129,7 @@ SLIDER MULTI
 */
 Slider multi_slider ;
 void multi_slider_setup(int x, int y) {
-	multi_slider = new Slider(iVec2(x,y),iVec2(200,20));
+	multi_slider = new Slider(ivec2(x,y),ivec2(200,20));
 	// multi_slider.set_molette(ELLIPSE);
 	multi_slider.set_molette_num(3);
 	multi_slider.size_molette(5,40);
@@ -180,8 +180,8 @@ void dropdown_setup(int x, int y) {
 	// String [] content_1 = {"tigre","lynx"};
 	int num = 2;
 	dropdown = new Dropdown[num];
-	dropdown[0] = new Dropdown(iVec2(x,y),iVec2(60,20), "Menu", content_0);
-	dropdown[1] = new Dropdown(iVec2(x*8,y),iVec2(60,20), "Menu", content_1);
+	dropdown[0] = new Dropdown(ivec2(x,y),ivec2(60,20), "Menu", content_0);
+	dropdown[1] = new Dropdown(ivec2(x*8,y),ivec2(60,20), "Menu", content_1);
 	int num_box_display = 4 ;
 	int rank_box_position = 2;
 	for(int i = 0 ; i < dropdown.length;i++) {
@@ -230,7 +230,7 @@ slider notch
 */
 Slotch slotch ;
 void slotch_setup(int x, int y) {
-	slotch = new Slotch(iVec2(x,y),iVec2(60,20));
+	slotch = new Slotch(ivec2(x,y),ivec2(60,20));
 	/*
   slotch.set_molette(ELLIPSE);
   slotch.set_rounded(20);
