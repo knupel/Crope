@@ -1,9 +1,9 @@
 /**
 * CROPE
-*CONTROL ROMANESCO PROCESSING ENVIRONMENT
-* v 0.9.13
+* Control ROmanesco Processing Environment
+* v 0.9.14
 * Copyleft (c) 2018-2019
-* Processing 3.5.2
+* Processing 3.5.3
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Crope
 * @see http://stanlepunk.xyz/
@@ -1469,10 +1469,10 @@ public class Slider extends Crope {
   
   public void show_label() {
     if(this.name != null) {
-       textAlign(align);
-       if(font != null) textFont(font);
-       if(font_size > 0) textSize(font_size);
-       if(inside_slider()) {
+      textAlign(align);
+      if(font != null) textFont(font);
+      if(font_size > 0) textSize(font_size);
+      if(inside_slider()) {
         fill(color_label_in);
       } else {
         fill(color_label_out);

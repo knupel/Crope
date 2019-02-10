@@ -1,11 +1,9 @@
 /**
-DROPDOWN 
-v 0.2.0
-2018-2019
-*/
-/**
-method to know is dropdown is active or not
-Add dropdown must use when the dropdown is build.
+* CROPE DROPDOWN 
+* v 0.2.1
+* 2018-2019
+* method to know is dropdown is active or not
+* Add dropdown must use when the dropdown is build.
 */
 
 boolean dropdown_is() {
@@ -26,9 +24,9 @@ boolean dropdown_is() {
 
 
 /**
-DROPDOWN class
-v 2.6.0
-2014-2018
+* DROPDOWN class
+* v 2.6.0
+* 2014-2018
 */
 public class Dropdown extends Crope {
   protected boolean selected_type;
@@ -365,12 +363,11 @@ public class Dropdown extends Crope {
       fill(colour_header_text_out);
     }
     textFont(font);
-    if(get_content().length > 0) {
+    if(get_content().length > 0 && get_content()[get_selection()] != null) {
       text(get_content()[get_selection()], x, y);
     } else {
       text("empty",x,y);
     }
-    
   }
   
   public void show_header() {
@@ -384,13 +381,15 @@ public class Dropdown extends Crope {
   }
 
   public void show_header_text(String name) {
-    if (inside(pos,size,cursor,RECT)) {
-      fill(colour_header_text_in); 
-    } else {
-      fill(colour_header_text_out);
+    if(name != null) {
+      if (inside(pos,size,cursor,RECT)) {
+        fill(colour_header_text_in); 
+      } else {
+        fill(colour_header_text_out);
+      }
+      textFont(font);
+      text(name, pos.x +pos_header_text.x, pos.y +pos_header_text.y);
     }
-    textFont(font);
-    text(name, pos.x +pos_header_text.x, pos.y +pos_header_text.y);
   }
 
   public void show_header_text() {
@@ -438,31 +437,33 @@ public class Dropdown extends Crope {
   }
 
   private void render_box(ivec2 pos, String content, int step, boolean inside) {
+    if(content != null) {
     // box part
-    noStroke() ;  
-    if (inside) {
-      fill(colour_box_in); 
-    } else {
-      fill(colour_box_out);
+      noStroke() ;  
+      if (inside) {
+        fill(colour_box_in); 
+      } else {
+        fill(colour_box_out);
+      }
+      int min = 60 ;
+      int max = 300 ;
+      if (size_box.x < min ) {
+        size_box.x = min; 
+      } else if(size_box.x > max ) {
+        size_box.x = max;
+      }
+      rect(pos,size_box); 
+      // text part
+      if (inside(pos,size_box,cursor,RECT)) {
+        fill(colour_box_text_in); 
+      } else {
+        fill(colour_box_text_out);
+      }
+      textFont(font_box);
+      int x = pos.x +pos_box_text.x;
+      int y = pos.y +height_box -(ceil(height_box*.2));
+      text(content,x,y);
     }
-    int min = 60 ;
-    int max = 300 ;
-    if (size_box.x < min ) {
-      size_box.x = min; 
-    } else if(size_box.x > max ) {
-      size_box.x = max;
-    }
-    rect(pos,size_box); 
-    // text part
-    if (inside(pos,size_box,cursor,RECT)) {
-      fill(colour_box_text_in); 
-    } else {
-      fill(colour_box_text_out);
-    }
-    textFont(font_box);
-    int x = pos.x +pos_box_text.x;
-    int y = pos.y +height_box -(ceil(height_box*.2));
-    text(content,x,y);
   }
 
 
