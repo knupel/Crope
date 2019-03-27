@@ -10,7 +10,10 @@ public class Crope_Bar {
 	JMenuBar menu_bar;
 
 	public Crope_Bar(PApplet app) {
-		System.setProperty("apple.laf.useScreenMenuBar", "true");
+		if(get_os_family().equals("mac")) {
+			System.setProperty("apple.laf.useScreenMenuBar","true");
+		}
+		
 		frame = (JFrame) ((processing.awt.PSurfaceAWT.SmoothCanvas)app.getSurface().getNative()).getFrame();
 		menu_bar = new JMenuBar();
 		frame.setJMenuBar(menu_bar);

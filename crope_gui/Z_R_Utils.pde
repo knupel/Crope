@@ -1,9 +1,10 @@
 /**
 Rope UTILS 
-v 1.56.3
+v 1.56.5
 * Copyleft (c) 2014-2019
-Rope – Romanesco Processing Environment – 
-Processing 3.5.3
+* Rope – Romanesco Processing Environment – 
+* Processing 3.5.3
+* Rope library 0.5.1
 * @author @stanlepunk
 * @see https://github.com/StanLepunK/Rope_framework
 */
@@ -1269,6 +1270,34 @@ String get_type(Object obj) {
   } else return "Unknow" ;
 }
 
+
+
+
+
+
+
+/**
+* Check OS
+* v 0.0.2
+*/
+String get_os() {
+  return System.getProperty("os.name").toLowerCase();
+}
+
+String get_os_family() {
+  String os = System.getProperty("os.name").toLowerCase();
+  String family = "";
+  if(os.indexOf("win") >= 0) {
+    family = "win";
+  } else if(os.indexOf("mac") >= 0) {
+    family = "mac";
+  } else if(os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("aix") >= 0) {
+    family = "unix";
+  } else if(os.indexOf("solaris") >= 0) {
+    family = "solaris";
+  }
+  return family;
+}
 
 
 
