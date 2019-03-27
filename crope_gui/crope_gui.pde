@@ -1,276 +1,33 @@
+/**
+* GUI CROPE
+* Processing 3.5.3
+* Rope Library 0.5.1
+* 2016-2018
+* v 0.2.0
+* 
+* Name
+* 
+*/
+Crope_Bar cb;
 
-  int x = 20 ;
-  int y = 20 ;
 void setup() {
-  size(400,200);
-  slider_setup(x,y);
-  
-  slider_adjustable_setup(x,y);
-  slotch_setup(x,y);
-  dropdown_setup(x,y);
-  multi_slider_setup(x,y);
-  print_crope();
-
-
-  
+	size(100,100);
+	cb = new Crope_Bar(this);
+	cb.help();
+	cb.set("about","file,load,load recent,|,save,save as","import,file,folder","help,controler,prescene,scene");
+	cb.show();
+	//cb.watch();
+	// cb.info_item();
 }
-
 
 void draw() {
-	// println((int)frameRate);
-	// println("crope",get_crope().size());
-	background(0);
-  
-  // slider_draw();
-  // multi_slider_draw();
-	// slotch_draw();
-	// slider_adjustable_draw();
-	dropdown_draw();
-
-	stroke(255,0,0);
-	line(x,0,x,height);
-	line(x+(slider.get_size().x/2),0,x+(slider.get_size().x/2),height);
-	line(x+slider.get_size().x,0,x+slider.get_size().x,height);
-	line(0,y,width,y);
-}
-
-
-void print_crope() {
-	for(Crope crope : get_crope()) {
-		println("name",crope.get_name());
-		println("birth",crope.get_birth());
-  	println("rank",crope.get_rank());
-  	println("type",crope.get_type());
-  	if(crope instanceof Slider) {
-			Slider s = (Slider) crope ;
-			println("first value",s.get(0));
-			println("array value");
-  		printArray(s.get());
-  	}
-  }
-}
-
-
-
-
-
-/**
-SLIDER CLASSIC
-*/
-Slider slider ;
-void slider_setup(int x, int y) {
-	slider = new Slider(ivec2(x,y),ivec2(200,20));
-  slider.set_molette(ELLIPSE);
-  slider.set_rounded(20);
-  slider.set_molette_num(1);
-  //slider.set_molette_pos_norm(.25);
-  // slider.wheel(true);
-}
-
-
-void slider_draw() {
-	// slider.select(keyPressed); // by default select is mousePressed arg
-	slider.keep_selection(keyPressed);
-	slider.select(mousePressed);
-	// println("select",slider.select_is(), frameCount);
-	println("used",slider.used_is(), frameCount);
-	slider.update(mouseX,mouseY);
-	slider.show_structure();
-	slider.show_molette();
-
-	slider.show_label(); 
-
-	slider.show_value(1.2); // add array value display under the label, useful when the slider value has mapped
-	slider.show_value(); // display the normal array value return by the slider
-}
-
-
-/**
-ADJUTABLE
-*/
-Sladj sladj ;
-void slider_adjustable_setup(int x, int y) {
-	sladj = new Sladj(ivec2(x,y),ivec2(200,20));
-  sladj.set_molette(ELLIPSE);
-  sladj.set_rounded(20);
-  sladj.set_molette_pos_norm(.25);
-  // slider.wheel(true);
-}
-
-
-void slider_adjustable_draw() {
-	// sladj.select(keyPressed); // by default select is mousePressed arg
-	// sladj.select(mousePressed, keyPressed);
-	sladj.select(true);
-	sladj.update(mouseX,mouseY);
-	if(!sladj.inside_max() && !sladj.locked_max_is()) {
-    sladj.inside_min();
-    sladj.select_min(keyPressed);
-    sladj.update_min();
-  }
-  // max molette
-  if(!sladj.inside_min() && !sladj.locked_min_is()) {
-    sladj.inside_max();
-    sladj.select_max(keyPressed);
-    sladj.update_max();
-  }
-  sladj.update_min_max();
-
-	sladj.show_structure();
-	sladj.show_adj();
-	sladj.show_molette();
+	// println(cb.armed_is());
+	// cb.info_item();
 
 }
 
 
 
-/**
-SLIDER MULTI
-*/
-Slider multi_slider ;
-void multi_slider_setup(int x, int y) {
-	multi_slider = new Slider(ivec2(x,y),ivec2(200,20));
-	// multi_slider.set_molette(ELLIPSE);
-	multi_slider.set_molette_num(3);
-	multi_slider.size_molette(5,40);
-  multi_slider.set_rounded(20);
-
-
-   // choice the num of molette, the position is set automaticly
-  // multi_slider.set_molette_pos_norm(.25,.5,.75); // choice the molette position the the num is autmatcly increment.
-  println(multi_slider.get_rank());
-}
-
-
-void multi_slider_draw() {
-	// multi_slider.select(keyPressed); // by default select is mousePressed arg
-	// multi_slider.select(mousePressed, keyPressed);
-	
-	multi_slider.update(mouseX,mouseY);
-	// multi_slider.select(true);
-	multi_slider.show_structure();
-	multi_slider.show_molette();
-	
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
-dropdown
-*/
-Dropdown [] dropdown;
-void dropdown_setup(int x, int y) {
-	String [] content_0 = {"chien","chat"};
-	//String [] content_0 = {"chien","chat", "poisson rouge","hamster","rat","souris"};
-	String [] content_1 = {"tigre","lynx","puma","chat","panthère","lion","guepard","chat sauvage"};
-	// String [] content_1 = {"tigre","lynx", "puma","chat","panthère"};
-	//String [] content_0 = {"chien","chat"};
-	// String [] content_1 = {"tigre","lynx"};
-	int num = 2;
-	dropdown = new Dropdown[num];
-	dropdown[0] = new Dropdown(ivec2(x,y),ivec2(60,20), "Menu", content_0);
-	dropdown[1] = new Dropdown(ivec2(x*8,y),ivec2(60,20), "Menu", content_1);
-	int num_box_display = 7;
-	int rank_box_position = 2;
-	for(int i = 0 ; i < dropdown.length;i++) {
-		dropdown[i].wheel(true);
-		dropdown[i].set_box(num_box_display, rank_box_position);	
-	}
-}
-
-
-void dropdown_draw() {
-	// slider.select(keyPressed); // by default select is mousePressed arg
-	// slider.select(mousePressed, keyPressed);
-	for(int i = 0 ; i < dropdown.length ;i++) {
-		dropdown[i].update(mouseX,mouseY);
-		dropdown[i].show();
-		int x = dropdown[i].get_pos().x + dropdown[i].get_header_text_pos().x;
-		int y = dropdown[i].get_pos().y + dropdown[i].get_size().y + dropdown[i].get_header_text_pos().y;
-		dropdown[i].show_selection(x,y);
-	}
-	
-	/*
-	println("highlighted",dropdown.get_highlighted());
-	println("selected",dropdown.get_selected());
-	*/
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
-slider notch
-*/
-Slotch slotch ;
-void slotch_setup(int x, int y) {
-	slotch = new Slotch(ivec2(x,y),ivec2(60,20));
-	/*
-  slotch.set_molette(ELLIPSE);
-  slotch.set_rounded(20);
-  */
-  slotch.set_notch(5).set_molette(ELLIPSE).set_rounded(20);
-  //slotch.set_molette(ELLIPSE).set_rounded(20).set_notch(5);
-  //slotch.set_notch(5);
-}
-
-
-void slotch_draw() {
-	slotch.update(mouseX,mouseY);
-
-	slotch.show_structure();
-	slotch.show_molette();
-	// stroke(255);
-	// slotch.show_notch();
-	// slotch.set_colour_notch(230);
-	slotch.set_aspect_notch(230,.5);
-	slotch.show_notch(-5,10);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-/**
-Processing and Rope event
-*/
-void mouseWheel(MouseEvent e) {
-	scroll(e);
-}
 
 
 
