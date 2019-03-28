@@ -14,7 +14,11 @@ void setup() {
 	size(100,100);
 	cb = new Crope_Bar(this);
 	cb.help();
-	cb.set("about","file,load,load recent,|,save,save as","import,file,folder","help,controler,prescene,scene");
+	// cb.set("file,load,save,save as");
+	cb.set("about",
+				"file,load,load recent,|,save,save as",
+				"import,import image,import video",
+				"help,controler,prescene,scene");
 	cb.show();
 	//cb.watch();
 	// cb.info_item();
@@ -22,7 +26,9 @@ void setup() {
 
 void draw() {
 	// println(cb.armed_is());
-	// cb.info_item();
+	cb.info_item();
+
+	if(input_image() != null) println(input_image());
 
 }
 

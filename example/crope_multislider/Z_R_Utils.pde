@@ -1,9 +1,10 @@
 /**
 Rope UTILS 
-v 1.56.3
+v 1.57.0
 * Copyleft (c) 2014-2019
-Rope – Romanesco Processing Environment – 
-Processing 3.5.3
+* Rope – Romanesco Processing Environment – 
+* Processing 3.5.3
+* Rope library 0.5.1
 * @author @stanlepunk
 * @see https://github.com/StanLepunK/Rope_framework
 */
@@ -139,22 +140,26 @@ class Constant_list {
 
 /**
 FOLDER & FILE MANAGER
-v 0.3.0
+v 0.4.0
 */
 /*
-INOUT PART
+INPUT PART
 */
+String [] input_type = {"media","image","video","sound","text","shape",
+                        "file","last","recent",
+                        "misc","input"};
 String selected_path_input = null;
 boolean input_selected_is;
 
 void select_input() {
-  select_input("");
+  selectInput("select input","input_selected");
 }
 
+/*
 void select_input(String message) {
-  // folder_selected_is = true ;
   selectInput(message, "input_selected");
 }
+*/
 
 void input_selected(File selection) {
   if (selection == null) {
@@ -179,6 +184,9 @@ String input() {
 }
 
 
+
+
+
 /*
 FOLDER PART
 */
@@ -193,10 +201,6 @@ void select_folder(String message) {
   selectFolder(message, "folder_selected");
 }
 
-
-/**
-* this method is called by method select_folder(), and the method name must be the same as named
-*/
 void folder_selected(File selection) {
   if (selection == null) {
     println("Window was closed or the user hit cancel.");
