@@ -1,7 +1,7 @@
 /**
 * CROPE BAR
 * Control ROmanesco Processing Environment
-* v 0.9.15
+* v 0.0.3
 * Copyleft (c) 2019-2019
 * Processing 3.5.3
 * Rope library 0.5.1
@@ -19,26 +19,39 @@ import javax.swing.JMenuItem;
 public class Crope_Bar {
 	JFrame frame;
 	JMenuBar menu_bar;
-
+  boolean you_can_build = false;
 	public Crope_Bar(PApplet app) {
-		if(get_os_family().equals("mac")) {
-			System.setProperty("apple.laf.useScreenMenuBar","true");
-		}
 		
-		frame = (JFrame) ((processing.awt.PSurfaceAWT.SmoothCanvas)app.getSurface().getNative()).getFrame();
-		menu_bar = new JMenuBar();
-		frame.setJMenuBar(menu_bar);
+		if(get_renderer().equals("processing.awt.PGraphicsJava2D")) {
+			you_can_build = true;
+		} else {
+      // com.jogamp.newt.opengl.GLWindow glw = (com.jogamp.newt.opengl.GLWindow)app.getSurface().getNative();
+			// println(glw);
+			printErr("Use class Crope_Bar with",get_renderer(),"is not possible. change your renderer to JAVA2D");
+		}
+
+
+		if(you_can_build) {
+			if(get_os_family().equals("mac")) {
+				System.setProperty("apple.laf.useScreenMenuBar","true");
+			}
+			frame = (JFrame) ((processing.awt.PSurfaceAWT.SmoothCanvas)app.getSurface().getNative()).getFrame();
+			menu_bar = new JMenuBar();
+			frame.setJMenuBar(menu_bar);
+		}
 	}
 
   // ArrayList<JMenuItem> menu_item_list = new ArrayList<JMenuItem>();
   ArrayList<C_Menu_Item> menu_item_list = new ArrayList<C_Menu_Item>();
-	void set(String... data) {
-		menu_item_list.clear();
-		build(data);
-		set_listener();
+	public void set(String... data) {
+		if(you_can_build) {
+			menu_item_list.clear();
+			build(data);
+			set_listener();
+		}
 	}
   
-	void build(String... data) {
+	private void build(String... data) {
 		JMenu [] menu = new JMenu [data.length];
 		int count = 0;
 		for(int i = 0 ; i < data.length ; i++) {
@@ -70,7 +83,7 @@ public class Crope_Bar {
 	String import_media = "import media";
 	String import_shape = "import shape";
 	String import_text = "import text";
-	String import_video = "import video";
+	String import_movie = "import movie";
 
 	String import_folder = "import folder";
 	String load_file = "load";
@@ -78,7 +91,7 @@ public class Crope_Bar {
 	String save_file = "save";
 	String save_as_file = "save as";
 
-	void set_listener() {
+	private void set_listener() {
 		if(menu_item_list.size() > 0) {
 			// for(JMenuItem mi : menu_item_list) {
 			for(C_Menu_Item cmi : menu_item_list) {
@@ -111,11 +124,11 @@ public class Crope_Bar {
 							println("action event:",import_text);
 						}
 			    });
-				} else if(cmi.get_name().toLowerCase().equals(import_video)) {
+				} else if(cmi.get_name().toLowerCase().equals(import_movie)) {
 					cmi.get_menu().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) {
-							select_input("video");
-							println("action event:",import_video);
+							select_input("movie");
+							println("action event:",import_movie);
 						}
 			    });
 				} else if(cmi.get_name().toLowerCase().equals(import_folder)) {
@@ -163,11 +176,14 @@ public class Crope_Bar {
 	}
 
  
-	void action_event() {
-		println(import_image,import_media,import_shape,import_text,import_video,
-						import_folder,
-						load_file,load_recent_file,
-						save_file,save_as_file);
+	public void action_event() {
+		if(you_can_build) {
+			println(import_image, import_media, import_shape, import_text, import_movie,
+				import_folder,
+				load_file, load_recent_file,
+				save_file, save_as_file);
+		}
+
 	}
 
 
@@ -201,8 +217,8 @@ public class Crope_Bar {
 
 
 
-	void watch() {
-		if(menu_item_list.size() > 0) {
+	public void watch() {
+		if(you_can_build && menu_item_list.size() > 0) {
 			/*
 			for(JMenuItem mi : menu_item_list) {
 				// mi.get_something_but_what();
@@ -215,11 +231,13 @@ public class Crope_Bar {
 
 
 
-	void show() {
-		frame.setVisible(true);
+	public void show() {
+		if(you_can_build) {
+			frame.setVisible(true);
+		}
 	}
   
-	void info_item() {
+	public void info_item() {
 		if(menu_item_list.size() > 0) {
 			// println("frameCount",frameCount);
 			for(C_Menu_Item cmi : menu_item_list) {
@@ -235,11 +253,13 @@ public class Crope_Bar {
 		}
 	}
 
-	void help() {
-		println("\npass all menus in differents String to method set(String... menu)");
-		println("The menu must have a content separate by coma ','");
-		println("the menu content represent the menu title");
-		println("for the separor use '|' between two comas\n");
+	public void help() {
+		if(you_can_build) {
+			println("\npass all menus in differents String to method set(String... menu)");
+			println("The menu must have a content separate by coma ','");
+			println("the menu content represent the menu title");
+			println("for the separor use '|' between two comas\n");
+		}
 	}
 	
  
