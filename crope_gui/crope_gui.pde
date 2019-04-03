@@ -13,30 +13,41 @@ Crope_Bar cb;
 void setup() {
 	// size(100,100);
 	size(100,100);
+	JSONObject menu_bar = new JSONObject();
+	// WARNING keep "menu bar" it's the key to build the Crope_Bar, is waiting
+	menu_bar.setString("menu bar", "about,file,import,help"); // set the title of the menu
 
-	JSONObject json = new JSONObject();
+	JSONObject about_ = new JSONObject();
+	about_.setString("menu", "information,version");
 
-  json.setInt("id", 0);
-  json.setString("menu bar", "about,file,import,help");
-  
-  json.setString("about", "information,version");
-  json.setString("file", "load,load recent+,|,save,save as");
-  json.setString("load recent", "blaubird.rope,youngtimer.rope");
-  
-  json.setString("import", "media,image,video,sound,text,shape,|,folder");
-  
-  json.setString("help", "controler,prescene,scene");
-/*
-	build_menu_bar( "about",
-									"file,load,load recent%blaubird.rope%youngtimer.rope,|,save,save as",
-									"import,import image,import movie",
-									"help,controler,prescene,scene");
-									*/
+	JSONObject file_ = new JSONObject();
+	file_.setString("menu", "load,load recent+,|,save,save as");
+  // here there is "+" a the end of recent that indicate there is a submenu
+  file_.setString("load recent", "blaubird.rope,youngtimer.rope"); // set the submenu
+  file_.setString("save","callback_type_save");
+  file_.setString("save as","prompt,callback_type_save_as,file_name,extension");
+ 
+ 	JSONObject import_ = new JSONObject();
+	import_.setString("menu", "media,image,video,sound,text,shape,|,folder");
 
-	build_menu_bar(json);
+	JSONObject help_ = new JSONObject();
+	help_.setString("menu", "controler,prescene,scene");
+  
+  // pass each JSONObject, must be the same than "menu bar" setting
+	menu_bar.setJSONObject("about", about_);
+	menu_bar.setJSONObject("file", file_);
+	menu_bar.setJSONObject("import", import_);
+	menu_bar.setJSONObject("help", help_);
+
+  build_menu_bar(menu_bar);
+
+
 	//cb.watch();
 	// cb.info_item();
-	cb.help();
+	// cb.help();
+	// cb.print_listener();
+
+	saveJSONObject(cb.get_menu(), "data/menu_bar_tree.json");
 }
 
 void draw() {
@@ -62,6 +73,15 @@ void build_menu_bar(JSONObject content) {
 				"help,controler,prescene,scene");
 				*/
 	cb.show();
+}
+
+
+void callback_type_save() {
+	println("save the current file");
+}
+
+void callback_type_save_as(File selection) {
+	println(selection.getAbsolutePath());
 }
 
 

@@ -1,7 +1,7 @@
 /**
 * CROPE BAR
 * Control ROmanesco Processing Environment
-* v 0.0.4
+* v 0.0.5
 * Copyleft (c) 2019-2019
 * Processing 3.5.3
 * Rope library 0.5.1
@@ -15,15 +15,19 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
  
 public class Crope_Bar {
+	PApplet app;
 	JSONObject json;
 	JFrame frame;
 	JMenuBar menu_bar;
   boolean you_can_build = false;
   int id_menu_item = 0;
 	public Crope_Bar(PApplet app) {
-		
+		this.app = app;
 		if(get_renderer().equals("processing.awt.PGraphicsJava2D")) {
 			you_can_build = true;
 		} else {
@@ -44,7 +48,6 @@ public class Crope_Bar {
 	}
 
   ArrayList<C_Menu_Item> menu_item_list = new ArrayList<C_Menu_Item>();
-	// public void set(String... data) {
 	public void set(JSONObject json) {
 		this.json = json;
 		if(you_can_build) {
@@ -59,25 +62,23 @@ public class Crope_Bar {
 		JMenu [] menu = new JMenu [data.length];
 		id_menu_item = 0;
 		for(int i = 0 ; i < data.length ; i++) {
-			String[] content = split(json.getString(data[i]),",");
+			String[] content = json.getJSONObject(data[i]).getString("menu").split(",");
 			menu[i] = new JMenu(data[i]); // prompt
 			menu_bar.add(menu[i]);
-			// String[] new_arr = Arrays.copyOfRange(content, 1, content.length);
-			set_menu_item(menu[i],content);
+			set_menu_item(data[i],menu[i],content);
 		}
 	}
 
-	private void set_menu_item(JMenu j_menu, String [] content) {
+	private void set_menu_item(String title_prompt, JMenu j_menu, String [] content) {
 		for(int i = 0 ; i < content.length ; i++) {
 			if(content[i].equals("|")) {
 				j_menu.addSeparator();
 			} else {
 				if(content[i].endsWith("+")) {
 					String prompt = content[i].substring(0,content[i].length()-1);
-					String [] sub_content = json.getString(prompt).split(",");
+					String [] sub_content = json.getJSONObject(title_prompt).getString(prompt).split(",");
 					JMenu sub_menu_item = new JMenu(prompt); // prompt
 					j_menu.add(sub_menu_item);
-					//String[] new_arr = Arrays.copyOfRange(sub_content, 1, sub_content.length);
 					add_sub_menu_item(sub_menu_item, sub_content);
 
 
@@ -96,7 +97,6 @@ public class Crope_Bar {
 	private void add_sub_menu_item(JMenu j_sub_menu, String [] content) {
 		for(int i = 0 ; i < content.length ; i++) {
 			id_menu_item++;
-			// JMenuItem menu_item = new JMenuItem(content[i]);
 			j_sub_menu.add(content[i]);
 		}
 	}
@@ -111,21 +111,42 @@ public class Crope_Bar {
   */
 	String import_image = "import image";
 	String import_media = "import media";
-	String import_shape = "import shape";
-	String import_text = "import text";
 	String import_movie = "import movie";
+	String import_shape = "import shape";
+	String import_sound = "import sound";
+	String import_text = "import text";
 
 	String import_folder = "import folder";
+	String import_folder_and_subfolder = "import folder / subfolder";
+
 	String load_file = "load";
 	String load_recent_file = "load recent";
 	String save_file = "save";
 	String save_as_file = "save as";
 
+	void print_listener() {
+		println("list of listener available:");
+		println(import_image);
+		println(import_media);
+		println(import_movie);
+		println(import_shape);
+		println(import_sound);
+		println(import_text);
+
+		println(import_folder);
+		println(import_folder_and_subfolder);
+
+		println(load_file);
+		println(load_recent_file);
+		println(save_file);
+		println(save_as_file);
+	}
+
 	private void set_listener() {
 		if(menu_item_list.size() > 0) {
 			// for(JMenuItem mi : menu_item_list) {
 			for(C_Menu_Item cmi : menu_item_list) {
-				// println("setting",cmi.get_name(),cmi.get_id());
+				// input file
 				if(cmi.get_name().toLowerCase().equals(import_image)) {
 					cmi.get_menu().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) {
@@ -140,11 +161,25 @@ public class Crope_Bar {
 							println("action event:",import_image);
 						}
 			    });
+				} else if(cmi.get_name().toLowerCase().equals(import_movie)) {
+					cmi.get_menu().addActionListener(new ActionListener() { 
+						public void actionPerformed(ActionEvent ae) {
+							select_input("movie");
+							println("action event:",import_movie);
+						}
+			    });
 				} else if(cmi.get_name().toLowerCase().equals(import_shape)) {
 					cmi.get_menu().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) {
 							select_input("shape");
 							println("action event:",import_shape);
+						}
+			    });
+				} else if(cmi.get_name().toLowerCase().equals(import_sound)) {
+					cmi.get_menu().addActionListener(new ActionListener() { 
+						public void actionPerformed(ActionEvent ae) {
+							select_input("sound");
+							println("action event:",import_sound);
 						}
 			    });
 				} else if(cmi.get_name().toLowerCase().equals(import_text)) {
@@ -154,21 +189,28 @@ public class Crope_Bar {
 							println("action event:",import_text);
 						}
 			    });
-				} else if(cmi.get_name().toLowerCase().equals(import_movie)) {
-					cmi.get_menu().addActionListener(new ActionListener() { 
-						public void actionPerformed(ActionEvent ae) {
-							select_input("movie");
-							println("action event:",import_movie);
-						}
-			    });
-				} else if(cmi.get_name().toLowerCase().equals(import_folder)) {
+				} 
+
+        // folder
+					else if(cmi.get_name().toLowerCase().equals(import_folder)) {
 					cmi.get_menu().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) {
 							select_folder();
 							println("action event:",import_folder);
 						}
 			    });
-				} else if(cmi.get_name().toLowerCase().equals(load_file)) {
+				} else if(cmi.get_name().toLowerCase().equals(import_folder_and_subfolder)) {
+					cmi.get_menu().addActionListener(new ActionListener() { 
+						public void actionPerformed(ActionEvent ae) {
+							select_folder();
+							explore_subfolder_is(true);
+							println("action event:",import_folder_and_subfolder);
+						}
+			    });
+				} 
+
+        // load
+					else if(cmi.get_name().toLowerCase().equals(load_file)) {
 					cmi.get_menu().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) { 
 							select_input("load");
@@ -182,22 +224,48 @@ public class Crope_Bar {
 							println("action event:",load_recent_file);
 						}
 			    });
-				} else if(cmi.get_name().toLowerCase().equals(save_file)) {
+				} 
+
+				// save
+					else if(cmi.get_name().toLowerCase().equals(save_file)) {
 					cmi.get_menu().addActionListener(new ActionListener() { 
-						public void actionPerformed(ActionEvent ae) { 
-							println("action event:",save_file);
+						public void actionPerformed(ActionEvent ae) {
+							if(json.getString("save") != null) {
+								String data_save = json.getString("save");
+								println("action event:",save_file);
+								callback_save(data_save,app);
+							} else {
+								printErr("class Crope_Bar method set_listener(): JSONObject.setString(\"save as\",\"callback_method\"), need to be implement");
+							}
 						}
 			    });
 				} else if(cmi.get_name().toLowerCase().equals(save_as_file)) {
 					cmi.get_menu().addActionListener(new ActionListener() { 
-						public void actionPerformed(ActionEvent ae) { 
-							println("action event:",save_as_file);
+						public void actionPerformed(ActionEvent ae) {
+							if(json.getString("save as") != null) {
+								String [] data_save = split(json.getString("save as"),",");
+								if(data_save.length > 1) {
+									File file;
+									String prompt = data_save[0];
+									String callback = data_save[1];
+									if(data_save.length > 3) {
+										file = new File (data_save[2]+"."+data_save[3]);
+									} else {
+										file = new File("file_name.txt");
+									}
+									selectOutput(prompt,callback,file);
+								}
+								println("action event:",save_as_file);
+							} else {
+								printErr("class Crope_Bar method set_listener(): JSONObject.setString(\"save as\",\"prompt\",\"callback_method\",\"file_name\",\"extension\"), need to be implement");
+							}
+
 						}
 			    });
 				} else {
 					cmi.get_menu().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) { 
-							println("action event: unknow action, check catalogue action > void name.action_event()");
+							println("action event: unknow action, check catalogue action > void your_menu_bar.print_listener()");
 						}
 			    });;
 				}
@@ -205,15 +273,26 @@ public class Crope_Bar {
 		}
 	}
 
- 
-	public void action_event() {
-		if(you_can_build) {
-			println(import_image, import_media, import_shape, import_text, import_movie,
-				import_folder,
-				load_file, load_recent_file,
-				save_file, save_as_file);
-		}
+
+
+
+
+	// callback
+	private void callback_save(String callbackMethod, Object callbackObject) {
+	  try {
+	    Class<?> callbackClass = callbackObject.getClass();
+	    Method selectMethod =
+	    callbackClass.getMethod(callbackMethod, new Class[]{});                     
+	    selectMethod.invoke(callbackObject);
+	  } catch (IllegalAccessException iae) {
+	    System.err.println(callbackMethod + "() must be public");
+	  } catch (InvocationTargetException ite) {
+	    ite.printStackTrace();
+	  } catch (NoSuchMethodException nsme) {
+	    System.err.println(callbackMethod + "() could not be found");
+	  }
 	}
+
 
 
 
@@ -266,6 +345,8 @@ public class Crope_Bar {
 		}
 	}
   
+
+  // get
 	public void info_item() {
 		if(menu_item_list.size() > 0) {
 			// println("frameCount",frameCount);
@@ -292,6 +373,10 @@ public class Crope_Bar {
 			println("");
 			println("for the separor use '|' between two comas\n");
 		}
+	}
+
+	public JSONObject get_menu() {
+		return json;
 	}
 }
 

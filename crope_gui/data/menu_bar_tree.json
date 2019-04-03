@@ -1,0 +1,12 @@
+{
+  "help": {"menu": "controler,prescene,scene"},
+  "file": {
+    "load recent": "blaubird.rope,youngtimer.rope",
+    "save": "callback_type_save",
+    "save as": "prompt,callback_type_save_as,file_name,extension",
+    "menu": "load,load recent+,|,save,save as"
+  },
+  "import": {"menu": "media,image,video,sound,text,shape,|,folder"},
+  "about": {"menu": "information,version"},
+  "menu bar": "about,file,import,help"
+}
