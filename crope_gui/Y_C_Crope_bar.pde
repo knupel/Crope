@@ -1,7 +1,7 @@
 /**
 * CROPE BAR
 * Control ROmanesco Processing Environment
-* v 0.0.3
+* v 0.0.4
 * Copyleft (c) 2019-2019
 * Processing 3.5.3
 * Rope library 0.5.1
@@ -17,9 +17,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
  
 public class Crope_Bar {
+	JSONObject json;
 	JFrame frame;
 	JMenuBar menu_bar;
   boolean you_can_build = false;
+  int id_menu_item = 0;
 	public Crope_Bar(PApplet app) {
 		
 		if(get_renderer().equals("processing.awt.PGraphicsJava2D")) {
@@ -41,44 +43,72 @@ public class Crope_Bar {
 		}
 	}
 
-  // ArrayList<JMenuItem> menu_item_list = new ArrayList<JMenuItem>();
   ArrayList<C_Menu_Item> menu_item_list = new ArrayList<C_Menu_Item>();
-	public void set(String... data) {
+	// public void set(String... data) {
+	public void set(JSONObject json) {
+		this.json = json;
 		if(you_can_build) {
 			menu_item_list.clear();
-			build(data);
+			build();
 			set_listener();
 		}
 	}
-  
-	private void build(String... data) {
-		JMenu [] menu = new JMenu [data.length];
-		int count = 0;
-		for(int i = 0 ; i < data.length ; i++) {
-			// println(data[i]);
-			String[] content = split(data[i],",");
-			menu[i] = new JMenu(content[0]);
-			menu_bar.add(menu[i]);
-			if(content.length > 1) {
-				for(int k = 1 ; k < content.length ; k++) {
-					if(content[k].equals("|")) {
-						menu[i].addSeparator();
-					} else {
-						count++;
-						// println(count);
-						JMenuItem menu_item = new JMenuItem(content[k]);
-						// menu_item_list.add(menu_item);
-						menu[i].add(menu_item);
 
-						C_Menu_Item cmi = new C_Menu_Item(content[k],count,menu_item);
-						menu_item_list.add(cmi);
-						
-					}
+	private void build() {
+		String [] data = split(json.getString("menu bar"),",");
+		JMenu [] menu = new JMenu [data.length];
+		id_menu_item = 0;
+		for(int i = 0 ; i < data.length ; i++) {
+			String[] content = split(json.getString(data[i]),",");
+			menu[i] = new JMenu(data[i]); // prompt
+			menu_bar.add(menu[i]);
+			// String[] new_arr = Arrays.copyOfRange(content, 1, content.length);
+			set_menu_item(menu[i],content);
+		}
+	}
+
+	private void set_menu_item(JMenu j_menu, String [] content) {
+		for(int i = 0 ; i < content.length ; i++) {
+			if(content[i].equals("|")) {
+				j_menu.addSeparator();
+			} else {
+				if(content[i].endsWith("+")) {
+					String prompt = content[i].substring(0,content[i].length()-1);
+					String [] sub_content = json.getString(prompt).split(",");
+					JMenu sub_menu_item = new JMenu(prompt); // prompt
+					j_menu.add(sub_menu_item);
+					//String[] new_arr = Arrays.copyOfRange(sub_content, 1, sub_content.length);
+					add_sub_menu_item(sub_menu_item, sub_content);
+
+
+				} else {
+					id_menu_item++;
+					JMenuItem menu_item = new JMenuItem(content[i]); // prompt
+					j_menu.add(menu_item);
+					C_Menu_Item cmi = new C_Menu_Item(content[i],id_menu_item,menu_item);
+					menu_item_list.add(cmi);
 				}
+						
 			}
 		}
 	}
 
+	private void add_sub_menu_item(JMenu j_sub_menu, String [] content) {
+		for(int i = 0 ; i < content.length ; i++) {
+			id_menu_item++;
+			// JMenuItem menu_item = new JMenuItem(content[i]);
+			j_sub_menu.add(content[i]);
+		}
+	}
+
+
+
+  
+
+  /**
+  * OPTION MENU
+  * This part can become very very huge !!!!!
+  */
 	String import_image = "import image";
 	String import_media = "import media";
 	String import_shape = "import shape";
@@ -183,7 +213,6 @@ public class Crope_Bar {
 				load_file, load_recent_file,
 				save_file, save_as_file);
 		}
-
 	}
 
 
@@ -256,12 +285,13 @@ public class Crope_Bar {
 	public void help() {
 		if(you_can_build) {
 			println("\npass all menus in differents String to method set(String... menu)");
+			println("");
 			println("The menu must have a content separate by coma ','");
-			println("the menu content represent the menu title");
+			println("The sub menu must have a content separate by coma '%'");
+			println("the first element of the menu or sub menu array represent the menu prompt");
+			println("");
 			println("for the separor use '|' between two comas\n");
 		}
 	}
-	
- 
 }
 
