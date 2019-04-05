@@ -26,6 +26,7 @@ public class Crope_Bar {
 	JMenuBar menu_bar;
   boolean you_can_build = false;
   int id_menu_item = 0;
+  int id_menu_item_dynamic = 0;
 	public Crope_Bar(PApplet app) {
 		this.app = app;
 		if(get_renderer().equals("processing.awt.PGraphicsJava2D")) {
@@ -47,13 +48,16 @@ public class Crope_Bar {
 		}
 	}
 
-  ArrayList<C_Menu_Item> menu_item_list = new ArrayList<C_Menu_Item>();
+  ArrayList<C_Menu_Item> menu_item_list_static = new ArrayList<C_Menu_Item>();
+  ArrayList<C_Menu_Item> menu_item_list_dynamic = new ArrayList<C_Menu_Item>();
 	public void set(JSONObject json) {
 		this.json = json;
 		if(you_can_build) {
-			menu_item_list.clear();
+			menu_item_list_static.clear();
+			menu_item_list_dynamic.clear();
 			build();
-			set_listener();
+			set_listener_static();
+			set_listener_dynamic();
 		}
 	}
 
@@ -85,14 +89,20 @@ public class Crope_Bar {
 					JMenuItem menu_item = new JMenuItem(content[i]); // prompt
 					j_menu.add(menu_item);
 					C_Menu_Item cmi = new C_Menu_Item(content[i],id_menu_item,menu_item);
-					menu_item_list.add(cmi);
+					menu_item_list_static.add(cmi);
 				}				
 			}
 		}
 	}
 
-	private void dynamic(String [] elements) {
-
+	private void dynamic(String [] dynamic_elem) {
+		id_menu_item_dynamic = 0;
+		for(int i = 0 ; i < dynamic_elem.length ; i++) {
+			id_menu_item_dynamic++;
+			JMenuItem menu_item = new JMenuItem(dynamic_elem[i]); // prompt
+			C_Menu_Item cmi = new C_Menu_Item(dynamic_elem[i],id_menu_item,menu_item);
+			menu_item_list_dynamic.add(cmi);
+		}
 	}
 
 
@@ -144,11 +154,20 @@ public class Crope_Bar {
 		println(save_file);
 		println(save_as_file);
 	}
+  
 
-	private void set_listener() {
-		if(menu_item_list.size() > 0) {
-			// for(JMenuItem mi : menu_item_list) {
-			for(C_Menu_Item cmi : menu_item_list) {
+
+  // SET LISTENER
+	private void set_listener_dynamic() {
+		if(menu_item_list_dynamic.size() > 0) {
+			for(C_Menu_Item cmi : menu_item_list_dynamic) {
+			}
+		}
+	}
+
+	private void set_listener_static() {
+		if(menu_item_list_static.size() > 0) {
+			for(C_Menu_Item cmi : menu_item_list_static) {
 				// SCAN STATIC ELEMENT
 				// input file
 				if(cmi.get_name().toLowerCase().equals(import_image)) {
@@ -316,9 +335,9 @@ public class Crope_Bar {
 
   // get
 	public void info_item() {
-		if(menu_item_list.size() > 0) {
+		if(menu_item_list_static.size() > 0) {
 			// println("frameCount",frameCount);
-			for(C_Menu_Item cmi : menu_item_list) {
+			for(C_Menu_Item cmi : menu_item_list_static) {
 				JMenuItem mi = cmi.get_menu_item();
 			//for(JMenuItem mi : menu_item_list) {
 				// println("getUIClassID()",mi.getUIClassID());
