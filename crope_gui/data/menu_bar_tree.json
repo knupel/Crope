@@ -6,7 +6,7 @@
     "save as": "prompt,callback_type_save_as,file_name,extension",
     "menu": "load,load recent+,|,save,save as"
   },
-  "import": {"menu": "media,image,video,sound,text,shape,|,folder"},
+  "import": {"menu": "import media,import image,import video,import sound,import text,import shape,|,import folder"},
   "about": {"menu": "information,version"},
   "menu bar": "about,file,import,help"
 }

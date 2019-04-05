@@ -15,6 +15,7 @@ void setup() {
 	size(100,100);
 	JSONObject menu_bar = new JSONObject();
 	// WARNING keep "menu bar" it's the key to build the Crope_Bar, is waiting
+	// WARNING wait "file" for "save", "save as", "load recent", load
 	menu_bar.setString("menu bar", "about,file,import,help"); // set the title of the menu
 
 	JSONObject about_ = new JSONObject();
@@ -23,12 +24,12 @@ void setup() {
 	JSONObject file_ = new JSONObject();
 	file_.setString("menu", "load,load recent+,|,save,save as");
   // here there is "+" a the end of recent that indicate there is a submenu
-  file_.setString("load recent", "blaubird.rope,youngtimer.rope"); // set the submenu
+  file_.setString("load recent", "blaubird.rope,youngtimer.rope"); // set the submenu and dynamic menu
   file_.setString("save","callback_type_save");
   file_.setString("save as","prompt,callback_type_save_as,file_name,extension");
  
  	JSONObject import_ = new JSONObject();
-	import_.setString("menu", "media,image,video,sound,text,shape,|,folder");
+	import_.setString("menu", "import media,import image,import video,import sound,import text,import shape,|,import folder");
 
 	JSONObject help_ = new JSONObject();
 	help_.setString("menu", "controler,prescene,scene");
@@ -41,8 +42,6 @@ void setup() {
 
   build_menu_bar(menu_bar);
 
-
-	//cb.watch();
 	// cb.info_item();
 	// cb.help();
 	// cb.print_listener();
@@ -52,11 +51,15 @@ void setup() {
 
 void draw() {
 	cb.info_item();
-	if(input("image") != null) println(input("image"));
+	if(input() != null) println("input()",input());
+	if(input("image") != null) println("input(\"image\")",input("image"));
+	if(input("load") != null) println("input(\"load\")",input("load"));
 }
 
 void keyPressed() {
-	// build_menu_bar("Mais que se passe-t-il?");
+	// to update menu, you need to catch the JSONObject of your Menu and update the content of this one.
+	cb.get_menu().getJSONObject("file").setString("load recent","new_path/item.psd");
+	build_menu_bar(cb.get_menu());
 
 }
 
@@ -83,6 +86,17 @@ void callback_type_save() {
 void callback_type_save_as(File selection) {
 	println(selection.getAbsolutePath());
 }
+/*
+void save() {
+	println("Je me sauve vite fait, mal fait");
+}
+
+
+void save_as(File file) {
+	println("Je me sauve lentement, mais surement",file);
+}
+*/
+
 
 
 

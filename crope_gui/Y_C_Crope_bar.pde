@@ -80,19 +80,22 @@ public class Crope_Bar {
 					JMenu sub_menu_item = new JMenu(prompt); // prompt
 					j_menu.add(sub_menu_item);
 					add_sub_menu_item(sub_menu_item, sub_content);
-
-
 				} else {
 					id_menu_item++;
 					JMenuItem menu_item = new JMenuItem(content[i]); // prompt
 					j_menu.add(menu_item);
 					C_Menu_Item cmi = new C_Menu_Item(content[i],id_menu_item,menu_item);
 					menu_item_list.add(cmi);
-				}
-						
+				}				
 			}
 		}
 	}
+
+	private void dynamic(String [] elements) {
+
+	}
+
+
 
 	private void add_sub_menu_item(JMenu j_sub_menu, String [] content) {
 		for(int i = 0 ; i < content.length ; i++) {
@@ -146,44 +149,46 @@ public class Crope_Bar {
 		if(menu_item_list.size() > 0) {
 			// for(JMenuItem mi : menu_item_list) {
 			for(C_Menu_Item cmi : menu_item_list) {
+				// SCAN STATIC ELEMENT
 				// input file
 				if(cmi.get_name().toLowerCase().equals(import_image)) {
-					cmi.get_menu().addActionListener(new ActionListener() { 
+					cmi.get_menu_item().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) {
 							select_input("image");
 							println("action event:",import_image);
+							println("use method input(\"image\") to catch path");
 						}
 			    });
 				} else if(cmi.get_name().toLowerCase().equals(import_media)) {
-					cmi.get_menu().addActionListener(new ActionListener() { 
+					cmi.get_menu_item().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) {
 							select_input("media");
-							println("action event:",import_image);
+							println("action event:",import_media);
 						}
 			    });
 				} else if(cmi.get_name().toLowerCase().equals(import_movie)) {
-					cmi.get_menu().addActionListener(new ActionListener() { 
+					cmi.get_menu_item().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) {
 							select_input("movie");
 							println("action event:",import_movie);
 						}
 			    });
 				} else if(cmi.get_name().toLowerCase().equals(import_shape)) {
-					cmi.get_menu().addActionListener(new ActionListener() { 
+					cmi.get_menu_item().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) {
 							select_input("shape");
 							println("action event:",import_shape);
 						}
 			    });
 				} else if(cmi.get_name().toLowerCase().equals(import_sound)) {
-					cmi.get_menu().addActionListener(new ActionListener() { 
+					cmi.get_menu_item().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) {
 							select_input("sound");
 							println("action event:",import_sound);
 						}
 			    });
 				} else if(cmi.get_name().toLowerCase().equals(import_text)) {
-					cmi.get_menu().addActionListener(new ActionListener() { 
+					cmi.get_menu_item().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) {
 							select_input("text");
 							println("action event:",import_text);
@@ -193,14 +198,14 @@ public class Crope_Bar {
 
         // folder
 					else if(cmi.get_name().toLowerCase().equals(import_folder)) {
-					cmi.get_menu().addActionListener(new ActionListener() { 
+					cmi.get_menu_item().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) {
 							select_folder();
 							println("action event:",import_folder);
 						}
 			    });
 				} else if(cmi.get_name().toLowerCase().equals(import_folder_and_subfolder)) {
-					cmi.get_menu().addActionListener(new ActionListener() { 
+					cmi.get_menu_item().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) {
 							select_folder();
 							explore_subfolder_is(true);
@@ -211,59 +216,59 @@ public class Crope_Bar {
 
         // load
 					else if(cmi.get_name().toLowerCase().equals(load_file)) {
-					cmi.get_menu().addActionListener(new ActionListener() { 
+					cmi.get_menu_item().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) { 
 							select_input("load");
 							println("action event:",load_file);
 						}
 			    });
-				} else if(cmi.get_name().toLowerCase().equals(load_recent_file)) {
-					cmi.get_menu().addActionListener(new ActionListener() { 
+				} 
+
+				// load recent is dynamic 
+				// we don't know in advance the content of this type of submenu, 
+				// need a loop to scan element
+				else if(cmi.get_name().toLowerCase().equals(load_recent_file)) {
+					cmi.get_menu_item().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) {
-							select_input("load");
+							String [] recent_file = split(json.getJSONObject("file").getString(load_recent_file),",");
+							// select_input("load");
 							println("action event:",load_recent_file);
+							if(recent_file != null) printArray(recent_file);
 						}
 			    });
 				} 
 
 				// save
 					else if(cmi.get_name().toLowerCase().equals(save_file)) {
-					cmi.get_menu().addActionListener(new ActionListener() { 
+					cmi.get_menu_item().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) {
-							if(json.getString("save") != null) {
-								String data_save = json.getString("save");
-								println("action event:",save_file);
-								callback_save(data_save,app);
-							} else {
-								printErr("class Crope_Bar method set_listener(): JSONObject.setString(\"save as\",\"callback_method\"), need to be implement");
-							}
+							String data_save = json.getJSONObject("file").getString(save_file);
+							println("action event:",save_file);
+							method(data_save,app);
+							template_method(data_save,app);
+							method(data_save,app);
 						}
 			    });
 				} else if(cmi.get_name().toLowerCase().equals(save_as_file)) {
-					cmi.get_menu().addActionListener(new ActionListener() { 
+					cmi.get_menu_item().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) {
-							if(json.getString("save as") != null) {
-								String [] data_save = split(json.getString("save as"),",");
-								if(data_save.length > 1) {
-									File file;
-									String prompt = data_save[0];
-									String callback = data_save[1];
-									if(data_save.length > 3) {
-										file = new File (data_save[2]+"."+data_save[3]);
-									} else {
-										file = new File("file_name.txt");
-									}
-									selectOutput(prompt,callback,file);
+							String [] data_save = split(json.getJSONObject("file").getString(save_as_file),",");
+							if(data_save.length > 1) {
+								File file;
+								String prompt = data_save[0];
+								String callback = data_save[1];
+								if(data_save.length > 3) {
+									file = new File (data_save[2]+"."+data_save[3]);
+								} else {
+									file = new File("file_name.txt");
 								}
-								println("action event:",save_as_file);
-							} else {
-								printErr("class Crope_Bar method set_listener(): JSONObject.setString(\"save as\",\"prompt\",\"callback_method\",\"file_name\",\"extension\"), need to be implement");
+								selectOutput(prompt,callback,file);
 							}
-
+							println("action event:",save_as_file);
 						}
 			    });
 				} else {
-					cmi.get_menu().addActionListener(new ActionListener() { 
+					cmi.get_menu_item().addActionListener(new ActionListener() { 
 						public void actionPerformed(ActionEvent ae) { 
 							println("action event: unknow action, check catalogue action > void your_menu_bar.print_listener()");
 						}
@@ -272,28 +277,6 @@ public class Crope_Bar {
 			}
 		}
 	}
-
-
-
-
-
-	// callback
-	private void callback_save(String callbackMethod, Object callbackObject) {
-	  try {
-	    Class<?> callbackClass = callbackObject.getClass();
-	    Method selectMethod =
-	    callbackClass.getMethod(callbackMethod, new Class[]{});                     
-	    selectMethod.invoke(callbackObject);
-	  } catch (IllegalAccessException iae) {
-	    System.err.println(callbackMethod + "() must be public");
-	  } catch (InvocationTargetException ite) {
-	    ite.printStackTrace();
-	  } catch (NoSuchMethodException nsme) {
-	    System.err.println(callbackMethod + "() could not be found");
-	  }
-	}
-
-
 
 
 
@@ -315,26 +298,11 @@ public class Crope_Bar {
 			return id;
 		}
 
-		protected JMenuItem get_menu() {
+		protected JMenuItem get_menu_item() {
 			return j_menu_item;
 		}
 	}
   
-
-
-
-
-
-	public void watch() {
-		if(you_can_build && menu_item_list.size() > 0) {
-			/*
-			for(JMenuItem mi : menu_item_list) {
-				// mi.get_something_but_what();
-			}
-			*/
-		}
-
-	}
 
 
 
@@ -351,7 +319,7 @@ public class Crope_Bar {
 		if(menu_item_list.size() > 0) {
 			// println("frameCount",frameCount);
 			for(C_Menu_Item cmi : menu_item_list) {
-				JMenuItem mi = cmi.get_menu();
+				JMenuItem mi = cmi.get_menu_item();
 			//for(JMenuItem mi : menu_item_list) {
 				// println("getUIClassID()",mi.getUIClassID());
 				//println("getText()",mi.getText());
@@ -365,11 +333,10 @@ public class Crope_Bar {
 
 	public void help() {
 		if(you_can_build) {
-			println("\npass all menus in differents String to method set(String... menu)");
+			println("\npass all menus in differents String to method set(JSONObject)");
 			println("");
 			println("The menu must have a content separate by coma ','");
-			println("The sub menu must have a content separate by coma '%'");
-			println("the first element of the menu or sub menu array represent the menu prompt");
+			println("The name of menu have a submenu need to finish by '+'");
 			println("");
 			println("for the separor use '|' between two comas\n");
 		}
