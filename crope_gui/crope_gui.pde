@@ -25,8 +25,8 @@ void setup() {
 	file_.setString("menu", "load,load recent+,|,save,save as");
   // here there is "+" a the end of recent that indicate there is a submenu
   file_.setString("load recent", "blaubird.rope,youngtimer.rope"); // set the submenu and dynamic menu
-  file_.setString("save","callback_type_save");
-  file_.setString("save as","prompt,callback_type_save_as,file_name,extension");
+  // file_.setString("save","callback_type_save");
+  //file_.setString("save as","prompt,callback_type_save_as,file_name,extension");
  
  	JSONObject import_ = new JSONObject();
 	import_.setString("menu", "import media,import image,import video,import sound,import text,import shape,|,import folder");
@@ -58,11 +58,11 @@ void draw() {
 
 void keyPressed() {
 	// to update menu, you need to catch the JSONObject of your Menu and update the content of this one.
-	cb.get_menu().getJSONObject("file").setString("load recent","new_path/item.psd");
-	build_menu_bar(cb.get_menu());
+	//cb.get_menu().getJSONObject("file").setString("load recent","new_path/item.psd");
+	//build_menu_bar(cb.get_menu());
 
 }
-
+ 
 
 void build_menu_bar(JSONObject content) {
 // void build_menu_bar(String... content) {
@@ -79,23 +79,14 @@ void build_menu_bar(JSONObject content) {
 }
 
 
-void callback_type_save() {
-	println("save the current file");
-}
 
-void callback_type_save_as(File selection) {
-	println(selection.getAbsolutePath());
-}
-/*
-void save() {
-	println("Je me sauve vite fait, mal fait");
+void what_happen_in_menu(String what, ActionEvent ae) {
+	println(ae);
+	println("here code your the behavior of", what);
 }
 
 
-void save_as(File file) {
-	println("Je me sauve lentement, mais surement",file);
-}
-*/
+
 
 
 
