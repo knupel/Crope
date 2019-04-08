@@ -1,7 +1,6 @@
 ## CROPE
 Controle GUI for Rope system
 v 0.2.0
-2018-2018
 * Copyleft (c) 2018-2019
 
 ## rope library
