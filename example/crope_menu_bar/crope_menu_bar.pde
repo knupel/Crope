@@ -12,8 +12,8 @@ Crope_Bar cb;
 
 void setup() {
 	size(100,100);
-	menu_bar_load();
-	//menu_bar_write();
+	// menu_bar_load();
+	menu_bar_write();
 	cb.help();
 }
 
@@ -55,7 +55,7 @@ void write_menu(JSONObject menu_bar) {
 	import_.setString("menu", "import media>i>cmd,import image,import video,import sound,import text,import shape,|,import folder");
 
 	JSONObject help_ = new JSONObject();
-	help_.setString("menu", "controler,prescene,scene");
+	help_.setString("menu", "controler!?,prescene?,scene?");
   
   // pass each JSONObject, must be the same than "menu bar" setting
 	menu_bar.setJSONObject("about", about_);

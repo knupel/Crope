@@ -1,7 +1,7 @@
 /**
 * CROPE BAR
 * Control ROmanesco Processing Environment
-* v 0.2.1
+* v 0.2.3
 * Copyleft (c) 2019-2019
 * Processing 3.5.3
 * Rope library 0.5.1
@@ -17,6 +17,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+import javax.swing.JCheckBoxMenuItem;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
@@ -103,14 +104,28 @@ public class Crope_Bar {
 	void add_menu_item(JMenu j_menu, String info) {
 		id_menu_item++;
 		String content [] = split(info,'>');
-		JMenuItem menu_item = new JMenuItem(content[0]); // prompt
+		String name_item = content[0];
+		if(name_item.endsWith("?")) {
+			name_item = name_item.substring(0,name_item.length()-1);
+			if(name_item.endsWith("!"));
+			name_item = name_item.substring(0,name_item.length()-1);
+		}
+		JMenuItem menu_item = new JMenuItem(name_item); // prompt
 		if(content.length > 1) {
 			String [] info_key_event = Arrays.copyOfRange(content, content.length-(content.length-1), content.length);
 			set_accelarator(menu_item,info_key_event);
 		}
+		// create check box item if necessary
+		if(content[0].endsWith("?")) {
+			menu_item = new JCheckBoxMenuItem(name_item);
+			if(content[0].endsWith("!?")) {
+				menu_item.setSelected(true);
+			}
+		}
+		
 		j_menu.add(menu_item);
-		action_name[id_menu_item] = content[0];
-		C_Menu_Item cmi = new C_Menu_Item(content[0],id_menu_item,menu_item);
+		action_name[id_menu_item] = name_item;
+		C_Menu_Item cmi = new C_Menu_Item(name_item,id_menu_item,menu_item);
 		menu_item_list.add(cmi);
 	}
 
@@ -317,14 +332,20 @@ public class Crope_Bar {
 		if(you_can_build) {
 			println("\npass all menus in differents String to method set(JSONObject)");
 			println("");
-			println("The menu must have a content separate by coma ','");
+			println("MENU must have 'menu bar' for name");
+			println("MENU must have a content separate by ','(coma)");
+			println("for the separor use '|'(vertical bar) between two ','(coma)\n");
 			println("");
-			println("The menu item can be key responding\n to use syntax like that\nname>key>action_event, the word must be separate by '>'\nthe first term after the menu item name is the key, after you pass your action event");
+			println("MENU ITEM finishing by '?'(interrogation) has a check box added");
+			println("MENU ITEM finishing by '!?'(exclamation)(interrogation) the check box is selected");
+			println("");
+			println("MENU ITEM can be key responding\n to use syntax like that\nname>key>action_event, the word must be separate by '>'\nthe first term after the menu item name is the key, after you pass your action event");
 			println("key available:\na,b,c...x,y,z\n0,1,2...\nf1,f2,...f25\n',',';','@','#','/','+','=','_','-'");
 			println("action event available:\nshift,cmd,meta,ctrl and alt");
-			println("The name of menu have a submenu need to finish by '+'");
 			println("");
-			println("for the separor use '|' between two comas\n");
+			println("ELEMENT of MENU finishing by '+'(plus) can hava a submenu, to set create JSONObject where the name finish by'_'(underscore)");
+
+			
 		}
 	}
 

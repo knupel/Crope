@@ -8,7 +8,7 @@
 
   "import": {"menu": "media>i>cmd,image,video,text,shape,|,import folder>i>cmd>shift"},
 
-  "misc": {"menu": "MIDI,syphon,mask"},
+  "misc": {"menu": "midi map?,syphon,mask"},
 
   "blend": {"menu": "multiply,overlay"},
 

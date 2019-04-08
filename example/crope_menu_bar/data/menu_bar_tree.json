@@ -1,5 +1,5 @@
 {
-  "help": {"menu": "controler,prescene,scene"},
+  "help": {"menu": "controler!?,prescene?,scene?"},
   "file": {
     "load recent": "blaubird.rope,youngtimer.rope",
     "menu": "load>o>cmd,load recent+,|,save>s>cmd,save as>s>cmd>shift,save as a copy>s>cmd>shift>alt"
