@@ -1,14 +1,13 @@
 /**
 * CROPE BAR
 * Control ROmanesco Processing Environment
-* v 0.2.0
+* v 0.2.1
 * Copyleft (c) 2019-2019
 * Processing 3.5.3
 * Rope library 0.5.1
 * @author @stanlepunk
 * @see https://github.com/StanLepunK/Crope
 */
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -23,7 +22,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
 import java.util.Arrays;
-
 
 public class Crope_Bar {
 	PApplet app;
@@ -70,10 +68,14 @@ public class Crope_Bar {
 		JMenu [] menu = new JMenu [data.length];
 		id_menu_item = 0;
 		for(int i = 0 ; i < data.length ; i++) {
-			String[] content = json.getJSONObject(data[i]).getString("menu").split(",");
-			menu[i] = new JMenu(data[i]); // prompt
-			menu_bar.add(menu[i]);
-			set_menu_item(data[i],menu[i],content);
+			if(json.getJSONObject(data[i]) != null) {
+				String[] content = json.getJSONObject(data[i]).getString("menu").split(",");
+				menu[i] = new JMenu(data[i]); // prompt
+				menu_bar.add(menu[i]);
+				set_menu_item(data[i],menu[i],content);
+			} else {
+				printErr("class Crope_Bar method build() menu item:",data[i],"is not found return",json.getJSONObject(data[i]));
+			}
 		}
 	}
 
@@ -261,15 +263,11 @@ public class Crope_Bar {
 	}
 
 
-
-
-
   private void add_sub_menu_item(JMenu j_sub_menu, String [] content) {
 		for(int i = 0 ; i < content.length ; i++) {
 			add_menu_item(j_sub_menu,content[i]);
 		}
 	}
-
 
 
   // SET LISTENER
@@ -285,9 +283,6 @@ public class Crope_Bar {
 			}
 		}
 	}
-
-
-
 
 	private class C_Menu_Item {
 		protected int id = 0;
@@ -312,17 +307,12 @@ public class Crope_Bar {
 		}
 	}
   
-
-
-
-
 	public void show() {
 		if(you_can_build) {
 			frame.setVisible(true);
 		}
 	}
   
-
 	public void help() {
 		if(you_can_build) {
 			println("\npass all menus in differents String to method set(JSONObject)");

@@ -12,10 +12,35 @@ Crope_Bar cb;
 
 void setup() {
 	size(100,100);
-	JSONObject menu_bar = new JSONObject();
+	// menu_bar_load();
+	menu_bar_write();
+	cb.help();
+}
 
-	
-	// WARNING keep "menu bar" it's the key to build the Crope_Bar, is waiting
+void draw() {
+}
+
+void keyPressed() {
+	// to update menu, you need to catch the JSONObject of your Menu and update the content of this one.
+	cb.get_menu().getJSONObject("file").setString("load recent","new_path/item.psd,other_path/with_a new super file.jpg,un fichier de patate.jpg");
+	build_menu_bar(cb.get_menu());
+}
+
+void menu_bar_load() {
+	JSONObject menu_bar = loadJSONObject("menu.json");
+	build_menu_bar(menu_bar);
+}
+
+
+void menu_bar_write() {
+	JSONObject menu_bar = new JSONObject();
+	write_menu(menu_bar);
+	build_menu_bar(menu_bar);
+	saveJSONObject(cb.get_menu(), "data/menu_bar_tree.json");
+}
+
+void write_menu(JSONObject menu_bar) {
+		// WARNING keep "menu bar" it's the key to build the Crope_Bar, is waiting
 	menu_bar.setString("menu bar", "about,file,import,help"); // set the title of the menu
 
 	JSONObject about_ = new JSONObject();
@@ -38,24 +63,6 @@ void setup() {
 	menu_bar.setJSONObject("import", import_);
 	menu_bar.setJSONObject("help", help_);
 
-  build_menu_bar(menu_bar);
-
-	cb.help();
-
-	saveJSONObject(cb.get_menu(), "data/menu_bar_tree.json");
-}
-
-void draw() {
-
-	if(input() != null) println("input()",input());
-	if(input("image") != null) println("input(\"image\")",input("image"));
-	if(input("load") != null) println("input(\"load\")",input("load"));
-}
-
-void keyPressed() {
-	// to update menu, you need to catch the JSONObject of your Menu and update the content of this one.
-	cb.get_menu().getJSONObject("file").setString("load recent","new_path/item.psd,other_path/with_a new super file.jpg,un fichier de patate.jpg");
-	build_menu_bar(cb.get_menu());
 }
  
 
