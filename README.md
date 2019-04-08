@@ -16,5 +16,5 @@ This systeme provide a GUI control:
 'apple menu bar'
 
 ## example
-you can find few example oon this [link](https://github.com/StanLepunK/Crope/tree/master/example)
+you can find few example on this [link](https://github.com/StanLepunK/Crope/tree/master/example)
 
