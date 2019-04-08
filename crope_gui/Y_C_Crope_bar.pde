@@ -1,7 +1,7 @@
 /**
 * CROPE BAR
 * Control ROmanesco Processing Environment
-* v 0.2.3
+* v 0.2.4
 * Copyleft (c) 2019-2019
 * Processing 3.5.3
 * Rope library 0.5.1
@@ -107,8 +107,10 @@ public class Crope_Bar {
 		String name_item = content[0];
 		if(name_item.endsWith("?")) {
 			name_item = name_item.substring(0,name_item.length()-1);
-			if(name_item.endsWith("!"));
-			name_item = name_item.substring(0,name_item.length()-1);
+			if(name_item.endsWith("!")) {
+				name_item = name_item.substring(0,name_item.length()-1);
+			}
+			
 		}
 		JMenuItem menu_item = new JMenuItem(name_item); // prompt
 		if(content.length > 1) {
