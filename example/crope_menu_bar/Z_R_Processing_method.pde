@@ -1,14 +1,15 @@
 /**
 ROPE PROCESSING METHOD
-v 2.4.5
+v 2.7.5
 * Copyleft (c) 2014-2019
 * Stan le Punk > http://stanlepunk.xyz/
 * @author @stanlepunk
 * @see https://github.com/StanLepunK/Rope_framework
 * Processing 3.5.3.269
-* Rope library 0.7.1.25
+* Rope library 0.8.1.26
 */
-
+import rope.core.R_Image;
+import rope.costume.R_Shape;
 
 /**
 ADVANCED GHOST METHOD
@@ -22,8 +23,9 @@ the idea here is create method directly insprating from Processing to simplify t
 * colorMode(vec5 color_component)
 * @param component give in order : mode, x, y, z and alpha
 */
+/*
 void colorMode(vec5 component) {
-  int mode = (int)component.w;
+  int mode = (int)component.a();
   if(mode == HSB) {
     colorMode(HSB,component.b(),component.c(),component.d(),component.e());
   } else if(mode == RGB) {
@@ -32,6 +34,7 @@ void colorMode(vec5 component) {
     printErr("The first component of your vec is", mode, "and don't match with any Processing colorMode, instead the current colorMode will be used");
   }
 }
+*/
 /**
 * colorMode(int mode, vec4 color_component)
 * @param mode give environment HSB or RGB
@@ -39,9 +42,9 @@ void colorMode(vec5 component) {
 */
 void colorMode(int mode, vec4 component) {
   if(mode == HSB) {
-    colorMode(HSB,component.x,component.y,component.z,component.w);
+    colorMode(HSB,component.x(),component.y(),component.z(),component.w());
   } else if(mode == RGB) {
-    colorMode(RGB,component.x,component.y,component.z,component.w);
+    colorMode(RGB,component.x(),component.y(),component.z(),component.w());
   } else {
     printErr("int mode", mode, "don't match with any Processing colorMode, instead the current colorMode will be used");
   }
@@ -52,7 +55,7 @@ void colorMode(int mode, vec4 component) {
 * @param color_component give in order : x, y, z
 */
 void colorMode(int mode, vec3 component) {
-  colorMode(mode, vec4(component.x,component.y,component.z,g.colorModeA));
+  colorMode(mode, vec4(component.x(),component.y(),component.z(),g.colorModeA));
 }
 /**
 * colorMode(int mode, vec2 color_component)
@@ -60,7 +63,7 @@ void colorMode(int mode, vec3 component) {
 * @param color_component give in order the x give x,y,z and y give the alpha
 */
 void colorMode(int mode, vec2 component) {
-   colorMode(mode, vec4(component.x,component.x,component.x,component.y));
+  colorMode(mode, vec4(component.x(),component.x(),component.x(),component.y()));
 }
 
 
@@ -73,15 +76,15 @@ void colorMode(int mode, vec2 component) {
 floor
 */
 vec2 floor(vec2 arg) {
-  return vec2(floor(arg.x),floor(arg.y));
+  return vec2(floor(arg.x()),floor(arg.y()));
 }
 
 vec3 floor(vec3 arg) {
-  return vec3(floor(arg.x),floor(arg.y),floor(arg.z));
+  return vec3(floor(arg.x()),floor(arg.y()),floor(arg.z()));
 }
 
 vec4 floor(vec4 arg) {
-  return vec4(floor(arg.x),floor(arg.y),floor(arg.z),floor(arg.w));
+  return vec4(floor(arg.x()),floor(arg.y()),floor(arg.z()),floor(arg.w()));
 }
 
 
@@ -93,15 +96,15 @@ vec4 floor(vec4 arg) {
 round
 */
 vec2 round(vec2 arg) {
-  return vec2(round(arg.x),round(arg.y));
+  return vec2(round(arg.x()),round(arg.y()));
 }
 
 vec3 round(vec3 arg) {
-  return vec3(round(arg.x),round(arg.y),round(arg.z));
+  return vec3(round(arg.x()),round(arg.y()),round(arg.z()));
 }
 
 vec4 round(vec4 arg) {
-  return vec4(round(arg.x),round(arg.y),round(arg.z),round(arg.w));
+  return vec4(round(arg.x()),round(arg.y()),round(arg.z()),round(arg.w()));
 }
 
 
@@ -112,15 +115,15 @@ vec4 round(vec4 arg) {
 ceil
 */
 vec2 ceil(vec2 arg) {
-  return vec2(ceil(arg.x),ceil(arg.y));
+  return vec2(ceil(arg.x()),ceil(arg.y()));
 }
 
 vec3 ceil(vec3 arg) {
-  return vec3(ceil(arg.x),ceil(arg.y),ceil(arg.z));
+  return vec3(ceil(arg.x()),ceil(arg.y()),ceil(arg.z()));
 }
 
 vec4 ceil(vec4 arg) {
-  return vec4(ceil(arg.x),ceil(arg.y),ceil(arg.z),ceil(arg.w));
+  return vec4(ceil(arg.x()),ceil(arg.y()),ceil(arg.z()),ceil(arg.w()));
 }
 
 
@@ -128,27 +131,27 @@ vec4 ceil(vec4 arg) {
 abs
 */
 vec2 abs(vec2 arg) {
-  return vec2(abs(arg.x),abs(arg.y));
+  return vec2(abs(arg.x()),abs(arg.y()));
 }
 
 vec3 abs(vec3 arg) {
-  return vec3(abs(arg.x),abs(arg.y),abs(arg.z));
+  return vec3(abs(arg.x()),abs(arg.y()),abs(arg.z()));
 }
 
 vec4 abs(vec4 arg) {
-  return vec4(abs(arg.x),abs(arg.y),abs(arg.z),abs(arg.w));
+  return vec4(abs(arg.x()),abs(arg.y()),abs(arg.z()),abs(arg.w()));
 }
 
 ivec2 abs(ivec2 arg) {
-  return ivec2(abs(arg.x),abs(arg.y));
+  return ivec2(abs(arg.x()),abs(arg.y()));
 }
 
 ivec3 abs(ivec3 arg) {
-  return ivec3(abs(arg.x),abs(arg.y),abs(arg.z));
+  return ivec3(abs(arg.x()),abs(arg.y()),abs(arg.z()));
 }
 
 ivec4 abs(ivec4 arg) {
-  return ivec4(abs(arg.x),abs(arg.y),abs(arg.z),abs(arg.w));
+  return ivec4(abs(arg.x()),abs(arg.y()),abs(arg.z()),abs(arg.w()));
 }
 
 
@@ -157,27 +160,27 @@ ivec4 abs(ivec4 arg) {
 max
 */
 vec2 max(vec2 a, vec2 b) {
-  return vec2(max(a.x,b.x),max(a.y,b.y));
+  return vec2(max(a.x(),b.x()),max(a.y(),b.y()));
 }
 
 vec3 max(vec3 a, vec3 b) {
-  return vec3(max(a.x,b.x),max(a.y,b.y),max(a.z,b.z));
+  return vec3(max(a.x(),b.x()),max(a.y(),b.y()),max(a.z(),b.z()));
 }
 
 vec4 max(vec4 a, vec4 b) {
-  return vec4(max(a.x,b.x),max(a.y,b.y),max(a.z,b.z),max(a.w,b.w));
+  return vec4(max(a.x(),b.x()),max(a.y(),b.y()),max(a.z(),b.z()),max(a.w(),b.w()));
 }
 
 ivec2 max(ivec2 a, ivec2 b) {
-  return ivec2(max(a.x,b.x),max(a.y,b.y));
+  return ivec2(max(a.x(),b.x()),max(a.y(),b.y()));
 }
 
 ivec3 max(ivec3 a, ivec3 b) {
-  return ivec3(max(a.x,b.x),max(a.y,b.y),max(a.z,b.z));
+  return ivec3(max(a.x(),b.x()),max(a.y(),b.y()),max(a.z(),b.z()));
 }
 
 ivec4 max(ivec4 a, ivec4 b) {
-  return ivec4(max(a.x,b.x),max(a.y,b.y),max(a.z,b.z),max(a.w,b.w));
+  return ivec4(max(a.x(),b.x()),max(a.y(),b.y()),max(a.z(),b.z()),max(a.w(),b.w()));
 }
 
 
@@ -186,126 +189,185 @@ ivec4 max(ivec4 a, ivec4 b) {
 min
 */
 vec2 min(vec2 a, vec2 b) {
-  return vec2(min(a.x,b.x),min(a.y,b.y));
+  return vec2(min(a.x(),b.x()),min(a.y(),b.y()));
 }
 
 vec3 min(vec3 a, vec3 b) {
-  return vec3(min(a.x,b.x),min(a.y,b.y),min(a.z,b.z));
+  return vec3(min(a.x(),b.x()),min(a.y(),b.y()),min(a.z(),b.z()));
 }
 
 vec4 min(vec4 a, vec4 b) {
-  return vec4(min(a.x,b.x),min(a.y,b.y),min(a.z,b.z),min(a.w,b.w));
+  return vec4(min(a.x(),b.x()),min(a.y(),b.y()),min(a.z(),b.z()),min(a.w(),b.w()));
 }
 
 ivec2 min(ivec2 a, ivec2 b) {
-  return ivec2(min(a.x,b.x),min(a.y,b.y));
+  return ivec2(min(a.x(),b.x()),min(a.y(),b.y()));
 }
 
 ivec3 min(ivec3 a, ivec3 b) {
-  return ivec3(min(a.x,b.x),min(a.y,b.y),min(a.z,b.z));
+  return ivec3(min(a.x(),b.x()),min(a.y(),b.y()),min(a.z(),b.z()));
 }
 
 ivec4 min(ivec4 a, ivec4 b) {
-  return ivec4(min(a.x,b.x),min(a.y,b.y),min(a.z,b.z),min(a.w,b.w));
+  return ivec4(min(a.x(),b.x()),min(a.y(),b.y()),min(a.z(),b.z()),min(a.w(),b.w()));
 }
 
 
 
 
 
-/**
-set
-*/
-void set(ivec2 pos, int c) {
-  set(pos.x, pos.y, c);
-}
 
-void set(vec2 pos, int c) {
-  set((int)pos.x, (int)pos.y, c);
-}
 
 
 
 /**
 random
 */
-float random (vec2 v) {
-  return random(v.x, v.y);
+float random(vec2 v) {
+  return random(v.x(),v.y());
 }
 
-float random (ivec2 v) {
-  return random(v.x, v.y);
+float random(ivec2 v) {
+  return random(v.x(),v.y());
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 /**
-Ellipse
-v 0.1.1
+* PImage method
+* v 0.2.2
 */
-// with vec2 or ivec2
-void ellipse(vec2 p, vec s) {
-  ellipse(p.x,p.y, s.x,s.y);
-}
-
-void ellipse(vec2 p, float x, float y) {
-  ellipse(p.x,p.y,x,y);
-}
-
-void ellipse(vec2 p, float x) {
-  ellipse(p.x,p.y,x,x);
-}
-
-
-// ivec
-void ellipse(ivec2 p, ivec s) {
-  ellipse(p.x,p.y,s.x,s.y) ;
-}
-
-void ellipse(ivec2 p, int x, int y) {
-  ellipse(p.x,p.y, x,y);
-}
-
-void ellipse(ivec2 p, int x) {
-  ellipse(p.x,p.y,x,x);
-}
-
-// with vec3 or ivec3
-void ellipse(ivec3 p, int x, int y) {
-  ellipse(p,ivec2(x,y));
-}
-
-void ellipse(ivec3 p, int x) {
-  ellipse(p,ivec2(x));
-}
-
-void ellipse(ivec3 p, ivec s) {
-  vec3 temp_pos = vec3((int)p.x, (int)p.y, (int)p.z);
-  vec2 temp_size = vec2((int)s.x,(int)s.y);
-  ellipse(temp_pos, temp_size);
-}
-
-
-void ellipse(vec3 p, float x, float y) {
-  ellipse(p,vec2(x,y));
-}
-
-void ellipse(vec3 p, float x) {
-  ellipse(p,vec2(x));
+rope.costume.R_Shape buffer_rope_framework;
+void set_buffer_shape(PGraphics other) {
+  if(buffer_rope_framework == null) {
+    buffer_rope_framework = new rope.costume.R_Shape(this,other);
+  }
 }
 
 /**
-main method
+* set
+* v 0.2.1
 */
-void ellipse(vec3 p, vec s) {
-  if(renderer_P3D()) {
-    start_matrix() ;
-    translate(p.x, p.y, p.z);
-    ellipse(0,0, s.x, s.y);
-    stop_matrix() ;
+void set(vec2 pos, int c, PGraphics other) {
+  set((int)pos.x(),(int)pos.y(),c,other);
+}
+
+void set(vec2 pos, int c) {
+  set((int)pos.x(),(int)pos.y(),c);
+}
+
+// main method
+void set(int x, int y, int c, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    buffer_rope_framework.set(x,y,c,other);
   } else {
-    ellipse(p.x,p.y,s.x,s.y);
+    set(x,y,c);
+  }
+}
+
+
+
+
+
+
+/** 
+* PGraphics Method
+* v 0.1.0
+*/
+/**
+* beginDraw and enDraw() is write here juste to keep a syntew cohesion withe PGraphics other system
+*/
+
+void beginDraw(PGraphics other) {
+  if(other != null) {
+    other.beginDraw();
+  }
+}
+
+void endDraw(PGraphics other) {
+  if(other != null) {
+    other.endDraw();
+  }
+}
+
+void clear(PGraphics other) {
+  if(other != null && other.pixels != null) {
+    other.clear();
+  } else {
+    g.clear();
+  }
+}
+
+
+/**
+* Ellipse
+*/
+void ellipse(float px, float py, float sx, float sy, PGraphics other) {
+  if(other != null) {
+    other.ellipse(px,py,sx,sy);
+  } else {
+    ellipse(px,py,sx,sy);
+  }
+}
+
+void ellipse(vec p, float x, float y) {
+  ellipse(p,x,y,null);
+}
+
+void ellipse(vec p, float x, float y, PGraphics other) {
+  ellipse(p,vec2(x,y),other);
+}
+
+void ellipse(vec p, float x) {
+  ellipse(p,x,null);
+}
+
+void ellipse(vec p, float x, PGraphics other) {
+  ellipse(p,vec2(x),other);
+}
+
+
+/**
+* main method
+*/
+void ellipse(vec p, vec s) {
+  ellipse(p,s,null);
+}
+
+void ellipse(vec p, vec s, PGraphics other) {
+  if(renderer_P3D() && p instanceof vec3) {
+    push(other) ;
+    translate(p.x(), p.y(), p.z(),other);
+    ellipse(0,0, s.x(), s.y(),other);
+    pop(other) ;
+  } else {
+    ellipse(p.x(),p.y(),s.x(),s.y(),other);
   }
 }
 
@@ -316,51 +378,62 @@ void ellipse(vec3 p, vec s) {
 
 
 /**
-Rect
+* Rect
 */
-void rect(vec2 p, vec2 s) {
-  rect(p.x,p.y,s.x,s.y);
-}
-void rect(vec3 p, vec2 s) {
-  if(renderer_P3D()) {
-    start_matrix();
-    translate(p.x,p.y,p.z);
-    rect(0,0,s.x,s.y);
-    stop_matrix();
-  } else rect(p.x,p.y,s.x,s.y);
+
+void rect(float px, float py, float sx, float sy, PGraphics other) {
+  if(other != null) {
+    other.rect(px,py,sx,sy);
+  } else {
+    rect(px,py,sx,sy);
+  }
 }
 
-void rect(ivec2 p, ivec2 s) {
-  rect(p.x,p.y,s.x,s.y) ;
+void rect(vec p, vec s) {
+  rect(p,s,null);
 }
 
-void rect(ivec3 p, ivec2 s) {
-  vec3 temp_pos = vec3((int)p.x,(int)p.y,(int)p.z);
-  vec2 temp_size = vec2((int)s.x,(int)s.y);
-  rect(temp_pos,temp_size);
+void rect(vec p, vec s, PGraphics other) {
+  if(renderer_P3D() && p instanceof vec3) {
+    push(other);
+    translate(p.x(),p.y(),p.z(),other);
+    rect(0,0,s.x(),s.y(),other);
+    pop(other);
+  } else {
+    rect(p.x(),p.y(),s.x(),s.y(),other);
+  }
 }
 
 
 /**
-Triangle
+* triangle
 */
-void triangle(ivec a, ivec b, ivec2 c) {
-  triangle(vec3(a.x,a.y,a.z),vec3(b.x,b.y,b.z),vec3(c.x,c.y,c.z));
+void triangle(float x1, float y1, float x2, float y2, float x3, float y3, PGraphics other) {
+  if(other != null) {
+    other.triangle(x1,y1, x2,y2, x3, y3);
+  } else {
+    triangle(x1,y1, x2,y2, x3, y3);
+  }
+
 }
 
-void triangle(vec a, vec b, vec c) {
-  if(a.z == 0 && b.z == 0 && c.z == 0) {
-    triangle(a.x,a.y,b.x,b.y,c.x,c.y);
-  } else {
-    if(renderer_P3D()) {
-      beginShape();
-      vertex(a.x,a.y,a.z);
-      vertex(b.x,b.y,b.z);
-      vertex(c.x,c.y,c.z);
-      endShape(CLOSE);
-    } else {
 
-      triangle(a.x,a.y,b.x,b.y,c.x,c.y);
+void triangle(vec a, vec b, vec c) {
+  triangle(a,b,c,null);
+}
+
+void triangle(vec a, vec b, vec c, PGraphics other) {
+  if(a.z == 0 && b.z == 0 && c.z == 0) {
+    triangle(a.x(),a.y(),b.x(),b.y(),c.x(),c.y(),other);
+  } else {
+    if(renderer_P3D() && a instanceof vec3 && b instanceof vec3 && c instanceof vec3) {
+      beginShape(other);
+      vertex(a.x(),a.y(),a.z(),other);
+      vertex(b.x(),b.y(),b.z(),other);
+      vertex(c.x(),c.y(),c.z(),other);
+      endShape(CLOSE,other);
+    } else {
+      triangle(a.x(),a.y(),b.x(),b.y(),c.x(),c.y(),other);
     }
   }
 }
@@ -369,351 +442,849 @@ void triangle(vec a, vec b, vec c) {
 
 
 /**
-Box
+* Box
 */
+void box(float size, PGraphics other) {
+  box(size,size,size,other);
+}
+
+void box(float x, float y, float z, PGraphics other) {
+  if(other != null) {
+    other.box(x,y,z);
+  } else {
+    box(x,y,z);
+  }
+}
+
+// 
 void box(vec3 p) {
-  box(p.x,p.y,p.z);
+  box(p,null);
 }
 
-void box(ivec3 p) {
-  box(p.x,p.y,p.z);
-}
-
-
-
-
-/**
-Point
-*/
-void point(vec2 p) {
-  point(p.x,p.y);
-}
-void point(vec3 p) {
-  if(renderer_P3D()) point(p.x,p.y,p.z); 
-  else point(p.x,p.y) ;
-}
-
-void point(ivec2 p) {
-  point(p.x,p.y);
-}
-void point(ivec3 p) {
-  if(renderer_P3D()) point(p.x,p.y,p.z); 
-  else point(p.x,p.y);
-}
-
-
-
-
-/**
-Line
-*/
-void line(vec2 a, vec2 b){
-  line(a.x,a.y,b.x,b.y);
-}
-void line(vec3 a, vec3 b){
-  if(renderer_P3D()) line(a.x,a.y,a.z,b.x,b.y,b.z); 
-  else line(a.x,a.y,b.x,b.y);
-}
-
-void line(ivec2 a, ivec2 b) {
-  line(a.x,a.y,b.x,b.y);
-}
-
-void line(ivec3 a, ivec3 b) {
-  if(renderer_P3D()) line(a.x,a.y,a.z,b.x,b.y,b.z); 
-  else line(a.x,a.y,b.x,b.y);
+void box(vec3 p, PGraphics other) {
+  box(p.x(),p.y(),p.z(),other);
 }
 
 
 
 /**
-Vertex
-v 0.0.2
+* Sphere
 */
-void vertex(vec2 xy) {
-  vertex(xy.x,xy.y);
+void sphere(float radius, PGraphics other) {
+  if(other != null) {
+    other.sphere(radius);
+  } else {
+    sphere(radius);
+  }
 }
 
-void vertex(vec3 xyz) {
-  if(renderer_P3D()) vertex(xyz.x,xyz.y,xyz.z); 
-  else vertex(xyz.x,xyz.y);
+
+void sphereDetail(int res, PGraphics other) {
+  if(other != null) {
+    other.sphereDetail(res);
+  } else {
+    sphereDetail(res);
+  }
 }
+
+void sphereDetail(int ures, int vres, PGraphics other) {
+  if(other != null) {
+    other.sphereDetail(ures, vres);
+  } else {
+    sphereDetail(ures, vres);
+  }
+
+}
+
+
+
+/**
+* point
+*/
+void point(float x, float y, float z, PGraphics other) {
+  if(other != null) {
+    other.point(x,y,z);
+  } else {
+    point(x,y,z);
+  }
+}
+
+void point(float x, float y, PGraphics other) {
+  if(other != null) {
+    other.point(x,y);
+  } else {
+    point(x,y);
+  }
+}
+
+
 //
-void vertex(ivec2 xy) {
-  vertex(xy.x,xy.y);
+void point(vec p) {
+  point(p,null);
 }
 
-void vertex(ivec3 xyz){
-  if(renderer_P3D()) vertex(xyz.x,xyz.y,xyz.z); 
-  else vertex(xyz.x,xyz.y);
+void point(vec p, PGraphics other) {
+  if(renderer_P3D() && p instanceof vec3) {
+    point(p.x(),p.y(),p.z(),other); 
+  } else {
+    point(p.x(),p.y(),other);
+  }
 }
+
+
+
+
+/**
+* Line
+*/
+void line(float x1, float y1, float x2, float y2, PGraphics other) {
+  if(other != null) {
+    other.line(x1,y1,x2,y2);
+  } else {
+    line(x1,y1,x2,y2);
+  }
+}
+
+void line(float x1, float y1, float z1, float x2, float y2, float z2, PGraphics other) {
+  if(other != null) {
+    other.line(x1,y1,z1,x2,y2,z2);
+  } else {
+    line(x1,y1,z1,x2,y2,z2);
+  }
+}
+
 //
-void vertex(vec2 xy, vec2 uv) {
-  vertex(xy.x,xy.y,uv.u,uv.v);
+void line(vec a, vec b) {
+  line(a,b,null);
 }
 
-void vertex(ivec2 xy, vec2 uv) {
-  vertex(xy.x,xy.y,uv.u,uv.v);
+void line(vec a, vec b, PGraphics other){
+  if(renderer_P3D() && a instanceof vec3 && b instanceof vec3) {
+    line(a.x(),a.y(),a.z(),b.x(),b.y(),b.z(),other); 
+  } else {
+    line(a.x(),a.y(),b.x(),b.y(),other);
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+* shape
+*/
+void beginShape(PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    buffer_rope_framework.beginShape(other);
+  } else {
+    beginShape();
+  }
+}
+
+void beginShape(int kind, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    buffer_rope_framework.beginShape(kind,other);
+  } else {
+    beginShape(kind);
+  }
+}
+
+
+void endShape(PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    buffer_rope_framework.endShape(other);
+  } else {
+    endShape();
+  }
+}
+
+void endShape(int mode, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    buffer_rope_framework.endShape(mode,other);
+  } else {
+    endShape(mode);
+  }
+}
+
+
+/**
+* vertex
+*/
+void vertex(float x, float y, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    buffer_rope_framework.vertex(x,y,other);
+  } else {
+    vertex(x,y);
+  }
+}
+
+void vertex(float x, float y, float z, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    if(renderer_P3D()) {
+      buffer_rope_framework.vertex(x,y,z,other);
+    } else {
+      buffer_rope_framework.vertex(x,y,other);
+    }   
+  } else {
+    vertex(x,y,z);
+  }
+}
+
+
+void vertex(float [] v, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    buffer_rope_framework.vertex(v,other);
+  } else {
+    vertex(v);
+  }
+}
+
+
+void vertex(float x, float y, float u, float v, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    buffer_rope_framework.vertex(x,y,u,v,other);
+  } else {
+    vertex(x,y,u,v,other);
+  }
+}
+
+void vertex(float x, float y, float z, float u, float v, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    if(renderer_P3D()) {
+      buffer_rope_framework.vertex(x,y,u,v,other);
+    } else {
+      buffer_rope_framework.vertex(x,y,z,u,v,other);
+    }
+  } else {
+    vertex(x,y,z,u,v,other);
+  }
+}
+
+
+void vertex(vec coord) {
+  if(renderer_P3D() && coord instanceof vec3) {
+    vertex(coord.x(),coord.y(),coord.z());
+  } else {
+    vertex(coord.x(),coord.y());
+  }
+}
+
+
+void vertex(vec coord, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    buffer_rope_framework.vertex(coord,other);
+  } else {
+    vertex(coord);
+  }
+}
+
+
+
 //
-void vertex(vec3 xyz, vec2 uv) {
-  if(renderer_P3D()) vertex(xyz.x,xyz.y,xyz.z,uv.u,uv.v); 
-  else vertex(xyz.x,xyz.y,uv.u,uv.v);
+void vertex(vec2 coord, vec2 uv) {
+  vertex(coord.x(),coord.y(),uv.x(),uv.y());
 }
 
-void vertex(ivec3 xyz, vec2 uv) {
-  if(renderer_P3D()) vertex(xyz.x,xyz.y,xyz.z,uv.u,uv.v); 
-  else vertex(xyz.x,xyz.y,uv.u,uv.v);
+void vertex(vec3 coord, vec2 uv) {
+  if(renderer_P3D()) {
+    vertex(coord.x(),coord.y(),coord.z(),uv.x(),uv.y());
+  } else {
+    vertex(coord.x(),coord.y(),uv.x(),uv.y());
+  }
+  
+}
+
+void vertex(vec2 coord, vec2 uv, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    buffer_rope_framework.vertex(coord,uv,other);
+  } else {
+    vertex(coord,uv);
+  }
+}
+
+
+void vertex(vec3 coord, vec2 uv, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    buffer_rope_framework.vertex(coord,uv,other);
+  } else {
+    vertex(coord,uv);
+  }
 }
 
 
 
 /**
-Bezier Vertex
+* Bezier Vertex
 */
-void bezierVertex(vec2 a, vec2 b, vec2 c) {
-  bezierVertex(a.x, a.y,b.x,b.y,c.x,c.y);
+void bezierVertex(float x2, float y2, float x3, float y3,  float x4, float y4, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    buffer_rope_framework.bezierVertex(x2,y2, x3,y3,  x4,y4, other);
+  } else {
+    bezierVertex(x2,y2, x3,y3,  x4,y4);
+  }
 }
 
-void bezierVertex(vec3 a, vec3 b, vec3 c) {
-  if(renderer_P3D()) bezierVertex(a.x,a.y,a.z,b.x,b.y,b.z,c.x,c.y,c.z); 
-  else bezierVertex(a.x,a.y,b.x,b.y,c.x,c.y);
+void bezierVertex(float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    if(renderer_P3D()) {
+      buffer_rope_framework.bezierVertex(x2,y2,z2, x3,y3,z3,  x4,y4,z4, other);
+    } else {
+      buffer_rope_framework.bezierVertex(x2,y2, x3,y3,  x4,y4, other);
+    }
+  } else {
+    if(renderer_P3D()) {
+      bezierVertex(x2,y2,z2, x3,y3,z3,  x4,y4,z4);
+    } else {
+      bezierVertex(x2,y2, x3,y3,  x4,y4);
+    }
+    
+  }
 }
 
-void bezierVertex(ivec2 a, ivec2 b, ivec2 c) {
-  bezierVertex(a.x,a.y,b.x,b.y,c.x,c.y);
+
+
+//
+void bezierVertex(vec a, vec b, vec c) {
+  if(a instanceof vec2 && b instanceof vec2 && b instanceof vec2) {
+    bezierVertex(a.x(),a.y(),b.x(),b.y(),c.x(),c.y());
+  } else if(a instanceof vec3 && b instanceof vec3 && b instanceof vec3) {
+    if(renderer_P3D()) {
+      bezierVertex(a.x(),a.y(),a.z(), b.x(),b.y(),b.z(), c.x(),c.y(),c.z());
+    } else {
+      bezierVertex(a.x(),a.y(), b.x(),b.y(), c.x(),c.y());
+    }    
+  } else {
+    printErr("method bezierVertex() all arg need to be vec2 or vec3");
+    exit();
+  }
 }
 
-void bezierVertex(ivec3 a, ivec3 b, ivec3 c) {
-  if(renderer_P3D()) bezierVertex(a.x,a.y,a.z,b.x,b.y,b.z,c.x,c.y,c.z); 
-  else bezierVertex(a.x,a.y,b.x,b.y,c.x,c.y);
+void bezierVertex(vec a, vec b, vec c, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    buffer_rope_framework.bezierVertex(a,b,c,other);
+  } else {
+    bezierVertex(a,b,c);
+  }
 }
+
+
+
+
+
+
+
+
 
 
 
 
 
 /**
-Quadratic Vertex
+* Quadratic Vertex
 */
-void quadraticVertex(vec2 a, vec2 b) {
-  quadraticVertex(a.x, a.y, b.x, b.y);
+void quadraticVertex(float cx, float cy, float x3, float y3, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    buffer_rope_framework.quadraticVertex(cx,cy, x3,y3,other);
+  } else {
+    quadraticVertex(cx,cy, x3,y3);
+  }
 }
 
-void quadraticVertex(vec3 a, vec3 b) {
-  if(renderer_P3D()) quadraticVertex(a.x, a.y, a.z, b.x, b.y, b.z); 
-  else quadraticVertex(a.x, a.y, b.x, b.y) ;
+void quadraticVertex(float cx, float cy, float cz, float x3, float y3, float z3, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    if(renderer_P3D()) {
+      buffer_rope_framework.quadraticVertex(cx,cy,cz, x3,y3,z3,other);
+    } else {
+      buffer_rope_framework.quadraticVertex(cx,cy, x3,y3,other);
+    }    
+  } else {
+    if(renderer_P3D()) {
+      quadraticVertex(cx,cy,cz, x3,y3,z3);
+    } else {
+      quadraticVertex(cx,cy, x3,y3);
+    }
+  }
 }
 
-void quadraticVertex(ivec2 a, ivec2 b) {
-  quadraticVertex(a.x, a.y, b.x, b.y);
+//
+void quadraticVertex(vec a, vec b) {
+  if(a instanceof vec2 && b instanceof vec2) {
+    quadraticVertex(a.x(),a.y(), b.x(),b.y());
+  } else if(a instanceof vec3 && b instanceof vec3) {
+    if(renderer_P3D()) {
+      quadraticVertex(a.x(),a.y(),a.z(), b.x(),b.y(),b.z());
+    } else {
+      quadraticVertex(a.x(),a.y(), b.x(),b.y());
+    } 
+  } else {
+    printErr("method quadraticVertex() all arg need to be vec2 or vec3");
+    exit();
+  }
 }
 
-void quadraticVertex(ivec3 a, ivec3 b) {
-  if(renderer_P3D()) quadraticVertex(a.x, a.y, a.z, b.x, b.y, b.z); 
-  else quadraticVertex(a.x, a.y, b.x, b.y);
+void quadraticVertex(vec a, vec b, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    buffer_rope_framework.quadraticVertex(a,b,other);
+  } else {
+    quadraticVertex(a,b);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+* Curve Vertex
+*/
+void curveVertex(float x, float y, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    buffer_rope_framework.curveVertex(x,y,other);
+  } else {
+    curveVertex(x,y);
+  }
+}
+
+void curveVertex(float x, float y, float z, PGraphics other) {
+  if(other != null) {
+    set_buffer_shape(other);
+    if(renderer_P3D()) {
+      buffer_rope_framework.curveVertex(x,y,z,other);
+    } else {
+      buffer_rope_framework.curveVertex(x,y,other);
+    }   
+  } else {
+    if(renderer_P3D()) {
+      curveVertex(x,y,z);
+    } else {
+      curveVertex(x,y);
+    } 
+  } 
+}
+
+
+
+//
+void curveVertex(vec a) {
+  if(renderer_P3D() && a instanceof vec3) {
+    curveVertex(a.x(),a.y(),a.z());
+  } else {
+    curveVertex(a.x(),a.y());
+  } 
+}
+
+void curveVertex(vec a, PGraphics other) {
+   if(other != null) {
+    set_buffer_shape(other);
+    buffer_rope_framework.curveVertex(a,other);
+  } else {
+    curveVertex(a);
+  }
 }
 
 
 
 
 /**
-Curve Vertex
+* strokeWeight
 */
-void curveVertex(vec2 a) {
-  curveVertex(a.x, a.y);
-}
-void curveVertex(vec3 a){
-  if(renderer_P3D()) curveVertex(a.x, a.y, a.z) ; 
-  else curveVertex(a.x, a.y);
-}
-
-void curveVertex(ivec2 a) {
-  curveVertex(a.x, a.y);
-}
-void curveVertex(ivec3 a){
-  if(renderer_P3D()) curveVertex(a.x, a.y, a.z) ; 
-  else curveVertex(a.x, a.y);
+void strokeWeight(float v, PGraphics other) {
+  if(other != null) {
+    other.strokeWeight(v);
+  } else {
+    strokeWeight(v);
+  }
 }
 
+void noFill(PGraphics other) {
+  if(other != null) {
+    other.noFill();
+  } else {
+    noFill();
+  }
+}
 
+void noStroke(PGraphics other) {
+  if(other != null) {
+    other.noStroke();
+  } else {
+    noStroke();
+  }
+}
 
 
 
 /**
-Fill
+* Fill
 */
+void fill(int rgb, PGraphics other) {
+  if(other != null) {
+    other.fill(rgb);
+  } else {
+    fill(rgb);
+  }
+}
+
+void fill(int rgb, float alpha, PGraphics other) {
+  if(other != null) {
+    other.fill(rgb,alpha);
+  } else {
+    fill(rgb,alpha);
+  }
+}
+
+void fill(float gray, PGraphics other) {
+  if(other != null) {
+    other.fill(gray);
+  } else {
+    fill(gray);
+  }
+}
+
+void fill(float gray, float alpha, PGraphics other) {
+  if(other != null) {
+    other.fill(gray,alpha);
+  } else {
+    fill(gray,alpha);
+  }
+}
+
+void fill(float v1, float v2, float v3, PGraphics other) {
+  if(other != null) {
+    other.fill(v1,v2,v3);
+  } else {
+    fill(v1,v2,v3);
+  }
+}
+
+void fill(float v1, float v2, float v3, float alpha, PGraphics other) {
+  if(other != null) {
+    other.fill(v1,v2,v3,alpha);
+  } else {
+    fill(v1,v2,v3,alpha);
+  }
+}
+
+
 // vec
 void fill(vec2 c) {
-  if( c.y > 0) fill(c.x, c.y); 
-  else noFill();
+  fill(c,null);
 }
+
+void fill(vec2 c, PGraphics other) {
+  if(c.y() > 0) fill(c.x(), c.y(),other); 
+  else noFill(other);
+}
+
+//
 void fill(vec3 c) {
-  fill(c.x,c.y,c.z) ;
+  fill(c,null);
 }
 
+void fill(vec3 c, PGraphics other) {
+  fill(c.x(),c.y(),c.z(),other) ;
+}
+
+//
 void fill(vec3 c, float a) {
-  if(a > 0) fill(c.x,c.y,c.z,a); 
-  else noFill();
+  fill(c,a,null);
+}
+void fill(vec3 c, float a, PGraphics other) {
+  if(a > 0) fill(c.x(),c.y(),c.z(),a,other); 
+  else noFill(other);
 }
 
+//
 void fill(vec4 c) {
-  if(c.w > 0) fill(c.x,c.y,c.z,c.w); 
-  else noFill();
+  fill(c,null);
 }
 
-// ivec
-void fill(ivec2 c) {
-  if(c.y > 0) fill(c.x,c.y); 
-  else noFill();
+void fill(vec4 c, PGraphics other) {
+  if(c.w() > 0) fill(c.x(),c.y(),c.z(),c.w(),other); 
+  else noFill(other);
 }
-void fill(ivec3 c) {
-  fill(c.x,c.y,c.z);
-}
-
-void fill(ivec3 c, float a) {
-  if(a > 0) fill(c.x,c.y,c.z,a);
-  else noFill();
-}
-
-void fill(ivec4 c) {
-  if(c.w > 0) fill(c.x,c.y,c.z,c.w); 
-  else noFill();
-}
-
 
 
 
 /**
-Stroke
+* Stroke
 */
+void stroke(int rgb, PGraphics other) {
+  if(other != null) {
+    other.stroke(rgb);
+  } else {
+    stroke(rgb);
+  }
+}
+
+void stroke(int rgb, float alpha, PGraphics other) {
+  if(other != null) {
+    other.stroke(rgb,alpha);
+  } else {
+    stroke(rgb,alpha);
+  }
+}
+
+void stroke(float gray, PGraphics other) {
+  if(other != null) {
+    other.stroke(gray);
+  } else {
+    stroke(gray);
+  }
+}
+
+void stroke(float gray, float alpha, PGraphics other) {
+  if(other != null) {
+    other.stroke(gray,alpha);
+  } else {
+    stroke(gray,alpha);
+  }
+}
+
+void stroke(float v1, float v2, float v3, PGraphics other) {
+  if(other != null) {
+    other.stroke(v1,v2,v3);
+  } else {
+    stroke(v1,v2,v3);
+  }
+}
+
+void stroke(float v1, float v2, float v3, float alpha, PGraphics other) {
+  if(other != null) {
+    other.stroke(v1,v2,v3,alpha);
+  } else {
+    stroke(v1,v2,v3,alpha);
+  }
+}
+
+
 // vec
 void stroke(vec2 c) {
-  if(c.y > 0) stroke(c.x,c.y); 
-  else noStroke();
+  stroke(c,null);
 }
+
+void stroke(vec2 c, PGraphics other) {
+  if(c.y() > 0) stroke(c.x(), c.y(),other); 
+  else noStroke(other);
+}
+
+//
 void stroke(vec3 c) {
-  stroke(c.x,c.y,c.z);
+  stroke(c,null);
 }
 
+void stroke(vec3 c, PGraphics other) {
+  stroke(c.x(),c.y(),c.z(),other) ;
+}
+
+//
 void stroke(vec3 c, float a) {
-  if(a > 0) stroke(c.x,c.y,c.z,a); 
-  else noStroke();
+  stroke(c,a,null);
+}
+void stroke(vec3 c, float a, PGraphics other) {
+  if(a > 0) stroke(c.x(),c.y(),c.z(),a,other); 
+  else noStroke(other);
 }
 
+//
 void stroke(vec4 c) {
-  if(c.w > 0) stroke(c.x,c.y,c.z,c.w); 
-  else noStroke();
-}
-// ivec
-void stroke(ivec2 c) {
-  if(c.y > 0) stroke(c.x,c.y); 
-  else noStroke();
-}
-void stroke(ivec3 c) {
-  stroke(c.x, c.y, c.z);
+  stroke(c,null);
 }
 
-void stroke(ivec3 c, float a) {
-  if(a > 0) stroke(c.x,c.y,c.z,a); 
-  else noStroke();
+void stroke(vec4 c, PGraphics other) {
+  if(c.w() > 0) stroke(c.x(),c.y(),c.z(),c.w(),other); 
+  else noStroke(other);
 }
 
-void stroke(ivec4 c) {
-  if(c.w > 0) stroke(c.x,c.y,c.z,c.w); 
-  else noStroke();
-}
 
 
 
 /**
-text
-v 0.2.0
+* text
 */
+
+void text(String s, float x, float y, PGraphics other) {
+  if(other != null) {
+    other.text(s,x,y);
+  } else {
+    text(s,x,y);
+  }
+}
+
+void text(char c, float x, float y, PGraphics other) {
+  if(other != null) {
+    other.text(c,x,y);
+  } else {
+    text(c,x,y);
+  }
+}
+
+void text(int i, float x, float y, PGraphics other) {
+  if(other != null) {
+    other.text(i,x,y);
+  } else {
+    text(i,x,y);
+  }
+}
+
+void text(float f, float x, float y, PGraphics other) {
+  if(other != null) {
+    other.text(f,x,y);
+  } else {
+    text(f,x,y);
+  }
+}
+
+void text(String s, float x, float y, float z, PGraphics other) {
+  if(other != null) {
+    other.text(s,x,y,z);
+  } else {
+    text(s,x,y,z);
+  }
+}
+
+void text(char c, float x, float y, float z, PGraphics other) {
+  if(other != null) {
+    other.text(c,x,y,z);
+  } else {
+    text(c,x,y,z);
+  }
+}
+
+void text(int i, float x, float y, float z, PGraphics other) {
+  if(other != null) {
+    other.text(i,x,y,z);
+  } else {
+    text(i,x,y,z);
+  }
+}
+
+void text(float f, float x, float y, float z, PGraphics other) {
+  if(other != null) {
+    other.text(f,x,y,z);
+  } else {
+    text(f,x,y,z);
+  }
+}
+
+
+
 void text(String s, vec pos) {
+  text(s,pos,null);
+}
+
+void text(String s, vec pos, PGraphics other) {
   if(pos instanceof vec2 && s != null) {
     vec2 p = (vec2)pos;
-    text(s,p.x,p.y);
+    text(s,p.x,p.y,other);
   } else if(pos instanceof vec3 && s != null) {
     vec3 p = (vec3)pos;
-    text(s,p.x,p.y,p.z);
+    text(s,p.x,p.y,p.z,other);
   } else {
     printErrTempo(60,"method text(): String message is null or vec is not an instance of vec3 or vec2");
   }
 }
 
 void text(char c, vec pos) {
+  text(c,pos,null);
+}
+
+void text(char c, vec pos, PGraphics other) {
   if(pos instanceof vec2) {
     vec2 p = (vec2)pos;
-    text(c, p.x, p.y);
+    text(c, p.x, p.y,other);
   } else if(pos instanceof vec3) {
     vec3 p = (vec3)pos;
-    text(c,p.x,p.y,p.z);
+    text(c,p.x,p.y,p.z,other);
   }
 }
 
-void text(int num, vec pos) {
+
+void text(int i, vec pos) {
+  text(i,pos,null);
+}
+
+void text(int i, vec pos, PGraphics other) {
   if(pos instanceof vec2) {
     vec2 p = (vec2)pos;
-    text(num, p.x, p.y);
+    text(i, p.x, p.y,other);
   } else if(pos instanceof vec3) {
     vec3 p = (vec3)pos;
-    text(num,p.x,p.y,p.z);
+    text(i,p.x,p.y,p.z,other);
   } 
 }
 
-void text(float num, vec pos) {
+void text(float f, vec pos) {
+  text(f,pos,null);
+}
+
+void text(float f, vec pos, PGraphics other) {
   if(pos instanceof vec2) {
     vec2 p = (vec2) pos;
-    text(num, p.x, p.y);
+    text(f, p.x, p.y,other);
   } else if(pos instanceof vec3) {
     vec3 p = (vec3) pos;
-    text(num,p.x,p.y,p.z);
+    text(f,p.x,p.y,p.z,other);
   } 
 }
 
-// ivec
-void text(String s, ivec pos) {
-  if(pos instanceof ivec2 && s != null) {
-    vec2 temp_pos = vec2(pos.x,pos.y);
-    text(s, temp_pos);
-  } else if(pos instanceof ivec2) {
-    vec3 temp_pos = vec3(pos.x,pos.y,pos.z);
-    text(s, temp_pos);
+
+
+void textAlign(int type, PGraphics other) {
+  if(other != null) {
+    other.textAlign(type);
   } else {
-    printErrTempo(60,"method text(): String message is null or ivec is not an instance of ivec3 or ivec2");
-  }  
-}
-
-void text(char c, ivec pos) {
-  if(pos instanceof ivec2) {
-    vec2 temp_pos = vec2(pos.x,pos.y);
-    text(c, temp_pos);
-  } else if(pos instanceof ivec2) {
-    vec3 temp_pos = vec3(pos.x,pos.y,pos.z);
-    text(c, temp_pos);
-  } 
-}
-
-void text(int num, ivec pos) {
-  if(pos instanceof ivec2) {
-    vec2 temp_pos = vec2(pos.x,pos.y);
-    text(num, temp_pos);
-  } else if(pos instanceof ivec2) {
-    vec3 temp_pos = vec3(pos.x,pos.y,pos.z);
-    text(num, temp_pos);
+    textAlign(type);
   }
 }
 
-void text(float num, ivec pos) {
-  if(pos instanceof ivec2) {
-    vec2 temp_pos = vec2(pos.x,pos.y);
-    text(num, temp_pos);
-  } else if(pos instanceof ivec2) {
-    vec3 temp_pos = vec3(pos.x,pos.y,pos.z);
-    text(num, temp_pos);
-  } 
+
+void textSize(float size, PGraphics other) {
+  if(other != null) {
+    other.textSize(size);
+  } else {
+    textSize(size);
+  }
 }
+
 
 
 
@@ -723,106 +1294,157 @@ void text(float num, ivec pos) {
 
 
 /**
-Translate
+* Translate
 */
+void translate(float x, float y, float z, PGraphics other) {
+  if(other != null) {
+    other.translate(x,y,z);
+  } else {
+    translate(x,y,z);
+  }
+}
+
+void translate(float x, float y, PGraphics other) {
+  if(other != null) {
+    other.translate(x,y);
+  } else {
+    translate(x,y);
+  }
+}
+
+
 // vec
-void translate(vec3 t) {
-  if(renderer_P3D()) {
-    translate(t.x,t.y,t.z); 
+void translate(vec v) {
+  translate(v,null);
+}
+
+void translate(vec v, PGraphics other) {
+  if(renderer_P3D() && v instanceof vec3) {
+    translate(v.x(),v.y(),v.z(),other); 
   } else {
-    translate(t.x,t.y);
+    translate(v.x(),v.y(),other);
   }
 }
 
-void translate(vec2 t){
-  translate(round(t.x),round(t.y));
+
+
+
+// translate X
+void translateX(float f) {
+  translateX(f,null);
 }
 
-// ivec
-void translate(ivec3 t){
-  if(renderer_P3D()) {
-    translate(t.x,t.y,t.z); 
-  } else {
-    translate(t.x,t.y);
-  }
+void translateX(float f, PGraphics other) {
+  translate(f,0,other);
 }
 
-void translate(ivec2 t){
-  translate(t.x,t.y);
+// translate Y
+void translateY(float f) {
+  translateY(f,null);
 }
 
-void translateX(float t){
-  translate(t,0);
+void translateY(float f, PGraphics other) {
+  translate(0,f,other);
 }
 
-void translateY(float t){
-  translate(0,t);
+// translate Z
+void translateZ(float f) {
+  translateZ(f,null);
 }
 
-void translateZ(float t){
-  translate(0,0,t);
+void translateZ(float f, PGraphics other) {
+  translate(0,0,f,other);
 }
 
 
 /**
-Rotate
+* Rotate
 */
+void rotate(float f, PGraphics other) {
+  if(other != null) {
+    other.rotate(f);
+  } else {
+    rotate(f);
+  }
+}
+
+
+void rotateX(float f, PGraphics other) {
+  if(other != null) {
+    other.rotateX(f);
+  } else {
+    rotateX(f);
+  }
+}
+
+
+void rotateY(float f, PGraphics other) {
+  if(other != null) {
+    other.rotateY(f);
+  } else {
+    rotateY(f);
+  }
+}
+
+void rotateZ(float f, PGraphics other) {
+  if(other != null) {
+    other.rotateZ(f);
+  } else {
+    rotateZ(f);
+  }
+}
+
+
 // vec
 void rotateXY(vec2 rot) {
+  rotateXY(rot,null);
+}
+
+void rotateXY(vec2 rot, PGraphics other) {
   rotateX(rot.x);
   rotateY(rot.y);
 }
 
+
 void rotateXZ(vec2 rot) {
+  rotateXZ(rot,null);
+}
+
+void rotateXZ(vec2 rot, PGraphics other) {
   rotateX(rot.x);
   rotateZ(rot.y);
 }
 
 void rotateYZ(vec2 rot) {
+  rotateYZ(rot,null);
+}
+
+void rotateYZ(vec2 rot, PGraphics other) {
   rotateY(rot.x);
   rotateZ(rot.y);
 }
+
 void rotateXYZ(vec3 rot) {
+  rotateXYZ(rot,null);
+}
+
+void rotateXYZ(vec3 rot, PGraphics other) {
   rotateX(rot.x);
   rotateY(rot.y);
   rotateZ(rot.z);
 }
-
-// ivec
-void rotateXY(ivec2 rot) {
-  rotateX(rot.x);
-  rotateY(rot.y);
-}
-
-void rotateXZ(ivec2 rot) {
-  rotateX(rot.x);
-  rotateZ(rot.y);
-}
-
-void rotateYZ(ivec2 rot) {
-  rotateY(rot.x);
-  rotateZ(rot.y);
-}
-void rotateXYZ(ivec3 rot) {
-  rotateX(rot.x);
-  rotateY(rot.y);
-  rotateZ(rot.z);
-}
-
-
 
 
 
 
 
 /**
-Matrix
-v 0.1.0
+* Matrix
 */
 // vec
-void start_matrix_3D(vec pos, vec3 dir_cart) {
+void push_3D(vec pos, vec3 dir_cart) {
   vec3 dir = dir_cart.copy() ;
-  pushMatrix() ;
+  push();
   if(pos instanceof vec2) {
     vec2 p = (vec2) pos ;
     translate(p) ;
@@ -830,7 +1452,7 @@ void start_matrix_3D(vec pos, vec3 dir_cart) {
     vec3 p = (vec3) pos ;
     translate(p) ;
   } else {
-    printErr("Error in void start_matrix_3D(), vec pos is not an instance of vec2 or vec3, the matrix don't translate your object") ;
+    printErr("Error in void push_3D(), vec pos is not an instance of vec2 or vec3, the matrix don't translate your object") ;
     // exit() ;
   }
   float radius = sqrt(dir.x * dir.x + dir.y * dir.y + dir.z * dir.z);
@@ -844,135 +1466,61 @@ void start_matrix_3D(vec pos, vec3 dir_cart) {
   rotateY(longitude);
 }
 
-void start_matrix_3D(vec pos, vec2 dir_polar) {
+void push_3D(vec pos, vec2 dir_polar) {
   if(pos instanceof vec2) {
     vec2 p = (vec2) pos;
-    pushMatrix();
+    push();
     translate(p);
     rotateXY(dir_polar);
   } else if(pos instanceof vec3) {
     vec3 p = (vec3) pos;
-    pushMatrix();
+    push();
     translate(p);
     rotateXY(dir_polar);
   } else {
-    printErr("Error in void start_matrix_3D(), vec pos is not an instance of vec2 or vec3, the matrix cannot be init") ;
-    // exit() ;
+    printErr("Error in void push_3D(), vec pos is not an instance of vec2 or vec3, the matrix cannot be init") ;
   }
 }
 
-void start_matrix_2D(vec pos, float orientation) {
+void push_2D(vec pos, float orientation) {
   if(pos instanceof vec2) {
     vec2 p = (vec2)pos;
-    pushMatrix();
+    push();
     translate(p);
     rotate(orientation);
   } else if(pos instanceof vec3) {
     vec3 p = (vec3)pos;
-    pushMatrix();
+    push();
     translate(p.x, p.y);
     rotate(orientation);
   } else {
-    printErr("Error in void start_matrix_3D(), vec pos is not an instance of vec2 or vec3, the matrix cannot be init") ;
-    // exit();
-  }
-}
-
-// ivec
-void start_matrix_3D(ivec pos, ivec3 dir_cart) {
-  vec3 temp_dir_cart = vec3(dir_cart.x, dir_cart.y, dir_cart.z);
-  if(pos instanceof ivec2) {
-    vec2 temp_pos = vec2(pos.x, pos.y);
-    start_matrix_3D(temp_pos, temp_dir_cart);
-  } else if(pos instanceof ivec3) {
-    vec3 temp_pos = vec3(pos.x, pos.y, pos.z);
-    start_matrix_3D(temp_pos, temp_dir_cart);
-  } 
-}
-
-void start_matrix_3D(ivec pos, ivec2 dir_polar) {
-  vec2 temp_dir_polar = vec2(dir_polar.x, dir_polar.y);
-  if(pos instanceof ivec2) {
-    vec2 temp_pos = vec2(pos.x, pos.y);
-    start_matrix_3D(temp_pos, temp_dir_polar);
-  } else if(pos instanceof ivec3) {
-    vec3 temp_pos = vec3(pos.x, pos.y, pos.z);
-    start_matrix_3D(temp_pos, temp_dir_polar);
-  }
-}
-
-void start_matrix_2D(ivec pos, float orientation) {
-  if(pos instanceof ivec2) {
-    vec2 temp_pos = vec2(pos.x, pos.y);
-    start_matrix_2D(temp_pos, orientation);
-  } else if(pos instanceof ivec3) {
-    vec3 temp_pos = vec3(pos.x, pos.y, pos.z);
-    start_matrix_2D(temp_pos, orientation);
+    printErr("Error in void push_3D(), vec pos is not an instance of vec2 or vec3, the matrix cannot be init") ;
   }
 }
 
 
 
-// stop ans Start Matrix
-void start_matrix() {
-  pushMatrix() ;
+
+
+
+// push and pop
+void push(PGraphics other) {
+  if(other != null) {
+    other.push();
+  } else {
+    push();
+  }
+}
+
+void pop(PGraphics other) {
+  if(other != null) {
+    other.pop();
+  } else {
+    pop();
+  }
 }
 
 
-void stop_matrix() {
-  popMatrix() ;
-}
-
-
-
-
-/**
-Matrix deprecated
-*/
-@Deprecated
-void matrix_3D_start(vec3 pos, vec3 dir_cart) {
-  vec3 dir = dir_cart.copy() ;
-  pushMatrix() ;
-  translate(pos) ;
-  float radius = sqrt(dir.x * dir.x + dir.y * dir.y + dir.z * dir.z);
-  float longitude = acos(dir.x / sqrt(dir.x * dir.x + dir.y * dir.y)) * (dir.y < 0 ? -1 : 1);
-  float latitude = acos(dir.z / radius) * (dir.z < 0 ? -1 : 1);
-  // check NaN result
-  if (Float.isNaN(longitude)) longitude = 0 ;
-  if (Float.isNaN(latitude)) latitude = 0 ;
-  if (Float.isNaN(radius)) radius = 0 ;
-  rotateX(latitude) ;
-  rotateY(longitude) ;
-  printErr("void matrix_3D_start() is deprecated instead use start_matrix_3D()") ;
-}
-
-@Deprecated
-void matrix_3D_start(vec3 pos, vec2 dir_polar) {
-  pushMatrix() ;
-  translate(pos) ;
-  rotateXY(dir_polar) ;
-  printErr("void matrix_3D_start() is deprecated instead use start_matrix_3D()") ;
-}
-
-@Deprecated
-void matrix_2D_start(vec2 pos, float orientation) {
-  pushMatrix() ;
-  translate(pos) ;
-  rotate(orientation) ;
-  printErr("void matrix_2D_start() is deprecated instead use start_matrix_2D()") ;
-}
-
-@Deprecated
-void matrix_end() {
-  popMatrix() ;
-  printErr("void matrix_end() is deprecated instead use stop_matrix()") ;
-}
-
-@Deprecated
-void matrix_start() {
-  pushMatrix() ;
-  printErr("void matrix_start() is deprecated instead use start_matrix()") ;
-}
 
 
 
@@ -1606,6 +2154,8 @@ void vertex(float x, float y) {
   }
 }
 
+
+
 void vertex(float x, float y, float z) {
   if(get_layer_is_correct()) {
     get_layer().vertex(x,y,z);
@@ -1842,7 +2392,7 @@ void normal(float nx, float ny, float nz) {
 }
 
 
-// pointLight(v1, v2, v3, x, y, z)
+
 void pointLight(float v1, float v2, float v3, float x, float y, float z) {
   if(get_layer_is_correct()) {
     get_layer().pointLight(v1,v2,v3,x,y,z);
@@ -1851,7 +2401,7 @@ void pointLight(float v1, float v2, float v3, float x, float y, float z) {
   }
 }
 
-// spotLight(v1, v2, v3, x, y, z, nx, ny, nz, angle, concentration)
+
 void spotLight(float v1, float v2, float v3, float x, float y, float z, float nx, float ny, float nz, float angle, float concentration) {
   if(get_layer_is_correct()) {
     get_layer().spotLight(v1,v2,v3,x,y,z,nx,ny,nz,angle,concentration);
@@ -2092,6 +2642,18 @@ void perspective(float fovy, float aspect, float zNear, float zFar) {
 /**
 matrix
 */
+
+
+// push and pop
+void push() {
+  if(get_layer_is_correct()) {
+    get_layer().push();
+  } else {
+    g.push();
+  }
+}
+
+
 void pushMatrix() {
   if(get_layer_is_correct()) {
     get_layer().pushMatrix();
@@ -2100,6 +2662,14 @@ void pushMatrix() {
   }
 }
 
+
+void pop() {
+  if(get_layer_is_correct()) {
+    get_layer().pop();
+  } else {
+    g.pop();
+  }
+}
 
 void popMatrix() {
   if(get_layer_is_correct()) {
@@ -2636,7 +3206,3 @@ void textFont(PFont font, float size) {
 
 
   
-
-
-
-

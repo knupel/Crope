@@ -1,8 +1,8 @@
 /**
 * GUI CROPE EXAMPLE
 * Processing 3.5.3
-* Rope Library 0.5.1
-* 2016-2018
+* Rope Library 0.8.3.29
+* 2016-2019
 * v 0.1.0
 * slider
 */

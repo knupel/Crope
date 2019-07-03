@@ -1,6 +1,6 @@
 /**
 * CROPE DROPDOWN 
-* v 0.2.1
+* v 0.2.3
 * 2018-2019
 * method to know is dropdown is active or not
 * Add dropdown must use when the dropdown is build.
@@ -25,7 +25,7 @@ boolean dropdown_is() {
 
 /**
 * DROPDOWN class
-* v 2.7.0
+* v 2.7.1
 * 2014-2018
 */
 public class Dropdown extends Crope {
@@ -139,19 +139,19 @@ public class Dropdown extends Crope {
 
 
   public Dropdown set_colour(R_Colour rc) {
-    this.colour_structure = rc.get()[0];
+    this.colour_structure = rc.get(0)[0];
 
-    this.colour_header_in = rc.get()[1];
-    this.colour_header_out = rc.get()[2];
+    this.colour_header_in = rc.get(0)[1];
+    this.colour_header_out = rc.get(0)[2];
 
-    this.colour_header_text_in = rc.get()[3];
-    this.colour_header_text_out = rc.get()[4];
+    this.colour_header_text_in = rc.get(0)[3];
+    this.colour_header_text_out = rc.get(0)[4];
 
-    this.colour_box_in = rc.get()[5];
-    this.colour_box_out = rc.get()[6]; 
+    this.colour_box_in = rc.get(0)[5];
+    this.colour_box_out = rc.get(0)[6]; 
 
-    this.colour_box_text_in = rc.get()[7];
-    this.colour_box_text_out = rc.get()[8];
+    this.colour_box_text_in = rc.get(0)[7];
+    this.colour_box_text_out = rc.get(0)[8];
     return this;
   }
 
@@ -377,7 +377,7 @@ public class Dropdown extends Crope {
     } else {
       fill(colour_header_out);
     }
-    rect(get_pos(),get_size());
+    rect(vec2(get_pos()),vec2(get_size()));
   }
 
   public void show_header_text(String name) {
@@ -452,7 +452,7 @@ public class Dropdown extends Crope {
       } else if(size_box.x > max ) {
         size_box.x = max;
       }
-      rect(pos,size_box); 
+      rect(vec2(pos),vec2(size_box)); 
       // text part
       if (inside(pos,size_box,cursor,RECT)) {
         fill(colour_box_text_in); 

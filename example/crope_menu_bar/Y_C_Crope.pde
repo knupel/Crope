@@ -1,10 +1,10 @@
 /**
 * CROPE
 * Control ROmanesco Processing Environment
-* v 0.9.15
+* v 0.10.1
 * Copyleft (c) 2018-2019
 * Processing 3.5.3
-* Rope library 0.5.1
+* Rope library 0.8.1
 * @author @stanlepunk
 * @see https://github.com/StanLepunK/Crope
 */
@@ -29,9 +29,9 @@ ArrayList<Crope> get_crope() {
 
 
 /**
-Crope info > Cropinfo
-v 0.1.2
-2018-2019
+* Crope info > Cropinfo
+* v 0.1.2
+* 2018-2019
 */
 public class Cropinfo {
   private int rank = -1;
@@ -562,16 +562,16 @@ v 1.2.3
 2013-2018
 */
 public class Button extends Crope {
-  int color_bg;
+  protected int color_bg;
 
-  int color_on_off;
-  int color_in_ON, color_out_ON, color_in_OFF, color_out_OFF; 
+  protected int color_on_off;
+  protected int color_in_ON, color_out_ON, color_in_OFF, color_out_OFF; 
 
-  PImage [] pic;
+  protected PImage [] pic;
 
-  boolean inside;
-  boolean authorization;
-  boolean is = false;  
+  protected boolean inside;
+  protected boolean authorization;
+  protected boolean is = false;  
 
   protected Button() {
     super("Button");
@@ -748,7 +748,7 @@ public class Button extends Crope {
       fill(color_on_off);
       ivec2 pos_def = iadd(pos,pos_label);
       pos_def.y += size.y ;
-      text(this.name,pos_def);
+      text(this.name,vec2(pos_def));
     }  
   }
 
@@ -776,7 +776,7 @@ public class Button extends Crope {
     } else {
       fill(color_bg);
     }  
-    rect(pos, size);
+    rect(vec2(pos),vec2(size));
   }
 }
 
@@ -868,9 +868,9 @@ public class Button_dynamic extends Button {
 
 
 /**
-SLIDER
-v 1.5.6
-2013-2019
+* SLIDER
+* v 1.6.0
+* 2013-2019
 */
 boolean molette_already_selected ;
 public class Slider extends Crope {
@@ -893,9 +893,6 @@ public class Slider extends Crope {
 
   protected int molette_type = RECT;
 
-  boolean notch_is;
-  int notches_num;
-  int notch;
 
   public Slider() {
     super("Slider");
@@ -1465,7 +1462,7 @@ public class Slider extends Crope {
     if(rounded > 0) {
       rect(pos.x,pos.y,size.x,size.y,rounded);
     } else {
-      rect(pos,size);
+      rect(vec2(pos),vec2(size));
     }
   }
 
@@ -1550,9 +1547,9 @@ public class Slider extends Crope {
   
   private void molette_shape(int index) {
     if(molette_type == ELLIPSE) {
-      ivec2 temp = ivec2(round(mult(molette[index].size,.5)));
-      ivec2 pos = iadd(molette[index].pos,temp);
-      ellipse(pos,molette[index].size);
+      vec2 temp = vec2(round(mult(molette[index].size,.5)));
+      vec2 pos = add(vec2(molette[index].pos),temp);
+      ellipse(pos,vec2(molette[index].size));
     } else if(molette_type == RECT) {
       molette_rect(index);
     } else {
@@ -1563,13 +1560,13 @@ public class Slider extends Crope {
 
   private void molette_rect(int index) {
     if(size.x > size.y) {
-      ivec2 pos = molette[index].pos.copy();
+      vec2 pos = vec2(molette[index].pos);
       pos.y = pos.y -((molette[index].size.y -size.y)/2);
-      rect(pos,molette[index].size);
+      rect(pos,vec2(molette[index].size));
     } else {
-      ivec2 pos = molette[index].pos;
+      vec2 pos = vec2(molette[index].pos);
       pos.x = pos.x -((molette[index].size.x -size.x)/2);
-      rect(pos,molette[index].size);
+      rect(pos,vec2(molette[index].size));
     }
   }
   
@@ -1692,7 +1689,7 @@ public class Slider extends Crope {
         value = map(molette[index].pos.y,pos_min.y,pos_max.y,min_norm,max_norm);
       }
     }
-    return value ;
+    return value;
   }
   
   public float get_min_norm() {
@@ -1808,15 +1805,21 @@ public class Slider extends Crope {
 
 /**
 SLOTCH > notch's slider
-v 0.1.0
+v 0.2.0
 2018-2018
 */
 public class Slotch extends Slider {
-  float [] notches_pos ;
-  int colour_notch = int(g.colorModeX);
-  float thickness_notch = 1.;
-  Slotch(ivec2 pos, ivec2 size) {
-    super("Slotch",pos, size);   
+  protected float [] notches_pos ;
+  protected int colour_notch = int(g.colorModeX);
+  protected float thickness_notch = 1.;
+
+  protected boolean notch_is;
+  protected int notches_num;
+  protected int notch;
+
+  public Slotch(ivec2 pos, ivec2 size, int num) {
+    super("Slotch",pos, size);
+    set_notch(num);
   }
 
 
@@ -1828,9 +1831,8 @@ public class Slotch extends Slider {
     if (size.x >= size.y) { 
       if(notch_is) {
         for(int i = 0 ; i < molette.length ; i++) {
-          molette[i].pos.x = (int)pos_notch(size.x, molette[i].pos.x);
-        }
-        
+          molette[i].pos.x = floor(pos_notch(size.x, molette[i].pos.x));
+        }    
       }
     } else { 
       if(notch_is) {
@@ -1845,7 +1847,7 @@ public class Slotch extends Slider {
 
   public Slotch set_notch(int num) {
     notch_is = true ;
-    this.notches_num = num;
+    this.notches_num = num +1;
     notches_position();
     return this;
   }
@@ -1862,20 +1864,27 @@ public class Slotch extends Slider {
   }
 
   private float pos_notch(int size, int pos_molette) {
-    /**
-    something must be improve when there is 3 notches
-    */
     float pos = pos_molette;
-    float step = size / get_notches_num();
-    for(int i = 0 ; i < notches_pos.length ; i++) {
+    float step = size / (float)get_notches_num();
+    
+    for(int i = 1 ; i < notches_pos.length ; i++) {
       float min = notches_pos[i] - (step *.5);
       float max = notches_pos[i] + (step *.5);
       if(pos > min && pos < max) {
         pos = notches_pos[i];
         break;
+      } else if(pos <= min) {
+        pos = notches_pos[i];
+        break;
+      } else if(pos >= notches_pos[notches_pos.length-1] + (step *.5)) {
+        pos = notches_pos[notches_pos.length-1];
+        break;
       }
     }
-    return pos;
+    float offset = 0;
+    float size_mol = molette[0].size.x() *.5;
+    offset = step *.5 - size_mol;
+    return pos -offset;
   }
 
 
@@ -1883,7 +1892,7 @@ public class Slotch extends Slider {
 
   public float [] notches_position() {
     notches_pos = new float[get_notches_num()];
-    float step = size.x / get_notches_num();
+    float step = (float)size.x / get_notches_num();
     for(int i = 0 ; i < get_notches_num(); i++) {
       notches_pos[i] = (i+1) *step -(step*.5);
     }
@@ -1924,6 +1933,39 @@ public class Slotch extends Slider {
   public int get_notches_num() {
     return notches_num;
   }
+
+
+
+  /**
+  * GET
+  * same get thant Slider but this one is not norm but slotched :)
+  */
+  public float get(int index) {
+    float value = 0;
+    if(molette != null && index < molette.length 
+      && pos_min.x > 0 && pos_min.y > 0 && pos_max.x > 0 && pos_max.y > 0) {
+      if (size.x >= size.y) {
+        value = map(molette[index].pos.x,pos_min.x,pos_max.x,min_norm,max_norm); 
+      } else {
+        value = map(molette[index].pos.y,pos_min.y,pos_max.y,min_norm,max_norm);
+      }
+    }
+    return round(value *get_notches_num());
+  }
+
+  public float [] get() {
+    int num = 1;
+    if(molette != null) {
+      num = molette.length;
+    }
+    float [] value = new float[num];
+    for(int i = 0 ; i < value.length ; i++) {
+      value[i] = get(i);
+    }
+    return value;
+  }
+
+  
 } 
 
 
@@ -2181,25 +2223,3 @@ public class Sladj extends Slider {
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

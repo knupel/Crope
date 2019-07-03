@@ -71,9 +71,3 @@ void build_menu_bar(JSONObject content) {
 	cb.set(content);
 	cb.show();
 }
-
-
-
-void what_happen_in_menu(String what, ActionEvent ae) {
-	println("here code your the behavior of", what);
-}
