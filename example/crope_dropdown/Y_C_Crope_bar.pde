@@ -355,3 +355,4 @@ public class Crope_Bar {
 		return json;
 	}
 }
+

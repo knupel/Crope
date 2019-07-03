@@ -1684,9 +1684,13 @@ public class Slider extends Crope {
     if(molette != null && index < molette.length 
       && pos_min.x > 0 && pos_min.y > 0 && pos_max.x > 0 && pos_max.y > 0) {
       if (size.x >= size.y) {
-        value = map(molette[index].pos.x,pos_min.x,pos_max.x,min_norm,max_norm); 
+        value = map(molette[index].pos.x,
+                    pos_min.x,pos_max.x,
+                    min_norm,max_norm); 
       } else {
-        value = map(molette[index].pos.y,pos_min.y,pos_max.y,min_norm,max_norm);
+        value = map(molette[index].pos.y,
+                    pos_min.y,pos_max.y,
+                    min_norm,max_norm);
       }
     }
     return value;
@@ -1883,10 +1887,13 @@ public class Slotch extends Slider {
         break;
       }
     }
-
+    
+    // here it's buggy, need to find a good ratio for the diffente size of slotch
+    // actully that's work well only when the step is equal to the mollete size in x and in y
     float offset = 0;
-    float size_mol = molette[0].size.x() *.5;
-    offset = step *.5 - size_mol;
+    float size_mol = molette[0].size.x();
+    float ratio = (size_mol / step) *0.5;
+    offset = step *.5 -(size_mol *ratio);
     return abs_pos - offset +offset_slider_pos_x;
   }
 
@@ -1947,13 +1954,19 @@ public class Slotch extends Slider {
     float value = 0;
     if(molette != null && index < molette.length 
       && pos_min.x > 0 && pos_min.y > 0 && pos_max.x > 0 && pos_max.y > 0) {
-      if (size.x >= size.y) {
-        value = map(molette[index].pos.x,pos_min.x,pos_max.x,min_norm,max_norm); 
+      if (size.x >= size.y) {  
+        value = map(molette[index].pos.x,
+                    pos_min.x,pos_max.x,
+                    min_norm,max_norm); 
       } else {
-        value = map(molette[index].pos.y,pos_min.y,pos_max.y,min_norm,max_norm);
+        value = map(molette[index].pos.y,
+                    pos_min.y,pos_max.y,
+                    min_norm,max_norm);
       }
     }
-    return round(value *get_notches_num());
+
+    value = round(value*(float)notches_num);
+    return value;
   }
 
   public float [] get() {
@@ -1967,8 +1980,6 @@ public class Slotch extends Slider {
     }
     return value;
   }
-
-  
 } 
 
 
