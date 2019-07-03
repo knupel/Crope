@@ -7,10 +7,10 @@
 * slotch
 */
 
-int x = 20 ;
+int x = 30;
 int y = 20 ;
 void setup() {
-  size(400,200);
+  size(800,200);
   slotch_setup(x,y); 
 }
 
@@ -44,6 +44,6 @@ void slotch_draw() {
 	slotch.set_aspect_notch(230,1);
 	slotch.show_notch(-5,10);
 
-	println(slotch.get(0));
+	//println(slotch.get(0));
 	//println(slotch.get_notch());
 }

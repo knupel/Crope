@@ -1,7 +1,7 @@
 /**
 * CROPE
 * Control ROmanesco Processing Environment
-* v 0.10.1
+* v 0.10.2
 * Copyleft (c) 2018-2019
 * Processing 3.5.3
 * Rope library 0.8.1
@@ -1805,7 +1805,7 @@ public class Slider extends Crope {
 
 /**
 SLOTCH > notch's slider
-v 0.2.0
+v 0.2.1
 2018-2018
 */
 public class Slotch extends Slider {
@@ -1864,27 +1864,30 @@ public class Slotch extends Slider {
   }
 
   private float pos_notch(int size, int pos_molette) {
-    float pos = pos_molette;
+
     float step = size / (float)get_notches_num();
+    float offset_slider_pos_x = get_pos().x() -step;
+    float abs_pos = pos_molette -offset_slider_pos_x;
     
     for(int i = 1 ; i < notches_pos.length ; i++) {
       float min = notches_pos[i] - (step *.5);
       float max = notches_pos[i] + (step *.5);
-      if(pos > min && pos < max) {
-        pos = notches_pos[i];
+      if(abs_pos > min && abs_pos < max) {
+        abs_pos = notches_pos[i];
         break;
-      } else if(pos <= min) {
-        pos = notches_pos[i];
+      } else if(abs_pos <= min ) {
+        abs_pos = notches_pos[i];
         break;
-      } else if(pos >= notches_pos[notches_pos.length-1] + (step *.5)) {
-        pos = notches_pos[notches_pos.length-1];
+      } else if(abs_pos >= notches_pos[notches_pos.length-1] + (step *.5) ) {
+        abs_pos = notches_pos[notches_pos.length-1];
         break;
       }
     }
+
     float offset = 0;
     float size_mol = molette[0].size.x() *.5;
     offset = step *.5 - size_mol;
-    return pos -offset;
+    return abs_pos - offset +offset_slider_pos_x;
   }
 
 
