@@ -27,11 +27,10 @@ void draw() {
 
 Slotch slotch ;
 void slotch_setup(int x, int y) {
-  // need that to avoid the bug when the size of slider is not in adequation with molette size :(
   int num_notch = 10;
-  int size_step_x = 20;
-  int len = size_step_x *num_notch + size_step_x;
-  slotch = new Slotch(ivec2(x,y),ivec2(len,20),num_notch);
+  int size_y = 20;
+  int len = size_y *num_notch + size_y;
+  slotch = new Slotch(ivec2(x,y),ivec2(len,size_y),num_notch);
   // slotch = new Slotch(ivec2(x,y),ivec2(200,20),9);
   // slotch = new Slotch(ivec2(x,y),ivec2(200,30),9);
   // slotch.set_notch(10);
