@@ -1,6 +1,6 @@
 /**
 * CROPE DROPDOWN 
-* v 0.2.4
+* v 0.2.5
 * 2018-2019
 * method to know is dropdown is active or not
 * Add dropdown must use when the dropdown is build.
@@ -356,7 +356,7 @@ public class Dropdown extends Crope {
     show_box();
   }
 
-  private void show_selection(int x,int y) {
+  private void show_selection(float x, float y) {
     if (inside(pos,size,cursor,RECT)) {
       fill(colour_header_text_in); 
     } else {
@@ -428,7 +428,7 @@ public class Dropdown extends Crope {
           float y = pos.y +(height_box *box_starting_rank_position);
           slider_dd.pos(x,y);
           //slider_dd.select(false);
-          slider_dd.update(cursor);
+          slider_dd.update(cursor.x(),cursor.y());
           slider_dd.show_structure();
           slider_dd.show_molette();
         }

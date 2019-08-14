@@ -40,6 +40,7 @@ void slider_draw() {
 	slider.select(mousePressed);
 	// println("select",slider.select_is(), frameCount);
 	println("used",slider.used_is(), frameCount);
+	println("value",slider.get(0), frameCount);
 	slider.update(mouseX,mouseY);
 	slider.show_structure();
 	slider.show_molette();
