@@ -1,13 +1,63 @@
 /**
 * Rope framework image
-* v 0.5.3
+* v 0.5.6
 * Copyleft (c) 2014-2019
-* Processing 3.5.3.269
-* Rope library 0.8.3.28
+*
+* dependencies
+* Processing 3.5.3
+* Rope library 0.8.5.30
+*
 * @author @stanlepunk
 * @see https://github.com/StanLepunK/Rope_framework
 */
 
+/**
+* entry return the pixel position from x,y coordinate
+* v 0.0.2
+*/
+// with coordinate
+int entry(ivec2 pos, boolean constrain_is) {
+  return entry(g,pos.x(),pos.y(), constrain_is);
+}
+
+int entry(vec2 pos, boolean constrain_is) {
+  return entry(g,pos.x(),pos.y(), constrain_is);
+}
+
+int entry(float x, float y, boolean constrain_is) {
+  return entry(g,x,y,constrain_is);
+}
+
+int entry(PGraphics pg, ivec2 pos, boolean constrain_is) {
+  return entry(pg,pos.x(),pos.y(),constrain_is);
+}
+
+int entry(PGraphics pg, vec2 pos, boolean constrain_is) {
+  return entry(pg,pos.x(),pos.y(),constrain_is);
+}
+
+int entry(PGraphics pg, float x, float y, boolean constrain_is) {
+  //int max = pg.pixels.length;
+  int rank = (int)y * pg.width + (int)x;
+  return entry(pg, rank, constrain_is);
+}
+
+// with rank
+int entry(int rank, boolean constrain_is) {
+  return entry(g,rank,constrain_is);
+}
+
+int entry(PGraphics pg, int rank, boolean constrain_is) {
+  int max = pg.pixels.length;
+  if(constrain_is) {
+    if(rank < 0) rank = 0;
+    if(rank >= max) rank = max -1;
+  } else {
+    if(rank < 0) rank = max-rank;
+    if(rank >= max) rank = rank-max;
+  }
+  return rank;
+}
 
 
 
@@ -1279,7 +1329,7 @@ void background_rope(float x, float y, float z) {
 
 /**
 * GRAPHICS METHOD
-* v 0.4.0
+* v 0.4.1
 */
 /**
 SCREEN
@@ -1372,15 +1422,14 @@ Rectangle get_screen(int target_screen) {
   GraphicsDevice[] awtDevices = environment.getScreenDevices();
   int target = 0 ;
   if(target_screen < awtDevices.length) {
-    target = target_screen ; 
+    target = target_screen;
+    GraphicsDevice awtDisplayDevice = awtDevices[target];
+    Rectangle display = awtDisplayDevice.getDefaultConfiguration().getBounds();
+    return display; 
   } else {
-    printErr("No screen match with your request, instead we use the current screen");
-    target = sketchDisplay() -1;
-    if(target >= awtDevices.length) target = awtDevices.length -1;
+    printErr("method get_screen(",target_screen,"), No screen match with your request");
+    return null;
   }
-  GraphicsDevice awtDisplayDevice = awtDevices[target];
-  Rectangle display = awtDisplayDevice.getDefaultConfiguration().getBounds();
-  return display;
 }
 
 

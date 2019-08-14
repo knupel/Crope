@@ -1,9 +1,11 @@
 /**
 * GUI CROPE EXAMPLE
+
+* dependancies
 * Processing 3.5.3
-* Rope Library 0.8.3.28
+* Rope Library 0.8.5.30
 * 2016-2019
-* v 0.1.2
+* v 0.1.3
 */
 
 
@@ -35,7 +37,7 @@ void button_simple_setup(int x, int y) {
 	button.set_colour_out_off(r.BLOOD);
 	// button.set_aspect_on_off(r.GREEN,r.SAPIN,r.RED,r.BLOOD);
 	button.set_pos_label(20,20);
-	button.set_label("Hello World");
+	button.set_label("Turn me please");
 }
 
 
@@ -53,6 +55,12 @@ void button_simple_draw() {
 
 
 void mousePressed() {
+	if(button.inside()) {
+		button.switch_is();
+	}
+}
+
+void mouseReleased() {
 	if(button.inside()) {
 		button.switch_is();
 	}
