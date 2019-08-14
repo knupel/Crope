@@ -1,9 +1,9 @@
 /**
 * GUI CROPE EXAMPLE
 * Processing 3.5.3
-* Rope Library 0.8.3.29
+* Rope Library 0.8.5.30
 * 2016-2019
-* v 0.1.0
+* v 0.1.1
 * slider
 */
 
@@ -25,7 +25,7 @@ SLIDER CLASSIC
 */
 Slider slider ;
 void slider_setup(int x, int y) {
-	slider = new Slider(ivec2(x,y),ivec2(200,20));
+	slider = new Slider(vec2(x,y),vec2(200,20));
   slider.set_molette(ELLIPSE);
   slider.set_rounded(20);
   slider.set_molette_num(1);

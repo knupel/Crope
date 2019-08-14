@@ -12,56 +12,56 @@
 
 
 /**
-* Simple button
+* Turn button
 */
 int x = 60;
 int y = 60 ;
 void setup() {
   size(160,160);
-  button_simple_setup(x,y); 
+  set_turn_button(x,y); 
 }
 
 
 void draw() {
 	background(125);
-	button_simple_draw();
+	draw_turn_button();
 }
 
-Button button ;
-void button_simple_setup(int x, int y) {
-	button = new Button(ivec2(x,y),ivec2(50));
-	button.set_is(true);
-	button.set_colour_in_on(r.GREEN);
-	button.set_colour_out_on(r.SAPIN);
-	button.set_colour_in_off(r.RED);
-	button.set_colour_out_off(r.BLOOD);
+Butturn butturn ;
+void set_turn_button(int x, int y) {
+	butturn = new Butturn(vec2(x,y),50);
+	butturn.set_is(true);
+	butturn.set_colour_in_on(r.GREEN);
+	butturn.set_colour_out_on(r.SAPIN);
+	butturn.set_colour_in_off(r.RED);
+	butturn.set_colour_out_off(r.BLOOD);
 	// button.set_aspect_on_off(r.GREEN,r.SAPIN,r.RED,r.BLOOD);
-	button.set_pos_label(20,20);
-	button.set_label("Turn me please");
+	butturn.set_pos_label(0,20);
+	butturn.set_label("Turn me please");
 }
 
 
-void button_simple_draw() {
-	button.update(mouseX,mouseY);
-	button.rollover(true);
+void draw_turn_button() {
+	butturn.update(mouseX,mouseY);
+	butturn.rollover(true);
 
-	button.show_label();
-	
-	button.show(ELLIPSE,true);
+	butturn.show_label();
+	butturn.show();
+	//buturn.show(ELLIPSE,true);
 	//button.show(RECT,true);
 
-	println(button.is());
+	println(butturn.is());
 }
 
 
 void mousePressed() {
-	if(button.inside()) {
-		button.switch_is();
+	if(butturn.inside()) {
+		butturn.switch_is();
 	}
 }
 
 void mouseReleased() {
-	if(button.inside()) {
-		button.switch_is();
+	if(butturn.inside()) {
+		butturn.switch_is();
 	}
 }

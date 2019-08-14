@@ -30,9 +30,9 @@ void slotch_setup(int x, int y) {
   int num_notch = 10;
   int size_y = 20;
   int len = size_y *num_notch + size_y;
-  slotch = new Slotch(ivec2(x,y),ivec2(len,size_y),num_notch);
-  // slotch = new Slotch(ivec2(x,y),ivec2(200,20),9);
-  // slotch = new Slotch(ivec2(x,y),ivec2(200,30),9);
+  slotch = new Slotch(vec2(x,y),vec2(len,size_y),num_notch);
+  // slotch = new Slotch(vec2(x,y),vec2(200,20),9);
+  // slotch = new Slotch(vec2(x,y),vec2(200,30),9);
   // slotch.set_notch(10);
   slotch.set_molette(ELLIPSE);
   slotch.set_rounded(20);

@@ -1,9 +1,9 @@
 /**
 * GUI CROPE EXAMPLE
 * Processing 3.5.3
-* Rope Library 0.8.3.29
+* Rope Library 0.8.4.30
 * 2016-2019
-* v 0.1.0
+* v 0.1.1
 * multi slider
 *
 */
@@ -29,10 +29,10 @@ SLIDER MULTI
 */
 Slider multi_slider ;
 void multi_slider_setup(int x, int y) {
-	multi_slider = new Slider(ivec2(x,y),ivec2(200,20));
+	multi_slider = new Slider(vec2(x,y),vec2(200,20));
 	// multi_slider.set_molette(ELLIPSE);
 	multi_slider.set_molette_num(3);
-	multi_slider.size_molette(5,40);
+	multi_slider.set_size_molette(5,40);
   multi_slider.set_rounded(20);
 
   // choice the num of molette, the position is set automaticly

@@ -1,7 +1,9 @@
-*CROPE GUIDE
+*CROPE – Control Romanesco Processing Environment
+
 2015–2019
 
-CROPE – Control Romanesco Processing Environment
+Crope is a GUI framework build for Romanesco application at the begining
+
 
 
 
@@ -121,12 +123,8 @@ void add_crope(Crope crope);
 
 *Constructor
 
-
-Button();
-
 Button(ivec2 pos, ivec2 size);
 
-Button(String type, ivec2 pos, ivec2 size);
 
 *method
 
@@ -156,11 +154,18 @@ void update(int x, int y);
 void rollover(boolean authorization);
 
 boolean inside();
- 
-void show_picto(PImage [] pic);
 
-void show_label();
+void show();
 
 void show(int kind, boolean on_off_is);
 
-void aspect(boolean on_off_is);
+void show(PImage [] pic);
+
+void show_label();
+
+
+
+
+
+
+

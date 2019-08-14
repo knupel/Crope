@@ -33,7 +33,7 @@ ADJUTABLE
 */
 Sladj sladj ;
 void slider_adjustable_setup(int x, int y) {
-	sladj = new Sladj(ivec2(x,y),ivec2(200,20));
+	sladj = new Sladj(vec2(x,y),vec2(200,20));
   sladj.set_molette(ELLIPSE);
   sladj.set_rounded(20);
   sladj.set_molette_pos_norm(.25);

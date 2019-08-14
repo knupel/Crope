@@ -1,9 +1,9 @@
 /**
 * GUI CROPE EXAMPLE
 * Processing 3.5.3
-* Rope Library 0.8.3.29
+* Rope Library 0.8.5.30
 * 2016-2019
-* v 0.1.1
+* v 0.1.2
 * dropdown
 */
 
@@ -36,8 +36,8 @@ void dropdown_setup(int x, int y) {
 	// String [] content_1 = {"tigre","lynx"};
 	int num = 2;
 	dropdown = new Dropdown[num];
-	dropdown[0] = new Dropdown(ivec2(x,y),ivec2(60,20), "Menu", content_0);
-	dropdown[1] = new Dropdown(ivec2(x*8,y),ivec2(60,20), "Menu", content_1);
+	dropdown[0] = new Dropdown(vec2(x,y),vec2(60,20), "Menu", content_0);
+	dropdown[1] = new Dropdown(vec2(x*8,y),vec2(60,20), "Menu", content_1);
 	int num_box_display = 7;
 	int rank_box_position = 1;
 
@@ -54,8 +54,8 @@ void dropdown_setup(int x, int y) {
 void dropdown_draw() {
   dropdown[0].update(mouseX,mouseY);
   dropdown[0].show();
-  int x = dropdown[0].get_pos().x + dropdown[0].get_header_text_pos().x;
-  int y = dropdown[0].get_pos().y + dropdown[0].get_size().y + dropdown[0].get_header_text_pos().y;
+  float x = dropdown[0].get_pos().x + dropdown[0].get_header_text_pos().x;
+  float y = dropdown[0].get_pos().y + dropdown[0].get_size().y + dropdown[0].get_header_text_pos().y;
   // dropdown[0].show_selection(x,y);
   
   
