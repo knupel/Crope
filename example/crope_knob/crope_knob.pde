@@ -1,15 +1,17 @@
 /**
 * GUI CROPE EXAMPLE
+
 * dependancies
 * Processing 3.5.3
 * Rope Library 0.8.5.30
 * 2016-2019
-
-* Knob example
-* v 0.1.4
+* v 0.1.3
 */
 
 
+/**
+* Knob example
+*/
 int x = 100;
 int y = 100;
 void setup() {
@@ -19,7 +21,7 @@ void setup() {
 
 
 void draw() {
-	background(255);
+	background(125);
 	draw_knob();
 }
 
@@ -44,15 +46,14 @@ void set_knob(int x, int y) {
 	knob.set_colour_out_off(r.BLOOD);
 	// colour molette
 	knob.set_align_label_name(LEFT);
-	knob.set_align_label_value(RIGHT);
 	knob.set_label("Turn me please");
 	float pos_info = 25;
-	// knob.set_pos_label(pos_info-5,20);
-	// knob.set_pos_value(pos_info+5,20);
+	knob.set_pos_label(pos_info-5,20);
+
+	knob.set_align_label_name(RIGHT);
+	knob.set_pos_value(pos_info+5,20);
 	knob.set_distance_molette(knob.size().x()*.5);
-	//knob.set_drag(r.CIRCULAR);
-	//knob.set_drag(r.VERTICAL);
-	// knob.set_drag(r.HORIZONTAL);
+	// knob.set_drag(r.VERTICAL);
 	knob.set_drag_force(0.05);
 
 }
@@ -61,11 +62,6 @@ void set_knob(int x, int y) {
 void draw_knob() {
 	knob.update(mouseX,mouseY);
 	knob.rollover(true);
-	if(!keyPressed) {
-		knob.set_drag(r.CIRCULAR);
-	} else {
-		knob.set_drag(r.HORIZONTAL);
-	}
 
 	knob.show_label();
 	knob.show_structure();

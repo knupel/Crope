@@ -30,7 +30,7 @@ Dropdown [] dropdown;
 void dropdown_setup(int x, int y) {
 	String [] content_0 = {"chien","chat"};
 	//String [] content_0 = {"chien","chat", "poisson rouge","hamster","rat","souris"};
-	String [] content_1 = {"tigre","lynx","puma","chat","panthère","lion","guepard","chat sauvage"};
+	String [] content_1 = {"tigre","lynx","puma","chat","panthère","lion","guepard","chat sauvage","chien"};
 	// String [] content_1 = {"tigre","lynx", "puma","chat","panthère"};
 	//String [] content_0 = {"chien","chat"};
 	// String [] content_1 = {"tigre","lynx"};
@@ -54,15 +54,15 @@ void dropdown_setup(int x, int y) {
 void dropdown_draw() {
   dropdown[0].update(mouseX,mouseY);
   dropdown[0].show();
-  float x = dropdown[0].get_pos().x + dropdown[0].get_header_text_pos().x;
-  float y = dropdown[0].get_pos().y + dropdown[0].get_size().y + dropdown[0].get_header_text_pos().y;
+  float x = dropdown[0].pos().x + dropdown[0].get_header_text_pos().x;
+  float y = dropdown[0].pos().y + dropdown[0].size().y + dropdown[0].get_header_text_pos().y;
   // dropdown[0].show_selection(x,y);
   
   
   dropdown[1].update(mouseX,mouseY);
   dropdown[1].show();
-  x = dropdown[1].get_pos().x + dropdown[1].get_header_text_pos().x;
-  y = dropdown[1].get_pos().y + dropdown[1].get_size().y + dropdown[1].get_header_text_pos().y;
+  x = dropdown[1].pos().x + dropdown[1].get_header_text_pos().x;
+  y = dropdown[1].pos().y + dropdown[1].size().y + dropdown[1].get_header_text_pos().y;
   dropdown[1].show_selection(x,y);
 }
 

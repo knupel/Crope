@@ -1,9 +1,9 @@
 /**
 * GUI CROPE EXAMPLE
 * Processing 3.5.3
-* Rope Library 0.8.3.28
+* Rope Library 0.8.5.30
 * 2016-2019
-* v 0.1.2
+* v 0.1.3
 * slotch
 */
 
@@ -34,6 +34,7 @@ void slotch_setup(int x, int y) {
   // slotch = new Slotch(vec2(x,y),vec2(200,20),9);
   // slotch = new Slotch(vec2(x,y),vec2(200,30),9);
   // slotch.set_notch(10);
+  slotch.set_value(.5);
   slotch.set_molette(ELLIPSE);
   slotch.set_rounded(20);
 }

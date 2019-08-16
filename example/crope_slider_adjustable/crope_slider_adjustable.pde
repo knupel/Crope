@@ -1,9 +1,9 @@
 /**
 * GUI CROPE EXAMPLE
 * Processing 3.5.3
-* Rope Library 0.8.3.29
+* Rope Library 0.8.5.30
 * 2016-2019
-* v 0.1.0
+* v 0.1.1
 * slider adjustable
 */
 
@@ -36,7 +36,7 @@ void slider_adjustable_setup(int x, int y) {
 	sladj = new Sladj(vec2(x,y),vec2(200,20));
   sladj.set_molette(ELLIPSE);
   sladj.set_rounded(20);
-  sladj.set_molette_pos_norm(.25);
+  sladj.set_value(.25);
   // slider.wheel(true);
 }
 

@@ -3,7 +3,7 @@
 * Processing 3.5.3
 * Rope Library 0.8.3.28
 * 2016-2019
-* v 0.1.3
+* v 0.1.4
 */
 
 
@@ -28,7 +28,7 @@ void draw() {
 Button button ;
 void button_simple_setup(int x, int y) {
 	button = new Button(vec2(x,y),vec2(50));
-	button.set_is(true);
+	button.is(true);
 	button.set_colour_in_on(r.GREEN);
 	button.set_colour_out_on(r.SAPIN);
 	button.set_colour_in_off(r.RED);
@@ -48,7 +48,8 @@ void button_simple_draw() {
 	button.show(ELLIPSE,true);
 	//button.show(RECT,true);
 
-	println(button.is());
+	println("button is",button.is());
+	println("button get",button.get());
 }
 
 
