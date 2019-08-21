@@ -3,7 +3,7 @@
 * Processing 3.5.3
 * Rope Library 0.8.5.30
 * 2016-2019
-* v 0.1.3
+* v 0.1.4
 * slotch
 */
 
@@ -20,7 +20,6 @@ void setup() {
 
 
 void draw() {
-  // println("truc");
   background(0);
   slotch_draw();
 }
@@ -29,11 +28,12 @@ Slotch slotch ;
 void slotch_setup(int x, int y) {
   int num_notch = 10;
   int size_y = 20;
+  // option 1
   int len = size_y *num_notch + size_y;
   slotch = new Slotch(vec2(x,y),vec2(len,size_y),num_notch);
-  // slotch = new Slotch(vec2(x,y),vec2(200,20),9);
-  // slotch = new Slotch(vec2(x,y),vec2(200,30),9);
-  // slotch.set_notch(10);
+
+  // option 2
+  // slotch.set_notch(6); // buggy
   slotch.set_value(.5);
   slotch.set_molette(ELLIPSE);
   slotch.set_rounded(20);
