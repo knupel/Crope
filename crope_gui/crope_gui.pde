@@ -1,55 +1,64 @@
 /**
 * GUI CROPE EXAMPLE
 * Processing 3.5.3
-* Rope Library 0.8.5.30
-* 2016-2019
-* v 0.1.4
-* slotch
+*
+* color palette picker
+* 2016-2020
+* v 0.0.1
 */
 
 
 
-
+Palette palette;
+Slider slider;
 
 int x = 30;
 int y = 40 ;
 void setup() {
-  size(800,200);
-  slotch_setup(x,y);
-  println(r.VERSION);
+	size(600,600);
+	// colorMode (HSB, 255 );
+	println(r.VERSION);
+	slider_setup(x, y);
+	palette_setup(x, y +40, width/2, height/2);
+	// palette_setup(x, y +40, 300, 300);
 }
 
 
 void draw() {
-  background(0);
-  slotch_draw();
-}
-
-Slotch slotch ;
-void slotch_setup(int x, int y) {
-  int num_notch = 10;
-  int size_y = 20;
-  // option 1
-  int len = size_y *num_notch + size_y;
-  slotch = new Slotch(vec2(x,y),vec2(len,size_y),num_notch);
-
-  // option 2
-  // slotch.set_notch(6); // buggy
-  slotch.set_value(.5);
-  slotch.set_molette(ELLIPSE);
-  slotch.set_rounded(20);
+	background(0);
+	float hue = slider_draw();
+	palette_draw(hue);
 }
 
 
-void slotch_draw() {
-  slotch.update(mouseX,mouseY);
-
-  slotch.show_structure();
-  slotch.show_molette();
-  // stroke(255);
-  // slotch.show_notch();
-  // slotch.set_colour_notch(230);
-  slotch.set_aspect_notch(230,1);
-  slotch.show_notch(-5,10);
-  println("value",slotch.get(0));
+void slider_setup(int x, int y) {
+	slider = new Slider(vec2(x,y),vec2(200,20));
+	slider.set_label("color choice");
+	slider.set_molette(ELLIPSE);
+	slider.set_rounded(20);
+	slider.set_value(0.75);
 }
+
+float slider_draw() {
+	slider.update(mouseX,mouseY);
+	slider.show_structure();
+	slider.show_molette();
+	slider.show_label();
+	return slider.get(0);
+}
+
+
+void palette_setup(int px, int py, int sx, int sy) {
+	// palette = new Palette(vec2(x,y),radius);
+	// vec2 pos = vec2(px, py);
+ //  vec2 size = vec2(sx, sy);
+  palette = new Palette(vec2(px,py), vec2(sx, sy));
+}
+
+void palette_draw(float hue) {
+	palette.show(hue);
+}
+
+
+
+
