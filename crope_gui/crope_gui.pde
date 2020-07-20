@@ -15,7 +15,8 @@ int x = 30;
 int y = 40 ;
 void setup() {
   size(800,200);
-  slotch_setup(x,y); 
+  slotch_setup(x,y);
+  println(r.VERSION);
 }
 
 
