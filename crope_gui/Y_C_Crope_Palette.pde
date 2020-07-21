@@ -1,146 +1,168 @@
 /**
 * PALETTE
+* color picker
 * v 0.0.1
 * 2020-2020
 */
-class Palette extends Crope {
-  vec2 target_pos;
-  int density = 0;
-  int color_mode = HSB;
-  
-  color newColor, currentColor, colorWrite;
-  boolean inside, locked, validate;
-  
-  Palette (vec2 pos, vec2 size) {
-  	super("Palette");
-  	// this.color_mode = color_mode;
-    this.pos(pos); 
-    this.size(size);
-    this.target_pos = vec2(size.x() * 0.5 + pos.x(), size.y() * 0.5 + pos.y());
-    currentColor = color(g.colorModeX * 0.5, g.colorModeY * 0.5, g.colorModeZ * 0.5);
-  }
-  
-  void show(float hue) {
-    int px = round(this.pos.x());
-    int py = round(this.pos.y());
-    int sx = round(this.size.x());
-    int sy = round(this.size.y());
+public class Palette extends Crope {
+	private vec2 target_pos;
+	
+	int newColor;
+	int colorWrite;
 
-    // float max_x = this.size.x();
-    // float max_y = this.size.y();
+
+	
+	public Palette(vec2 pos, vec2 size) {
+		super("Palette");
+		this.pos(pos); 
+		this.size(size);
+		this.target_pos = vec2(size.x() * 0.5 + pos.x(), size.y() * 0.5 + pos.y());
+		
+	}
+
+	/**
+	* show palette and set the picker size
+	*/
+	public void show(float hue) {
+		show(hue,40);
+	}
+	
+	public void show(float hue, int radius) {
+		int px = round(this.pos.x());
+		int py = round(this.pos.y());
+		int sx = round(this.size.x());
+		int sy = round(this.size.y());
 
 		float step_x = 1.0 / this.size.x();
 		float step_y = 1.0 / this.size.y();
 		println(step_x,step_y);
-		// float step_x = 1.0;
-		// float step_y = 1.0;
+		int ref_colorMode = g.colorMode;
+		vec4 ref_colorMode_xyza = vec4(g.colorModeX,g.colorModeY,g.colorModeZ,g.colorModeA);
 
-   //  if(g.colorMode != HSB) {
-    	// colorMode(HSB,g.colorModeX);
-   //  }
-   colorMode(HSB,1);
+	 	colorMode(HSB,1);
 
-    // hue *= g.colorModeX;
 		for (float x = 0 ; x < 1.0 ; x += step_x) {
 			for (float y = 0 ; y < 1.0 ; y += step_y) {
-        int c = color(hue, x ,y);
-        set(int(x * size.x() + px), int(y * size.y() + py), c);
-      }
-    }
-    pipette();
-  }
-  
-  
-  // Pipette
-  void pipette() {
-    checkPipette(); // look if the pipette are in the area or not
-    returnNewColor(); // give the value of new color selected by pipette
-    
-    strokeWeight(1) ;
-    colorWrite(newColor);
-    stroke(colorWrite);
-    fill(newColor);
-    ellipseMode(CENTER);
-    ellipse(target_pos.x(), target_pos.y(), 40, 40);
-  }
-  
-  void checkPipette() {
-    if(		mouseX < this.size.x() + this.pos.x() && mouseX > this.pos.x() 
-    	&& 	mouseY < this.size.y() + this.pos.y() && mouseY > this.pos.y() 
+				int c = color(hue, x ,y);
+				set(int(x * size.x() + px), int(y * size.y() + py), c);
+			}
+		}	
+		colorMode(ref_colorMode,ref_colorMode_xyza);
+		picker(radius);
+	}
+	
+	
+	// Pipette
+	private void picker(int radius) {
+		picker_is(); // look if the pipette are in the area or not
+		newColor = get_color(); // give the value of new color selected by pipette
+		
+		strokeWeight(1) ;
+		stroke(color_ring(newColor));
+		fill(newColor);
+		ellipseMode(CENTER);
+		ellipse(target_pos.x(), target_pos.y(), radius, radius);
+	}
+	
+	private void picker_is() {
+		if(		mouseX < this.size.x() + this.pos.x() && mouseX > this.pos.x() 
+			&& 	mouseY < this.size.y() + this.pos.y() && mouseY > this.pos.y() 
 			&&	mousePressed) {
-          this.target_pos.x(mouseX);
-          this.target_pos.y(mouseY);
-    }
-  }
-  
-  //board color
-  // new color
-  void newColor(PVector posNC, PVector sizeNC) {
-    strokeWeight(1);
-    stroke(185);
-    fill(newColor);
-    rect(posNC.x, posNC.y, sizeNC.x, sizeNC.y);
-    
-    colorWrite(newColor);
-    fill(colorWrite);
-    String newHexColor = hex(newColor) ;
-    println(newHexColor) ;
-    text(newHexColor , posNC.x +5 , posNC.y +5 +(sizeNC.y /2.0) );
-  }
-  // current color
-  void currentColor(PVector posCC, PVector sizeCC) {
-    strokeWeight(1);
-    stroke (185);
-    fill(currentColor);
-    rect(posCC.x, posCC.y, sizeCC.x, sizeCC.y ) ;
-    
-    colorWrite(currentColor) ;
-    fill(colorWrite) ;
-    String currentHexColor = hex(currentColor) ;
-    println(currentHexColor) ;
-    text( currentHexColor , posCC.x +5 , posCC.y +5 +(sizeCC.y /2.0) );
-  }
-  
-  /////////////////////////////////
-  //button
-  void buttonValidate (vec2 posB, vec2 sizeB, color buttonIN, color buttonOUT, color buttonBorderIN, color buttonBorderOUT, int buttonThickness, int typeOfButton, String title, color colorTitle) {
-    if ( mouseX < sizeB.x + posB.x && mouseX > posB.x && mouseY < sizeB.y + posB.y && mouseY > posB.y) {
-      inside = true ;
-      fill(buttonIN) ;
-    } else {
-      inside = false ;
-      fill (buttonOUT) ;
-    }
-    if(mousePressed && inside)    locked = true ;
-    if(!mousePressed)             locked = false ;
-    
-    if(locked) currentColor = newColor ;
-    
-    if ( typeOfButton < 1 || typeOfButton > 2 ) rect(posB.x, posB.y, sizeB.x, sizeB.y ) ;
-    
-    if ( typeOfButton == 1  ) rect(posB.x, posB.y, sizeB.x, sizeB.y ) ;
-    if ( typeOfButton == 2  ) { 
-      ellipseMode(CORNER) ;
-      ellipse(posB.x, posB.y, sizeB.x, sizeB.y);
-    }
-    fill(colorTitle) ;
-    text (title, posB.x +5, posB.y +5 +(sizeB.y /2.0) ) ;
-  }
-  
-  ///RETURN/////////////
-  color colorWrite(color colorRef)
-  {
-    if( brightness( colorRef ) < 170 ) {
-      colorWrite = color(185) ;
-    } else {
-      colorWrite = color(10) ;
-    }
-    return colorWrite ;
-  }
-  /////////
-  color returnNewColor() {
-    newColor = get(round(target_pos.x()), round(target_pos.y()) ) ;
-    return newColor ;
-  }
-   
+					this.target_pos.x(mouseX);
+					this.target_pos.y(mouseY);
+		}
+	}
+	
+	private int color_ring(int color_arg) {
+		if(brightness(color_arg) < 170) {
+			return color(185);
+		} else {
+			return color(10);
+		}
+	}
+
+	public int get_color() {
+		return get(round(target_pos.x()), round(target_pos.y()));
+	}
+
 }
+
+
+
+/**
+* PALETTE SELECTOR
+*/
+public class Palette_Selector extends Crope {
+	boolean inside;
+	boolean locked;
+	boolean validate;
+	int current_color;
+	
+
+	public Palette_Selector(vec2 pos, vec2 size) {
+		super("Palette Selector");
+		this.pos(pos);
+		this.size(size);
+		current_color = color(g.colorModeX * 0.5, g.colorModeY * 0.5, g.colorModeZ * 0.5);
+	}
+
+	public void validate() {
+		if (mouseX < this.size.x() + this.pos.x() && mouseX > this.pos.x()
+				&& mouseY < this.size.y() + this.pos.y() && mouseY > this.pos.y()) {
+			this.inside = true;
+			fill(this.fill_in);
+			stroke(this.stroke_in);
+		} else {
+			this.inside = false;
+			fill(this.fill_out);
+			stroke(this.stroke_in);
+		}
+		strokeWeight(this.thickness);
+
+
+		if(mousePressed && this.inside) {
+			this.locked = true ;
+		}
+		if(!mousePressed){ 
+			this.locked = false;
+		}
+		
+		if(this.locked) {
+			this.current_color = this.new_color;
+		}
+		
+		rect(this.pos, this.size);
+		text(this.name, this.pos.x() +5, this.pos.y() +5 +(this.size.y() /2.0));
+	}
+
+	public void box_current_color() {
+		strokeWeight(this.thickness);
+		stroke(this.stroke_in);
+		fill(this.current_color);
+		rect(this.pos, this.size);
+		
+		fill(this.current_color) ;
+		String hex_color = hex(this.current_color);
+		// println(hex_color);
+		text(hex_color , pos.x() +5 , pos.y() +5 +(size.y() /2.0));
+	}
+
+	public void box_new_color() {
+		strokeWeight(this.thickness);
+		stroke(this.stroke_in);
+		fill(this.new_color);
+		rect(this.pos, this.size);
+		
+		fill(this.new_color);
+		String hex_color = hex(this.new_color);
+		// println(hex_color) ;
+		text(hex_color , this.pos.x() +5 , this.pos.y() +5 +(this.size.y() /2.0));
+	}
+
+	public void set_color_picker(int new_color) {
+		this.new_color = new_color;
+
+	}
+
+}
+
