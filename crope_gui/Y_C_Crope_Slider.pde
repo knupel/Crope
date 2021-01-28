@@ -847,8 +847,8 @@ public class Slider extends Crope {
 
 /**
 SLOTCH > notch's slider
-v 0.2.3
-2018-2019
+v 0.3.0
+2018-2021
 */
 public class Slotch extends Slider {
 	protected float [] notches_pos ;
@@ -859,14 +859,49 @@ public class Slotch extends Slider {
 	protected int notches_num;
 	protected int notch;
 
+	public Slotch() {
+		super("Slotch",vec2(-1), vec2(-1));
+		set_notch(2);
+	}
+
+	// 	public Slotch(vec2 pos, vec2 size, int num) {
+	// 	super("Slotch",pos, size);
+	// 	set_notch(num);
+	// }
+
 	public Slotch(vec2 pos, vec2 size, int num) {
 		super("Slotch",pos, size);
 		set_notch(num);
 	}
 
+	public Slotch(String type, vec2 pos, vec2 size, int num) {
+		super(type,pos, size);
+		set_notch(num);
+	}
+
+	/*
+		public Slider() {
+		super("Slider");
+		this.pos(vec2(-1));
+		this.size(vec2(-1));
+	}
+	
+	public Slider(vec2 pos, vec2 size) {
+		super("Slider");
+		this.pos(pos);
+		this.size(size);
+	}
+
+	public Slider(String type, vec2 pos, vec2 size) {
+		super(type);
+		this.pos(pos);
+		this.size(size);
+	}
+	*/
+
 	// SET
 	public Slotch set_notch(int num) {
-		notch_is = true ;
+		notch_is = true;
 		this.notches_num = num +1;
 		notches_position();
 		return this;
