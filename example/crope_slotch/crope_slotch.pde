@@ -1,13 +1,3 @@
-/**
-* GUI CROPE EXAMPLE
-* Processing 3.5.3
-* Rope Library 0.8.8.34
-* 2016-2021
-* v 0.1.5
-* slotch
-*/
-
-
 int x = 30;
 int y = 40 ;
 void setup() {
@@ -35,7 +25,8 @@ void slotch_setup(int x, int y) {
   slotch.set_notch(num_notch);
 
   // other setting
-  slotch.set_value(.5);
+  // slotch.set_value(0.5); // use normal position from [0.0, 1.0]
+  slotch.set_value(2); // use position from [0, int num_of_notch]
   slotch.set_molette(ELLIPSE);
   slotch.set_rounded(20);
   println("slotch.get_type():", slotch.get_type());
@@ -51,7 +42,7 @@ void slotch_draw() {
   // slotch.show_notch();
   // slotch.set_colour_notch(230);
   
-  slotch.set_aspect_notch(230,1);
+  // slotch.set_aspect_notch(230,1); // What is it ????
   
   // notch is separator
   slotch.show_notch(-5,10);
