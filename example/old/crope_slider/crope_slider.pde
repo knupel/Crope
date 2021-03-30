@@ -33,9 +33,9 @@ void slider_setup(int x, int y) {
 
 void slider_draw() {
   // by default select is mousePressed arg
-  slider.select(keyPressed); 
+  // slider.select(keyPressed); 
   // slider.select(mousePressed);
-  slider.keep_selection(keyPressed);
+  slider.keep_selection(false);
   
   println("select",slider.select_is());
   println("used",slider.used_is());

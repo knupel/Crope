@@ -3,6 +3,9 @@ Controle GUI for Rope system
 v 0.2.0
 * Copyleft (c) 2018-2019
 
+## IS OVER
+Now the framework Crope is implemented directly in the [Rope library](https://github.com/StanLepunK/Rope/tree/master/src/rope/gui)
+
 ## rope library
 to use the set rope method you need to downlow Rope library
 [download](https://github.com/StanLepunK/Rope/blob/master/build_rope/Rope.zip)
